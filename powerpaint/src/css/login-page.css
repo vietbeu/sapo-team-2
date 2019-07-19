@@ -1,0 +1,147 @@
+
+.first-page .image-background{
+  background-image: url(../images/img3.jpg);
+  float: left;
+  width:62%;height: 100vh;
+  background-position: center;
+  background-size: cover;
+  
+}
+.first-page .image-background h1{
+  margin-top:40%;
+  margin-left: 10%;
+  margin-right: 10%;
+  font-size: 187.5%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.first-page .image-background h2{
+  margin-left: 10%;
+  margin-right: 5%;
+  font-size: 137.5%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+#hint{
+  color:#0084FF;
+  background-color: inherit;
+  border:none;
+}
+
+.info-popup{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: normal;
+}
+.info-popup .popup-title{
+  border-bottom:  #C4CDD5 solid 2px;
+}
+.info-popup p{
+  font-size: 137.5%;
+  color:#333333;
+
+}
+.logo-popup img{
+  margin-top:1%;
+  width: 30%;
+  height:auto;
+  
+}
+.popup-content{
+  margin:2% 5%;
+}
+.contact-popup{
+  width:60%;
+  margin-top: 5%;
+  float: right;
+}
+.contact-item{
+  margin-bottom:5%;
+}
+.font-icon i{
+  width: 5%;
+  margin-right: 2%;
+  text-align: center;
+}
+
+
+.first-page .form-container{
+  width: 35%;
+  margin-right:2% ; 
+  float: right;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: #FFFFFF;
+  color: #333333;
+}
+
+.row label{
+  width: 50%;
+  border-bottom: #DDDDDD solid 2px;
+  text-align: center;
+  vertical-align: center;
+  font-size: 175%;
+  font-family: inherit;
+}
+
+.form label{
+  font-size: 150%;
+  width: 90%;
+}
+.form input{
+  font-size: 125%;
+  width: 100%;
+  min-width: 100px;
+  padding: 2%;
+  margin: 2% 0%;
+  border: #C4CDD5 solid 1px;
+  border-radius:5px;
+  box-sizing: border-box;
+}
+.form button{
+  border: none;
+  margin: 3% 0%;
+  width: 40%;
+  padding: 2%;
+  border-radius: 5px;
+}
+.form .submit{
+  background-color :#0084FF;
+  color: white;
+  font-size: 125%;
+}
+.forget-pass{
+  float:right;
+  clear: both;
+  color:#0084FF;
+  background-color: inherit;
+  font-size: 125%;
+}
+.register-form label{
+  font-size:100%;
+}
+
+.forget-pass-form label{
+  font-size: 100%;
+}
+.more div{
+  font-size:125%;
+  text-align: center;
+  color: #7B7B7B;
+}
+.more button{
+  margin-top:2%;
+  width: 50%;
+  margin-left: 25%;
+  border-radius:5px;
+  background-color: #3A5BA0;
+}
+.more button i{
+  float: left;
+  margin-left: 3%;
+  vertical-align: middle;
+  color:#FFFFFF;
+}
+#face-login{
+  margin-left: 2%;
+  font-family: inherit;
+  font-size: 125%;
+  color: #FFFFFF;
+}
