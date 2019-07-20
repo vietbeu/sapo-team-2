@@ -38,8 +38,12 @@ class LoginForm extends Component {
                     Thông tin đăng nhập
                 </label>
                 <form onSubmit={this.handleSubmit}> 
-                    <input type='email' placeholder='Email' required autoComplete='off' onChange={this.changeEmail}/>
-                    <input type='password' placeholder='Mật khẩu' required autoComplete='off' onChange={this.changePass}/>
+                    <div className='input'>
+                        <input type='email' placeholder='Email' required autoComplete='off' onChange={this.changeEmail}/>
+                    </div>   
+                    <div>
+                        <input type='password' placeholder='Mật khẩu' required autoComplete='off' onChange={this.changePass}/>
+                    </div>   
                     <button className='submit' type='submit' >Đăng nhập</button>
                     <button onClick={this.clickForgetPass} className='forget-pass'>Quên mật khẩu?</button>
                 </form>

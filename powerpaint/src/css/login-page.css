@@ -85,15 +85,21 @@
   font-size: 150%;
   width: 90%;
 }
+.form .input{
+  margin: 3% 0%;
+}
 .form input{
   font-size: 125%;
   width: 100%;
   min-width: 100px;
   padding: 2%;
-  margin: 2% 0%;
   border: #C4CDD5 solid 1px;
   border-radius:5px;
   box-sizing: border-box;
+}
+.error{
+  color:red;
+  font-size: 70%;
 }
 .form button{
   border: none;
