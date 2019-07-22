@@ -13,15 +13,22 @@ class LoginForm extends Component {
     changePass = (e) => {
         this.setState({pass: e.target.value})
     }
+    
     handleSubmit = (e) => {
         e.preventDefault();
         axios.post('http://192.168.9.253:8181/login',{
             email: this.state.email,
 			password: this.state.pass
 		})
-        .then( (respone)=>{
-            if(respone.data.success===1){
-                alert('Đăng nhập thành công');
+        .then( (response)=>{
+            if(response.data.success===1){
+               // document.cookie='username='+response.data.username;
+               localStorage.setItem("username",response.data.username);
+               localStorage.setItem('email',response.data.email);
+               localStorage.setItem('phone',response.data.phone);
+               localStorage.setItem('id',response.data.id);
+               localStorage.setItem('shop',response.data.shop);
+                window.location.replace("/welcome");
             }
         })
         .catch((error) => {

@@ -1,0 +1,42 @@
+
+.content{
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    top: 10%;
+}
+
+.content h1{
+    font-weight: normal;
+    font-size: 175%;
+    text-align: center;
+}
+
+.content .description{
+    margin-top:5%;
+    font-size: 100%;
+}
+
+.description div{
+    margin-bottom: 2%;
+}
+
+#footer {
+    text-align: center;
+    margin-top:5%;
+}
+#footer button{
+    text-align: center;
+    background: rgba(255, 107, 0, 0.87);
+    border-radius: 5px;
+    width:20%;
+    height:7vh;
+    border: none;
+    color:#FFFFFF;
+    padding: 0.5% 1%;
+    font-size: 100%;
+    margin-bottom: 5%;
+}
+#signup span{
+    color: #007BFF;
+}

@@ -11,19 +11,19 @@ const InfoPopup = () => {
             <span className='contact-popup'>
                 <div className='contact-item'>
                     <span className='font-icon'><i className="fa fa-phone" aria-hidden="true"></i></span>
-                    <span className='info'>0975867756</span>
+                    0975867756
                 </div>
                 <div className='contact-item'>
                     <span className='font-icon'><i className="fa fa-envelope" aria-hidden="true"></i></span>
-                    <span className='info'>sapoteam2@gmail.com</span>
+                    sapoteam2@gmail.com
                 </div>
                 <div className='contact-item'>
                     <span className='font-icon'><i className="fa fa-map-marker" aria-hidden="true"></i></span>
-                    <span className='info'>Tầng 8 toà nhà Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</span>
+                    Tầng 8 toà nhà Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội
                 </div>
                 <div className='contact-item'>
                     <span className='font-icon'><i className="fa fa-clock-o" aria-hidden="true"></i></span>
-                    <span className='info'>8:30 h - 20:00 h, Thứ 2 - Thứ 7</span>
+                    8:30 h - 20:00 h, Thứ 2 - Thứ 7
                 </div>
             </span>
         </div>
