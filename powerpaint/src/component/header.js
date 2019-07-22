@@ -15,14 +15,7 @@ class Header extends Component {
                 </div>
                
                 <div className='info'>
-                    <span><Popup
-                            trigger={<button className="button">  </button>}
-                            position="bottom left"
-                            on="hover"
-                            >
-                            a
-                            </Popup>
-                            </span>
+                    <span></span>
                 </div>
                 <div className='help'>
                     <div>

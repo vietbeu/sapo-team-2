@@ -1,0 +1,88 @@
+.body{
+    position: relative;
+    width: 100%;
+    background: #F9FAFC;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.body-content{
+    position: absolute;
+    top:3vh;
+    left: 5%;
+    right:5%;
+}
+
+.body-title div{
+    color:#7B7B7B;
+}
+#account{
+    font-size: 1.4vw;    
+}
+.body-title p{
+    font-size: 3vw;
+    color: #333333;
+    font-weight: bold;
+    margin:0%
+}
+.body-title hr{
+    border: 1px solid #C4CDD5;
+    margin-top: 0%;
+    margin-bottom: 4vh;
+}
+.body-note{
+    float:left;
+    width: 40%;
+    font-size: 1.5vw;
+}
+.table-inf{
+    font-size: 1.5vw;
+    background-color: #FFFFFF;
+    width: 60%;
+    float:right;
+    border: 1px solid #C4CDD5;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.info-content{
+    margin:2vh 3%;
+}
+.info-content #title{
+    font-size: 1.6vw;
+}
+.row-info{
+    width:100%;
+    margin-top:3vh;
+    
+}
+.row-info input{
+    background: #FFFFFF;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding-left: 2%;
+    float: right;
+    width: 70%;
+    vertical-align: middle;
+}
+.row-info #email{
+    border: none;
+    width: 50%;
+}
+#change-email{
+    float:right;
+    width: 20%;
+    color: #0084FF
+}
+.table-inf hr{
+    margin-top: 3vh;
+}
+
+.info-content #change-pass-button{
+    background: inherit;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    width:40%;
+    color: #7B7B7B;
+    font-size: 1.5vw;
+
+}

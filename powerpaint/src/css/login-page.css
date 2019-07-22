@@ -2,23 +2,23 @@
 .first-page .image-background{
   background-image: url(../images/img3.jpg);
   float: left;
-  width:62%;height: 100vh;
+  width:62%;height: 115vh;
   background-position: center;
   background-size: cover;
   
 }
 .first-page .image-background h1{
-  margin-top:40%;
+  margin-top:40vh;
   margin-left: 10%;
   margin-right: 10%;
-  font-size: 187.5%;
+  font-size: 2.5vw;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .first-page .image-background h2{
   margin-left: 10%;
   margin-right: 5%;
-  font-size: 137.5%;
+  font-size: 1.8vw;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 #hint{
@@ -35,9 +35,9 @@
   border-bottom:  #C4CDD5 solid 2px;
 }
 .info-popup p{
-  font-size: 137.5%;
+  font-size: 2.6vw;
   color:#333333;
-
+  margin-left: 5%;
 }
 .logo-popup img{
   margin-top:1%;
@@ -46,7 +46,7 @@
   
 }
 .popup-content{
-  margin:2% 5%;
+  margin:2% 0%;
 }
 .contact-popup{
   width:60%;
@@ -77,29 +77,29 @@
   border-bottom: #DDDDDD solid 2px;
   text-align: center;
   vertical-align: center;
-  font-size: 175%;
+  font-size: 2.5vw;
   font-family: inherit;
 }
 
 .form label{
-  font-size: 150%;
+  font-size: 2.15vw;
   width: 90%;
 }
 .form .input{
-  margin: 3% 0%;
+  margin: 3vh 0%;
 }
 .form input{
-  font-size: 125%;
+  font-size: 1.6vw;
   width: 100%;
   min-width: 100px;
-  padding: 2%;
+  padding: 1vh;
   border: #C4CDD5 solid 1px;
   border-radius:5px;
   box-sizing: border-box;
 }
 .error{
   color:red;
-  font-size: 70%;
+  font-size: 0.9vw;
 }
 .form button{
   border: none;
@@ -111,24 +111,22 @@
 .form .submit{
   background-color :#0084FF;
   color: white;
-  font-size: 125%;
+  font-size: 1.5vw;
 }
 .forget-pass{
   float:right;
   clear: both;
   color:#0084FF;
   background-color: inherit;
-  font-size: 125%;
-}
-.register-form label{
-  font-size:100%;
+  font-size: 1.5vw;
 }
 
+
 .forget-pass-form label{
-  font-size: 100%;
+  font-size: 1.4vw;
 }
 .more div{
-  font-size:125%;
+  font-size:1.5vw;
   text-align: center;
   color: #7B7B7B;
 }
@@ -148,6 +146,6 @@
 #face-login{
   margin-left: 2%;
   font-family: inherit;
-  font-size: 125%;
+  font-size: 1.5vw;
   color: #FFFFFF;
 }
