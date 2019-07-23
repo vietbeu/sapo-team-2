@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import '../css/user-info-manage-body.css';
+import SettingMenu from './setting';
+
 
 class UserInfoManagementBody extends Component {
     state = {  }
     render() { 
         return ( 
             <div className='body'>
+                <SettingMenu/>
                 <div className='body-content'>
                     <div className='body-title'>
                         <div id='account'>Tài khoản</div>

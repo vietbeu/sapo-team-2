@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../css/header.css'
 import Popup from 'reactjs-popup'
-import Axios from 'axios';
+
 class Header extends Component {
     state = {  }
     componentDidMount(){
@@ -20,7 +20,7 @@ class Header extends Component {
                     </span>
                 </div>
                
-                <div className='info' id='avatar'>
+                <div className='info' id='avatar' onClick={()=>localStorage.setItem('showDialog','true')}>
                 </div>
                 <button className='header-button' onClick={() =>
                     alert("Hãy liên hệ với chúng tôi qua  số điện thoại 0975867756 hoặc email sapoteam2@gmail.com")}>

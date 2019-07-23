@@ -58,3 +58,53 @@
     color: #7B7B7B;
     font-size: 2.5vh;
 }
+
+.setting-menu{
+    position: absolute;
+    left: 95%;
+    transform:translateX(-100%) ;
+    background: #FFFFFF;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    z-index: 1;
+    font-size: 1.3vw;
+    padding: 0.5%;
+    width: 15%;
+}
+
+.setting-menu label{
+    color:#333333;
+    margin-left: 20%;
+}
+.setting-menu #user-status label{
+    color: #2BA92E;
+}
+.setting-menu hr{
+    margin: 0%;
+    margin-bottom: 5%;
+}
+.setting-menu button{
+    border: none;
+    background: inherit;
+    padding: 0%;
+    color: #7B7B7B;
+    width: 100%;
+    position: relative;
+}
+.setting-menu button:hover{
+    background: #3A5BA0;
+    color: #FFFFFF;
+}
+.setting-menu button i {
+    width: 20%;
+    vertical-align: middle;
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    left:0%;
+}
+.setting-menu #setting-item{
+    margin-left:20%;
+    float: left;
+}
