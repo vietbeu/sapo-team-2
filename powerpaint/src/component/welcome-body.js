@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import '../css/welcome-body.css'
-
+import SettingMenu from '../component/setting'
 class WelcomeBody extends Component {
     state = {  }
     render() { 
+        let menu;
+        if (this.props.showMenu === true) menu=<SettingMenu/>;  
+        else menu=null;
         return (
             <div className = 'body'>
+                {menu}
                 <div className='content'>
                     <h1>Chào mừng {localStorage.getItem('username')} đến với Sapo Decorate</h1>
                     <div className='description'>

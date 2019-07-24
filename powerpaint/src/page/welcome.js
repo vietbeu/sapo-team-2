@@ -4,15 +4,26 @@ import Header from '../component/header';
 import WelcomeBody from '../component/welcome-body';
 
 class WelcomePage extends Component {
-    state = {  }
+    state = { 
+        showMenu:false
+     }
+    showMenuDialog=()=>{
+        let isShowDialog = this.state.showMenu;
+        if ( isShowDialog===false ) this.setState({showMenu:true});
+        if ( isShowDialog===true) this.setState({showMenu:false});
+    }
     render() { 
+        let isShowDialog=this.state.showMenu;
+        let body;
+        if (isShowDialog===true) body=<WelcomeBody showMenu={true}/>;
+        if (isShowDialog===false) body=<WelcomeBody showMenu={false}/>;
         return ( 
             <div className='welcome-page'>
                 <div className='header'>
-                    <Header/>
+                    <Header isShowMenu={this.showMenuDialog}/>
                 </div>
                 <div className='body'>
-                    <WelcomeBody/>
+                    {body}
                 </div>
             </div>
          );

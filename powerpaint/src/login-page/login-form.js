@@ -16,7 +16,7 @@ class LoginForm extends Component {
     
     handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://192.168.9.253:8181/login',{
+        axios.post('http://192.168.9.253:8181/api/v1/login',{
             email: this.state.email,
 			password: this.state.pass
 		})

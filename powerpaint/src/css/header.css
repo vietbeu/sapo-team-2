@@ -31,7 +31,7 @@
     background-position: center center;
     background-repeat: no-repeat;
     float: right;
-    width: 10%;
+    width: 7%;
     height: 70%;
     position: relative;
     top: 50%;
@@ -43,7 +43,7 @@
     position: relative;
     top: 50%;
     transform: translateY(-50%);  
-    width:10%;
+    width:7%;
     border: none;
     background: inherit;
     border-left: 1px solid #C4CDD5;
@@ -61,7 +61,7 @@
 
 .setting-menu{
     position: absolute;
-    left: 95%;
+    left: 96.5%;
     transform:translateX(-100%) ;
     background: #FFFFFF;
     border: 1px solid #C4CDD5;

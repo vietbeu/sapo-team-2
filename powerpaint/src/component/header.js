@@ -5,9 +5,13 @@ import Popup from 'reactjs-popup'
 class Header extends Component {
     state = {  }
     componentDidMount(){
+        let name = String(localStorage.getItem('username')).replace(/ /g, "+");
         document.getElementById('avatar').style.backgroundImage =
-        'url(https://ui-avatars.com/api/?rounded=true&size=50&background=27AE60&color=FFFFFF&name=Le+Viet)';
-
+        'url(https://ui-avatars.com/api/?rounded=true&size=50&background=27AE60&color=FFFFFF&name='+name+')';
+    }
+    handleCLickAvatar =(e)=> {
+        e.preventDefault();
+       this.props.isShowMenu();
     }
     render() { 
         return ( 
@@ -20,7 +24,7 @@ class Header extends Component {
                     </span>
                 </div>
                
-                <div className='info' id='avatar' onClick={()=>localStorage.setItem('showDialog','true')}>
+                <div className='info' id='avatar' onClick={this.handleCLickAvatar}>
                 </div>
                 <button className='header-button' onClick={() =>
                     alert("Hãy liên hệ với chúng tôi qua  số điện thoại 0975867756 hoặc email sapoteam2@gmail.com")}>

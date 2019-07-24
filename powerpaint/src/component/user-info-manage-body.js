@@ -4,15 +4,28 @@ import SettingMenu from './setting';
 
 
 class UserInfoManagementBody extends Component {
-    state = {  }
+    constructor(props){
+        super(props);
+        this.state={
+            changePass:false,
+        }
+    }
+    
+    showChangePassForm=()=>{
+        this.setState({changePass:true});
+        document.getElementById('change-pass-button').style.display='none';
+    } 
     render() { 
+        let menu;
+        if (this.props.showMenu === true) menu=<SettingMenu/>;  
+        else menu=null;
         return ( 
-            <div className='body'>
-                <SettingMenu/>
+            <>
+                {menu}
                 <div className='body-content'>
                     <div className='body-title'>
                         <div id='account'>Tài khoản</div>
-                        <p>{localStorage.getItem('username')}Van Dung</p>
+                        <p>{localStorage.getItem('username')}</p>
                         <hr/>
                         <div className='body-note'>
                             <div>Thông tin tài khoản</div>
@@ -38,15 +51,38 @@ class UserInfoManagementBody extends Component {
                             <hr/>
                             <div className="info-content">
                                 <div id="title">Đổi mật khẩu</div>
-                                <div className='row-info'>Đổi mật khẩu mà bạn sử dụng để đăng nhập vào tài khoản 123456789@gmail.com</div>
-                                <button id="change-pass-button">Đổi mật khẩu</button>
+                                <div className='row-info'>Đổi mật khẩu mà bạn sử dụng để đăng nhập vào tài khoản {localStorage.getItem('email')}</div>
+                                <button id="change-pass-button" onClick={this.showChangePassForm}>Đổi mật khẩu</button>
+                                <ChangePassForm isHidden={this.state.changePass}/>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
          );
     }
 }
  
 export default UserInfoManagementBody;
+
+const ChangePassForm=(props)=>{
+    if (!props.isHidden) { return null;}
+    return (
+        <>
+            <div className='row1-change-pass'>
+                <label>Mật khẩu hiện tại</label>
+                <div><input type='text'></input></div>
+            </div>
+            <div className='row2-change-pass'>
+                <span id='new-pass'>
+                    <label>Mật khẩu mới</label>
+                    <div><input type='text'></input></div>
+                </span>
+                <span id ='confirm-pass'>
+                <label>Mật khẩu mới</label>
+                <div><input type='text'></input></div>
+                </span>
+            </div> 
+        </>   
+        )
+}
