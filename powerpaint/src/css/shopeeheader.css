@@ -1,0 +1,47 @@
+.header-text{
+    position:absolute;
+    vertical-align: middle;
+    font-size: 1.3vw;
+    width:65%;
+    font-weight: normal;
+    top:50%;
+    transform: translateY(-50%);
+}
+
+#header-button{
+    position: absolute;
+    left:82%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30%;
+    font-size:1.2vw;
+}
+#header-button button{
+    background: #007BFF;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    color: #ffffff;
+    padding: 2% 5%;
+}
+.header-text i{
+    float:left;
+    color:  #7B7B7B;
+}
+.header-text #logo-shopee{
+    background-image: url('../images/logo-shopee.png');
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height:5vh;
+    width: 10%;
+    float: left;
+}
+.header-text #location{
+    float:left;
+    top:50%;
+    transform: translateY(-50%);
+    position: absolute;
+    left:15%;
+    color: #000000;
+}

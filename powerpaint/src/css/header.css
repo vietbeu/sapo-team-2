@@ -12,7 +12,7 @@
 }
 .header-content .welcome{
     float: left;
-    width:50%;
+    width:75%;
     height: 100%;
     font-size: 1.5vw;
     position: relative;
@@ -23,6 +23,7 @@
     transform: translateY(-50%);
     font-weight: bold;
     color: #333333;
+    width: 100%;
 }
 
 .info {

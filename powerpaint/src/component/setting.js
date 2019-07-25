@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import '../css/header.css'
 class SettingMenu extends Component {
     state = {  }
+    redirect=()=>{
+        window.location.replace('/userinfo');
+    }
     render() { 
         return (
             <dialog className='setting-menu' open>
@@ -11,7 +14,7 @@ class SettingMenu extends Component {
                 <div>
                     <button>
                         <span><i className="fa fa-user-circle-o" aria-hidden="true"></i></span>
-                        <span id='setting-item'>Tài khoản</span>
+                        <span id='setting-item' onClick={this.redirect}>Tài khoản</span>
                     </button>
                 </div>
                 <div>

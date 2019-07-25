@@ -1,0 +1,54 @@
+.table-sh{
+    width:94%;
+    height:70vh;
+    margin: 3% ;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    position: relative;
+    font-size: 1.3vw;
+    
+}
+.table-sh table{
+    position: absolute;
+    width:95%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+table th{
+    height:10vh;
+    border-bottom: 1px solid #C4CDD5;
+    text-align: center;
+}
+.data-row{
+    height:15vh;
+    border-bottom: 1px solid #C4CDD5;
+    color: #7B7B7B;
+}
+
+.column-shopname{
+    width:20%;
+    
+}
+.column-linkshop{
+    width: 30%;
+    
+}
+.column-date{
+    width:20%;
+}
+.column-ordernum{
+    width:15%;
+}
+.column-productnum{
+    width:15%;
+    
+}
+
+.link-shop{
+    color: #007BFF;
+}
+
+.data-row #data-num{
+    text-align: center;
+}

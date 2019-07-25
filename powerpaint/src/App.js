@@ -5,10 +5,8 @@ import IntroPage from './intro-page';
 import {BrowserRouter,Route} from 'react-router-dom';
 import WelcomePage from './page/welcome';
 import UserInfoManagement from './page/user-info-manage'
+import ShopeeOverview from './page/shopee-overview';
 class App extends Component {
-  state = {
-    username:'',
-    }
   render() { 
     return (
       <BrowserRouter>
@@ -18,6 +16,7 @@ class App extends Component {
             <Route path="/signup" render={()=><FirstPage active={2}/>} />
             <Route path="/welcome" render={()=><WelcomePage/>} />
             <Route path='/userinfo' render={()=><UserInfoManagement/>}/>
+            <Route path='/overview' render={()=><ShopeeOverview/>} />
         </div>
     </BrowserRouter>
       );

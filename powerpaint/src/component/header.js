@@ -20,7 +20,7 @@ class Header extends Component {
                 </div>
                 <div className='welcome'>
                     <span className='wel-text'>
-                    Xin chào {localStorage.getItem('username')}
+                    {this.props.text}
                     </span>
                 </div>
                
