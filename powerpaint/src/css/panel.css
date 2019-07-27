@@ -1,0 +1,12 @@
+#left-panel{
+    float:left;
+    width: 15%;
+    background: #263A53;
+    position: relative;
+    transition: 0.7s ease-in-out;
+}
+#right-panel{
+    float:left;
+    width: 85%;
+    position: relative;
+}

@@ -28,6 +28,7 @@ class LoginForm extends Component {
                localStorage.setItem('phone',response.data.phone);
                localStorage.setItem('id',response.data.id);
                localStorage.setItem('shop',response.data.shop);
+               localStorage.setItem('token',response.data.token);
                 window.location.replace("/welcome");
             }
         })

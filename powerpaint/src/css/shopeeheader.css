@@ -45,3 +45,11 @@
     left:15%;
     color: #000000;
 }
+
+#title-overview-table{
+    color: #333333;
+    font-weight: bold;
+    font-size: 1.3vw;
+    margin-top:3%;
+    margin-left: 2.5%;
+}
