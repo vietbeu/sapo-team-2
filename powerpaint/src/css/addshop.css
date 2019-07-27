@@ -1,0 +1,56 @@
+.add-shop-dialog{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    border: 1px solid #C4CDD5;
+    z-index: 1;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    width: 70%;
+}
+.add-shop-dialog p{
+    text-align: center;
+    font-size:2vw;
+}
+
+.popup-addshop-body{
+    margin:2%;
+    border: 1px solid #C4CDD5;
+    position: relative;
+}
+#body-content{
+    margin: 3%;
+}
+.message{
+    font-weight: bold;
+    font-size: 1.2vw;
+}
+.input-shopname{
+    margin-top:5%;
+}
+.input-shopname label{
+    width:20%;
+}
+.input-shopname input{
+    width:70%;
+    border: 1px solid #C4CDD5;
+    padding: 1%;
+    font-size: 1vw;
+}
+.footer-button{
+    margin-top:5%;
+    text-align: center;
+}
+.footer-button button{
+    width:30%;
+}
+#access{
+    color: #FFFFFF;background: #0084FF;
+    border-radius: 5px;
+    margin-right: 5%;
+    padding: 1% 5%;
+}
+#reset{
+    color: #0084FF;
+    background: inherit;
+    border: none;
+}

@@ -5,7 +5,8 @@
   width:62%;height: 115vh;
   background-position: center;
   background-size: cover;
-  
+  transition-property: background-image;
+  transition-duration: 2s;
 }
 .first-page .image-background h1{
   margin-top:40vh;
