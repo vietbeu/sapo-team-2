@@ -1,4 +1,13 @@
-.header-content{position: relative;
+.header{
+    position: sticky;
+    height: 10vh;
+    width: 100%;
+    z-index: 1;
+    top:0%;
+    background: #EAEFF3;
+}
+
+.header-content{
     height:100%;
 }
 .header-content .header-logo{
