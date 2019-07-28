@@ -6,6 +6,7 @@ import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import WelcomePage from './page/welcome';
 import UserInfoManagement from './page/user-info-manage'
 import ShopeeOverview from './page/shopee-overview';
+import ShopOverview from './page/shop-overview';
 class App extends Component {
   render() { 
     return (
@@ -17,7 +18,9 @@ class App extends Component {
             <Route path="/signup" render={()=><FirstPage active={2}/>} />
             <Route path="/welcome" render={()=><WelcomePage/>} />
             <Route path='/userinfo' render={()=><UserInfoManagement/>}/>
+            <Route path='/overview/shop' render={()=><ShopOverview/>} />
             <Route path='/overview' render={()=><ShopeeOverview/>} />
+            
           </Switch>
         </div>
     </BrowserRouter>

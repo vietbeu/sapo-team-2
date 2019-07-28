@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../css/header.css'
-import Popup from 'reactjs-popup'
 
 class Header extends Component {
     state = {  }

@@ -6,6 +6,7 @@
     position: relative;
     height: 10vh;
     border-bottom: 1px solid #c4cdd5;
+    font-size: 1.3vw;
 }
 .navbar-header .sapo-logo{
     height: 100%;
@@ -40,6 +41,7 @@
 .navbar-body-row{
     height: 8vh;
     position: relative;
+    font-size: 1.3vw;
 }
 
 .navbar-body-row:hover ,.row-bottom:hover{
@@ -66,6 +68,7 @@
     height: 10vh;
     position: absolute;
     bottom: 0%;
+    font-size: 1.2vw;
 }
 
 .row-bottom #bottom-avatar{
@@ -88,6 +91,7 @@
     bottom: 10%;
     width: 100%;
     background: #10253F;
+    font-size: 1.1vw;
 }
 
 .sub-menu-row{

@@ -1,0 +1,114 @@
+#shop-overview-content{
+    width:95%;
+    position: relative;
+    left: 2.5%;
+    right:2.5%;
+    top:3%;
+}
+#left-content{
+    position: absolute;
+    width: 60%;
+    top: 0%;
+    left: 0%;
+}
+#right-content{
+    position: absolute;
+    left:65%;
+    width: 35%;
+}
+#account-info-table{
+    border: 1px solid #C4CDD5;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 5%;
+}
+#left-content #table-caption{
+    width: 100%; 
+    text-align: center;
+    color: #333333;
+    font-weight: bold;
+    font-size:1.3vw;
+    padding: 2%;
+    border-bottom: 1px solid #C4CDD5;
+}
+#tb-content{
+    padding: 5% 5% 6%;
+}
+#tb-content span{
+    width:45%;
+    display: inline-block;
+    text-align: left;
+    padding: 2% 5%;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-size: 1.4vw;
+    line-height: 3.5vw;
+}
+ #margin{
+    display: inline-block;
+    margin-left: 10%;
+}
+#tb-help-content{
+    padding: 2%;
+    font-size:1.3vw;
+}
+#tb-help-content li{
+    line-height: 2.5vw;
+}
+#tb-help-content li span{
+    color: #007BFF;
+}
+#right-tb-caption{
+    width: 100%; 
+    text-align: center;
+    color: #333333;
+    font-weight: bold;
+    font-size:1.3vw;
+    padding: 3.42%;
+    border-bottom: 1px solid #C4CDD5;    
+}
+#right-tb-body{
+    margin: 10% ;
+}
+#logo_2{
+    width: 100%;
+    height:12vh;
+    background-image: url(../images/logo_2.jpg);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+#lock-icon{
+    text-align: center;
+    color: #F9FAFC;
+    font-size: 2vw;
+    margin: 8% 0%;
+}
+#lock{
+    color:#64FE2E;
+}
+#shop-info  {
+    font-size: 1.2vw;
+    text-align: center;
+}
+#shop-info div span{
+    font-weight: bold;
+}
+#shop-info i {
+    margin-right:1%;
+    color:#00BFFF;
+}
+#right-tb-footer{
+    border-top: 1px solid #C4CDD5;
+    text-align: center;
+    padding: 5%;
+}
+#right-tb-footer button{
+    background: #F1582C;  
+    color: #ffffff;
+    border:none;
+    border-radius: 5px;
+    font-size:1.3vw;
+    padding: 2% 5%;
+}
