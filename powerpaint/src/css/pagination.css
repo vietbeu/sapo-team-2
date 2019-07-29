@@ -1,0 +1,24 @@
+.tb-footer{
+    margin-top:5%;
+    font-size:1.1vw;
+    height: 10vh;
+    position: relative;
+}
+.tb-footer span{
+    position: absolute;
+    bottom: 0%;
+}
+#footer-left{
+    left:0%;
+    width: 40%;
+    text-align: left;
+}
+#footer-middle{
+    left: 40%;
+    width: 25%;
+}
+#footer-right{
+    left: 65%;
+    width: 35%;
+    text-align: right;
+}

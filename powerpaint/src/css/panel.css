@@ -8,7 +8,9 @@
 }
 #right-panel{
     width: 85%;
-    height: 150vh;
     float:right;
     transition: all 0.5s ease-in-out;
+}
+.body-panel{
+    width:100%;
 }

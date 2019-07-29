@@ -7,9 +7,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import BodyShopOverView from '../component/shop-overview-body';
 class ShopOverview extends Component {
-    state = {
-        isHiddenPopupAddShop:true,
-      }
+    state = {}
 
     openNav=()=>{
         document.getElementById('left-panel').style.width='15%';

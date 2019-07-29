@@ -35,7 +35,10 @@
     background-repeat: no-repeat;
     height:5vh;
     width: 10%;
-    float: left;
+    position: absolute;
+    left:5%;
+    top:50%;
+    transform: translateY(-50%);
 }
 .header-text #location{
     float:left;

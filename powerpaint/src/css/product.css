@@ -1,0 +1,81 @@
+#product-overview-content{
+    width:95%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    top:3vh;
+    font-size: 1.3vw;
+}
+#select-acc select{
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    width:20%;
+    padding: 0.5% 1%;
+    color: #7B7B7B;
+}
+.product-table{
+    margin-top:2%;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 2% 2.5%;
+}
+.product-tb-content{
+    text-align: center;
+    width:100%;
+}
+.search-bar{
+    width: 100%;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.search-bar i{
+    width:5%;
+    color: #7B7B7B;
+}
+.search-bar input{
+    width:95%;
+    border: none;
+    padding: 0.5% 1%;
+}
+.search-bar input:focus{
+    outline: none;
+}
+
+.tb-product-content{
+    margin-top:2%;
+    width: 100%;
+}
+#column-sku{
+    width: 15%;
+}
+#column-product-img{
+    width:25%;
+    text-align: left;
+}
+#column-product-name{
+    width:20%;
+}
+#column-shopee-status{
+    width:15%;
+}
+#column-update-status{
+    width:15%;
+}
+#column-set{
+    width:10%;
+}
+.column-product-img{
+    text-align: left;
+}.column-product-name{
+    color: #0084FF;
+}
+.column-update-status{
+    color:#2BA92E;
+}
+
+.footer-align{
+    height:10vh;
+}
