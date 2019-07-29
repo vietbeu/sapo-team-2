@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Header from '../component/header';
 import '../css/shopeeheader.css'
 import '../css/panel.css'
 import Table from '../component/overview-table';
-import NavBar from '../component/navbar';
 import PopUpAddShop from '../component/add-shop-popup';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Page from './page';
 class ShopeeOverview extends Component {
     state = {
         isHiddenPopupAddShop:true,
@@ -77,21 +76,18 @@ class ShopeeOverview extends Component {
                 </span>
             </>
         )
-        return (
+        let body = (
             <>
-            <div id='left-panel'>
-                <NavBar onCloseNav={this.closeNav} onOpenNav={this.openNav}/>
-            </div>
-            <div id='right-panel'>
                 <PopUpAddShop onAddShop={this.addShop} isHidden={this.state.isHiddenPopupAddShop}/>
-                <div className='header' >
-                    <Header isShowMenu={this.showMenuDialog} text={text}/>
-                </div>
                 <div id='title-overview-table'>Thông tin tất cả gian hàng</div>
                 <div>
                     <Table/>
                 </div>
-            </div>
+            </>    
+        )
+        return (
+            <>
+                <Page text={text} body={body}/>            
             </>
           );
     }

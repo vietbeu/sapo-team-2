@@ -1,22 +1,12 @@
 import React, { Component } from 'react';
-import Header from '../component/header';
 import '../css/shopeeheader.css';
 import '../css/panel.css';
-import NavBar from '../component/navbar';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import BodyShopOverView from '../component/shop-overview-body';
+import Page from './page';
 class ShopOverview extends Component {
     state = {}
-
-    openNav=()=>{
-        document.getElementById('left-panel').style.width='15%';
-        document.getElementById('right-panel').style.width='85%';
-    }
-    closeNav=()=>{
-        document.getElementById('left-panel').style.width='5%';
-        document.getElementById('right-panel').style.width='95%';
-    }
     addShop=(shop_name)=>{
         const authen = 'Bearer '+localStorage.getItem('token');
         console.log(authen);
@@ -71,16 +61,7 @@ class ShopOverview extends Component {
         )
         return (
             <>
-            <div id='left-panel'>
-                <NavBar onCloseNav={this.closeNav} onOpenNav={this.openNav}/>
-            </div>
-            <div id='right-panel'>
-                <div className='header' >
-                    <Header isShowMenu={this.showMenuDialog} text={text}/>
-                </div>
-                <div id='title-overview-table'>Thông tin chi tiết gian hàng abcxyz </div>
-                <BodyShopOverView/>
-            </div>
+                <Page text={text} body={<BodyShopOverView/>}/>
             </>
           );
     }

@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
-import Header from '../component/header';
-import NavBar from '../component/navbar'
 import BodyProDuct from '../component/product-body';
-import Body from '../component/body';
+import Page from './page';
 
 class Product extends Component {
     state = {  }
-    openNav=()=>{
-        document.getElementById('left-panel').style.width='15%';
-        document.getElementById('right-panel').style.width='85%';
-    }
-    closeNav=()=>{
-        document.getElementById('left-panel').style.width='5%';
-        document.getElementById('right-panel').style.width='95%';
-    }
+    
     render() { 
         let text = (
             <>
@@ -29,15 +20,7 @@ class Product extends Component {
         )
         return (
             <>
-            <div id='left-panel'>
-                <NavBar onCloseNav={this.closeNav} onOpenNav={this.openNav}/>
-            </div>
-            <div id='right-panel'>
-                <div className='header' >
-                    <Header isShowMenu={this.showMenuDialog} text={text}/>
-                </div>
-                <Body body={<BodyProDuct/>}/>
-            </div>
+                <Page text={text} body={<BodyProDuct/>}></Page>
             </>
           );
     }

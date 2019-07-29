@@ -5,6 +5,8 @@ class BodyShopOverView extends Component {
     state = {  }
     render() { 
         return (
+            <>
+            <div id='title-overview-table'>Thông tin chi tiết gian hàng abcxyz </div>
             <div id='shop-overview-content'>
                 <div id='left-content'>
                     <div id='account-info-table'>
@@ -52,6 +54,7 @@ class BodyShopOverView extends Component {
                     </div>
                 </div>
             </div>
+            </>
           );
     }
 }
