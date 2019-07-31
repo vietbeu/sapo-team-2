@@ -1,12 +1,57 @@
 import React, { Component } from 'react';
 import '../css/shop-overview.css';
+import {port,serverIP} from './const';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 class BodyShopOverView extends Component {
     state = {  }
+
+    deleteAcount=()=>{
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Bạn có chắc chắn muốn xoá shop?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.value) {
+                const authen = 'Bearer '+localStorage.getItem('token');
+                console.log(authen);
+                axios.delete('http://' + serverIP + ':'+port+'/api/v1/shop/'+localStorage.getItem('shop-id'),
+                {headers: {
+                    'Authorization': authen,
+                }})
+                .then(()=>{
+                    Swal.fire(
+                        'Succes!',
+                        'Xoá shop thành công! ',
+                        'success'
+                    );
+                    setTimeout(
+                        () => {
+                          window.location.replace('/overview');
+                        },
+                        2 * 1000
+                      );
+                })
+                .catch((error) => {
+                    Swal.fire(
+                        'Fail!',
+                        'Xoá shop thất bại! Xin vui lòng thử lại sau !',
+                        'error'
+                    );
+                }) 
+            }
+          })
+        
+    }
     render() { 
         return (
             <>
-            <div id='title-overview-table'>Thông tin chi tiết gian hàng abcxyz </div>
+            <div id='title-overview-table'>{'Thông tin chi tiết gian hàng '+localStorage.getItem('shop-name')} </div>
             <div id='shop-overview-content'>
                 <div id='left-content'>
                     <div id='account-info-table'>
@@ -42,14 +87,14 @@ class BodyShopOverView extends Component {
                                 <div>
                                     <i className="fa fa-globe" aria-hidden="true"></i>
                                     Đang kết nối 
-                                    <span> baotrangbayby99</span>
+                                    <span> {localStorage.getItem('shop-name')}</span>
                                 </div>
-                                <div className='link-shop'>https://shopee.vn/shop/94115363</div>
-                                <div>(Ngày kết nối: 15/01/2019 10:40) </div>
+                                <div className='link-shop'>{'https://shopee.vn/shop/'+localStorage.getItem('shop-id')}</div>
+                                <div>{'Ngày kết nối: '+localStorage.getItem('shop-create_date')} </div>
                             </div>
                         </div>
                         <div id='right-tb-footer'>
-                            <button>Gỡ bỏ tài khoản này</button>
+                            <button onClick={this.deleteAcount}>Gỡ bỏ tài khoản này</button>
                         </div>
                     </div>
                 </div>

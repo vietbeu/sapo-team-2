@@ -10,6 +10,7 @@ import ShopOverview from './page/shop-overview';
 import Product from './page/product';
 class App extends Component {
   render() { 
+    let id=localStorage.getItem('shop-id');
     return (
       <BrowserRouter>
         <div>
@@ -19,8 +20,9 @@ class App extends Component {
             <Route path="/signup" render={()=><FirstPage active={2}/>} />
             <Route path="/welcome" render={()=><WelcomePage/>} />
             <Route path='/userinfo' render={()=><UserInfoManagement/>}/>
-            <Route path='/overview/shop/product' render={()=><Product/>} />
-            <Route path='/overview/shop' render={()=><ShopOverview/>} />
+            <Route path={'/product/shopid='+id} render={()=><Product/>} />
+            <Route path={'/shop/id='+id} 
+                render={()=><ShopOverview/>} />
             <Route path='/overview' render={()=><ShopeeOverview/>} />
             
           </Switch>

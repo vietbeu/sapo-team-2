@@ -3,78 +3,62 @@ import '../css/product.css';
 import '../css/table.css'
 import ProductItem from './product-item';
 import Pagination from './pagination';
+import {API_Shopee} from './API';
+import {partner_id} from './const';
 
-const newsList = [
-    {
-      "id": "abc01",
-      "title": "The Highs and Lows of Life as a Black Editor in Chief",
-      "content": "ct1"
-    },
-    {
-      "id": "abc02",
-      "title": "The Real Reason Apple Wants You to Use Its Sign-in Service",
-      "content": "ct2"
-    },
-    {
-      "id": "abc03",
-      "title": "Men Need To Think More About Fertility",
-      "content": "ct3"
-    },
-    {
-      "id": "abc04",
-      "title": "Reactive Streams and Kotlin Flows",
-      "content": "ct4"
-    },
-    {
-      "id": "abc05",
-      "title": "The Incredible Creative Power of the Index Card",
-      "content": "ct5"
-    },
-    {
-      "id": "abc06",
-      "title": "The Man Who Helped the Beatles Admit It’s Getting Better",
-      "content": "ct6"
-    },
-    {
-      "id": "abc07",
-      "title": "Facebook Can Resolve Its Issues — How Will We Resolve Ours?",
-      "content": "ct7"
-    },
-    {
-      "id": "abc08",
-      "title": "The Personal Newsletter Fad Needs to End",
-      "content": "ct8"
-    },
-    {
-      "id": "abc09",
-      "title": "How Do You Know You Have a Good Idea?",
-      "content": "ct9"
-    },
-    {
-      "id": "abc10",
-      "title": "Ronaldo & Messi",
-      "content": "ct10"
-    }
-  ]
 class BodyProDuct extends Component {
     state = { 
         currentPage:1,
         itemPerPage:3,
+        listItemsDetail:[],
      }
-    choosePage=(e)=>{
-        this.setState({})
+    async componentDidMount(){
+      let shopid=205134;
+      let timestamp = Date.now() / 1000 | 0;
+      let URL_getItemsList = 'https://partner.uat.shopeemobile.com/api/v1/items/get';
+      let body_getItemList = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
+                            ',"pagination_offset": '+1+', "pagination_entries_per_page": '+100+'}';
+      let listItems=[]; let listItemsDetail=[];
+      await API_Shopee(URL_getItemsList, body_getItemList)
+      .then (res=>{
+        console.log(res.data.items);
+        listItems=res.data.items;
+        this.setState({listItems: res.data.items})
+      })
+      .catch((e)=> console.log(e));
+      let URL_getItemDetail = 'https://partner.uat.shopeemobile.com/api/v1/item/get';
+      await listItems.map(x =>{
+        let body_getItemDetail = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
+                                  ',"item_id": '+x.item_id+'}';
+        API_Shopee(URL_getItemDetail, body_getItemDetail)
+        .then (res=>{
+          listItemsDetail.push(res.data);
+        })
+      })
+      
+      this.setState({listItemsDetail: listItemsDetail});
     }
+  
     getItemPerPage = x => {
         this.setState({itemPerPage:x})
     }
+
+    changePage = (index) =>{
+      this.setState({currentPage:index});
+    }
+
+    
     render() { 
+        
         const currentPage = this.state.currentPage;
         const itemPerPage = this.state.itemPerPage;
         const indexOfLastItem = currentPage * itemPerPage;
         const indexOfFirstItem = indexOfLastItem - itemPerPage;
-        const currentList = newsList.slice(indexOfFirstItem, indexOfLastItem);
-        const renderList = currentList.map((x, index) => {
-            return <ProductItem id={index + 1 + (currentPage - 1)*itemPerPage} key={index} data={x} />;
+        let   listItemsDetail = this.state.listItemsDetail;
+        const numOfPage = Math.ceil(listItemsDetail.length / itemPerPage);
+        const currentList = listItemsDetail.slice(indexOfFirstItem, indexOfLastItem);
+        const renderList = currentList.map((x) => {
+            return <ProductItem key={x.item.item_id} data={x} />;
           });
         return ( 
             <div id='product-overview-content'>
@@ -100,14 +84,14 @@ class BodyProDuct extends Component {
                                         <th id='column-product-name'>Sản phẩm</th>
                                         <th id='column-shopee-status'>Trạng thái trên Shopee</th>
                                         <th id='column-update-status'>Trạng thái cập nhật</th>
-                                        <th id='column-set'>Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {renderList}
                                 </tbody>
                             </table>
-                            <Pagination onChangeItemPerPage={this.getItemPerPage}/>
+                            <Pagination onChangeItemPerPage={this.getItemPerPage} numOfPage={numOfPage}
+                              onChangePage={this.changePage}/>
                         </div>
                     </div>
                  </div>

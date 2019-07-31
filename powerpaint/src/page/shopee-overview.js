@@ -6,6 +6,7 @@ import PopUpAddShop from '../component/add-shop-popup';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Page from './page';
+import { serverIP,port } from '../component/const';
 class ShopeeOverview extends Component {
     state = {
         isHiddenPopupAddShop:true,
@@ -24,11 +25,13 @@ class ShopeeOverview extends Component {
         document.getElementById('left-panel').style.width='5%';
         document.getElementById('right-panel').style.width='95%';
     }
+    
+    
     addShop=(shop_name)=>{
         const authen = 'Bearer '+localStorage.getItem('token');
         console.log(authen);
-        axios.post('http://192.168.9.253:8181/api/v1/shop',{
-            shop_id:Math.floor(Math.random() * 10000) ,
+        axios.post('http://'+serverIP+':'+port+'/api/v1/shop',{
+            shop_id:Math.random()*1000 ,
             name:shop_name
         },
         {headers: {
@@ -42,6 +45,12 @@ class ShopeeOverview extends Component {
                     'Thêm Shop thành công',
                     'success'
                 )
+                setTimeout(
+                    () => {
+                      window.location.replace('/overview');
+                    },
+                    2 * 1000
+                  );
             }
             else if(response.data.success===0) 
             Swal.fire(

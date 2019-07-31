@@ -13,6 +13,7 @@
     width:20%;
     padding: 0.5% 1%;
     color: #7B7B7B;
+    background: inherit;
 }
 .product-table{
     margin-top:2%;

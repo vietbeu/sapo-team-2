@@ -70,7 +70,7 @@
 }
 
 .setting-menu{
-    position: absolute;
+    position: fixed;
     left: 96.5%;
     transform:translateX(-100%) ;
     background: #FFFFFF;
