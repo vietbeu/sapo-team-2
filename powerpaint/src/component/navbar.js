@@ -73,7 +73,7 @@ class NavBar extends Component {
                         <span className='nav-icon'><i className="fa fa-home fa-2x" aria-hidden="true"></i></span>
                         <span className='nav-text'>Tổng quan</span>
                     </div>
-                    <div className='navbar-body-row'>
+                    <div className='navbar-body-row' onClick={()=>this.redirect('/product/shopid='+localStorage.getItem('shop-id'))}>
                         <span className='nav-icon'><i className="fa fa-cube fa-2x" aria-hidden="true"></i></span>
                         <span className='nav-text'>Sản phẩm</span>
                     </div>

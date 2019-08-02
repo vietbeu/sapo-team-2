@@ -28,8 +28,9 @@ class ShopItem extends Component {
                     name={shop.name} onClick={this.clickShop}>{shop.name}</td>
                     <td className='link-shop'>{'https://shopee.vn/shop/'+shop.shop_id}</td>
                     <td className='connect-date'>{this.formatDay(shop.createDate)}</td>
-                    <td id='data-num'>40</td>
-                    <td id='data-num'>60</td>
+                    <td className='active-status'>Đang hoạt động</td>
+                    {/*<td id='data-num'>40</td>
+                    <td id='data-num'>60</td>*/}
                 </tr>   
             </>         
           );

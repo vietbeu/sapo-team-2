@@ -8,6 +8,8 @@ import UserInfoManagement from './page/user-info-manage'
 import ShopeeOverview from './page/shopee-overview';
 import ShopOverview from './page/shop-overview';
 import Product from './page/product';
+import ProductDetailPage from './page/product-detail';
+import Test from './component/test';
 class App extends Component {
   render() { 
     let id=localStorage.getItem('shop-id');
@@ -24,7 +26,8 @@ class App extends Component {
             <Route path={'/shop/id='+id} 
                 render={()=><ShopOverview/>} />
             <Route path='/overview' render={()=><ShopeeOverview/>} />
-            
+            <Route path='/product/detail' render={()=><ProductDetailPage/>} />
+            <Route path='/test' render={()=><Test/>} />
           </Switch>
         </div>
     </BrowserRouter>

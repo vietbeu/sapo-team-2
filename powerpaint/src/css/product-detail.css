@@ -1,0 +1,101 @@
+#product-detail-body{
+    font-size: 1.3vw;
+    color: #7B7B7B;
+}
+#back{
+    color:#000000;
+    margin-left: 2%;
+    margin-bottom: 2vh;
+}
+#back i{
+    width:1%;
+}
+#back :hover{
+    cursor: pointer;
+}
+#product-name{
+    margin-left: 3%;
+    color:#333333;
+    font-size:1.9vw;  
+    margin-bottom: 3vh;
+}
+#detail-content{
+    width: 94%;
+    margin-left: 3%;
+    position: relative;
+}
+#left-detail-content{
+    width:40%;
+    position: absolute;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 2% ;
+    height: 65vh;
+}
+#right-detail-content{
+    width:55%;
+    position: absolute;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 2vh;
+    padding-right: 0%;
+    right: 0%; 
+    height: 65vh; 
+}
+.detail-row{
+    margin-bottom: 5%;
+}
+.detail-row input{
+    width: 95%;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 3% 5%;
+}
+.detail-row label{
+    margin-bottom: 7%;
+}
+
+.menu-img-item{
+    width:33%;
+    float: left;
+    height: 8vh;
+}
+.menu-img-item:hover{
+    cursor: pointer;
+    
+}
+#img-field{
+    height: 45vh;
+    overflow: scroll;overflow-x: hidden;
+    padding: 1%;
+    border-bottom: 1px solid #C4CDD5;
+}
+#img-field img{
+    width: 25%;
+    padding-right: 2%;
+    padding-bottom: 2%;
+}
+#right-content-footer{
+    position: relative;
+    height: 10vh;
+}
+#update-button{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    right: 5%;
+    width: 40%;
+}
+#update-button button{
+    background: #007BFF;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    width: 100%;
+    color: #FFFFFF;
+    float:right;
+    padding: 2% 5%;
+}

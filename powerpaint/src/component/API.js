@@ -1,6 +1,7 @@
 import {key} from './const';
 import axios from 'axios';
 import Crypto from 'crypto-js';
+import Swal from 'sweetalert2'
 
 
 export const API_Shopee = async(url, body) => {
@@ -14,7 +15,11 @@ export const API_Shopee = async(url, body) => {
         }
     })
     .catch(function (error) {
-        console.log(error);
+        Swal.fire(
+            'Fail!',
+            'Đã có lỗi xảy ra. Xin vui lòng thử lại sau !',
+            'error'
+          )
     })  
     return res;
 }
