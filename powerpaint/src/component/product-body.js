@@ -138,8 +138,6 @@ class BodyProDuct extends Component {
                     </div>
                  </div>
                  <div className='footer-align'></div>
-
-
             </div>
          );
     }

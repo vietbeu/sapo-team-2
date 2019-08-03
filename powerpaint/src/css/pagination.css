@@ -22,3 +22,9 @@
     width: 35%;
     text-align: right;
 }
+#footer-right button{
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    background: #ffffff;
+    color: #007BFF;
+}

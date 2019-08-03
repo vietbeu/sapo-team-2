@@ -1,0 +1,33 @@
+#gallery-content{
+    width:95%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    top:1vh;
+    font-size: 1.3vw;
+}
+
+.up-img{
+    float:right;
+    color: #007BFF;
+    width:20%;
+    text-align: right;
+}
+.up-img:hover{
+    cursor: pointer;
+}
+.gallery-table{
+    height: 72vh;
+    margin-top:3vh;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 1vh ;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.gallery-table img{
+    width: 11vw;
+    height: 11vw;
+    padding: 1vh;
+}

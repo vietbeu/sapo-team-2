@@ -1,6 +1,5 @@
 .table-sh{
     width:94%;
-    height:70vh;
     margin: 3% ;
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
@@ -10,10 +9,9 @@
     
 }
 .table-sh table{
-    position: absolute;
     width:95%;
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 0 auto;
+    border-collapse: collapse;
 }
 table th{
     height:10vh;
@@ -23,32 +21,46 @@ table th{
 .data-row{
     height:15vh;
     border-bottom: 1px solid #C4CDD5;
+    border-collapse: collapse;
     color: #7B7B7B;
+    font-size:1.2vw;
 }
 
 .column-shopname{
     width:20%;
+    text-align: left;
     
 }
 .column-linkshop{
-    width: 30%;
-    
+    width: 40%;
+    text-align: left;
 }
 .column-date{
     width:20%;
+   
+}
+.column-status{
+    width: 20%;
 }
 .column-ordernum{
-    width:15%;
+    width:10%;
 }
 .column-productnum{
-    width:15%;
-    
+    width:10%;
 }
 
 .link-shop{
     color: #007BFF;
 }
-
+.link-shop:hover .shop-name:hover{
+    cursor: pointer;color: red;
+}
+.connect-date{
+    text-align: center;
+}
+.active-status{
+    text-align: center;
+}
 .data-row #data-num{
     text-align: center;
 }
