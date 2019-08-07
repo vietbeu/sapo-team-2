@@ -4,7 +4,7 @@ import '../css/table.css'
 import ProductItem from './product-item';
 import Pagination from './pagination';
 import {API_Shopee} from './API';
-import {partner_id} from './const';
+import {partner_id, URL_GetItemsList, URL_GetItemDetail} from './const';
 import Swal from 'sweetalert2';
 
 class BodyProDuct extends Component {
@@ -15,6 +15,7 @@ class BodyProDuct extends Component {
         listItemsDetail:[],
         shop_id:205134,
         searchKey:'',
+        listCheckBox:[],
      }
     componentDidMount(){
       this.getProductItem();
@@ -25,8 +26,8 @@ class BodyProDuct extends Component {
       let timestamp = Date.now() / 1000 | 0;
       let more=true;
       let offset=0;
-      let URL_getItemsList = 'https://partner.uat.shopeemobile.com/api/v1/items/get';
-      let URL_getItemDetail = 'https://partner.uat.shopeemobile.com/api/v1/item/get';
+      let URL_getItemsList = URL_GetItemsList;
+      let URL_getItemDetail = URL_GetItemDetail;
       
       let listItems=[]; let listItemsDetail=[];
       while(more){
@@ -86,6 +87,27 @@ class BodyProDuct extends Component {
       return str;
   }
 
+  handleSelectProduct=(box)=>{
+    let checkBox=this.state.listCheckBox;
+    let itemId = box.value;
+    if (box.checked && checkBox.indexOf(itemId)<0) {
+      checkBox.push(itemId);
+      this.setState({listCheckBox: checkBox});
+    }
+    else if (!box.checked){
+      let i= checkBox.indexOf(itemId);
+      if(i>=0) checkBox.splice(i,1);
+      this.setState({listCheckBox:checkBox})
+    };
+  }
+  selectAllProduct=(e)=>{
+    let checkBoxes= document.getElementsByName('checkbox');
+    for (let i=0; i<checkBoxes.length; i++){
+      checkBoxes[i].checked=e.target.checked;
+      this.handleSelectProduct(checkBoxes[i]);
+    }
+  }
+
     render() { 
         let listShop=JSON.parse(localStorage.getItem('listShop'));
         const currentPage = this.state.currentPage;
@@ -100,9 +122,41 @@ class BodyProDuct extends Component {
         const numOfPage = Math.ceil(activeList.length / itemPerPage);
         const currentList = activeList.slice(indexOfFirstItem, indexOfLastItem);
         const renderList = currentList.map((x) => {
-            return <ProductItem key={x.item.item_id} data={x} />;
+            return <ProductItem key={x.item.item_id} data={x} onSelectProduct={this.handleSelectProduct} />;
           });
-        const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>)
+        const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
+
+        let thRow;
+        if(this.state.listCheckBox.length>0) thRow=(
+          <>
+          <th id='bulk-action' colSpan='6'>
+            <div id='checkbox-row'>
+            <input type='checkbox' onClick={this.selectAllProduct}/>
+            <span>{'Đã chọn '+this.state.listCheckBox.length+' danh mục'}</span>
+            <select>
+              <option hidden>Chọn thao tác</option>
+              <option>Thay thế hình ảnh</option>
+              <option>Cập nhật lên Shopee</option>
+              <option>Xoá sản phẩm</option>
+            </select>  
+            </div>  
+          </th>
+          </>
+        );else thRow=(
+          <>
+            <th id='bulk-action'>
+              <div id='checkbox-icon'>
+              <input type='checkbox' onClick={this.selectAllProduct}/>
+              </div>
+            </th>
+            <th id='column-sku'>Mã SKU</th>
+            <th id='column-product-img'>Ảnh sản phẩm</th>
+            <th id='column-product-name'>Sản phẩm</th>
+            <th id='column-shopee-status'>Trạng thái trên Shopee</th>
+            <th id='column-update-status'>Trạng thái cập nhật</th>
+          </>
+        );      
+
         return ( 
             <div id='product-overview-content'>
                 <div id='select-acc'>
@@ -120,11 +174,7 @@ class BodyProDuct extends Component {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th id='column-sku'>Mã SKU</th>
-                                        <th id='column-product-img'>Ảnh sản phẩm</th>
-                                        <th id='column-product-name'>Sản phẩm</th>
-                                        <th id='column-shopee-status'>Trạng thái trên Shopee</th>
-                                        <th id='column-update-status'>Trạng thái cập nhật</th>
+                                       {thRow} 
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -133,7 +183,7 @@ class BodyProDuct extends Component {
                             </table>
                             <Pagination onChangeItemPerPage={this.getItemPerPage} numOfPage={numOfPage}
                               onChangePage={this.changePage} firstItem={indexOfFirstItem} lastItem={indexOfLastItem}
-                              numOfItem={numOfItem}/>
+                              numOfItem={numOfItem} currentPage={currentPage}/>
                         </div>
                     </div>
                  </div>

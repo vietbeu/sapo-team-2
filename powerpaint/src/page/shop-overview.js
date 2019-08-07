@@ -5,6 +5,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import BodyShopOverView from '../component/shop-overview-body';
 import Page from './page';
+import AddShopButton from '../component/add-shop-button';
 class ShopOverview extends Component {
     state = {}
     addShop=(shop_name)=>{
@@ -55,7 +56,7 @@ class ShopOverview extends Component {
                     <div id='location'>KÊNH SHOPEE/ Thông tin chi tiết</div>
                 </span>
                 <span id='header-button'>
-                    <button>Thêm gian hàng</button>
+                    <AddShopButton/>
                 </span>
             </>
         )

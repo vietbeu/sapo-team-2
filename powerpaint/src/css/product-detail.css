@@ -45,17 +45,17 @@
     height: 65vh; 
 }
 .detail-row{
-    margin-bottom: 5%;
+    margin-bottom: 5vh;
 }
 .detail-row input{
-    width: 95%;
+    width: 100%;
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
     border-radius: 5px;
-    padding: 3% 5%;
+    padding: 1.5vh 5%;
 }
 .detail-row label{
-    margin-bottom: 7%;
+    margin-bottom: 4vh;
 }
 
 .menu-img-item{

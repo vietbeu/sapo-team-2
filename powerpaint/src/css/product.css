@@ -49,6 +49,57 @@
     margin-top:2%;
     width: 100%;
 }
+#bulk-action{
+    width: 3%;
+    font-weight: normal;
+    color: #7B7B7B;
+}
+#checkbox-icon{
+    width: 100%;
+    position: relative;
+    height: 5vh;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border-collapse: collapse;  
+}
+#checkbox-row{
+    width: 40%;
+    position: relative;
+    height: 5vh;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border-collapse: collapse;
+    
+}
+#checkbox-row input{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    width: 7%;
+    left: 0%;
+    text-align: left;
+}
+#checkbox-row span{
+    position: absolute;
+    left:7%;
+    border-right: 1px solid #C4CDD5;
+    box-sizing: border-box;  
+    padding: 0% 2%;
+    top:50%;
+    transform: translateY(-50%);
+}
+#checkbox-row select{
+    position: absolute;
+    border: none;
+    outline: none;
+    left:57%;
+    top:50%;
+    transform: translateY(-50%);
+    color: #7B7B7B;
+}
+
 #column-sku{
     width: 15%;
 }
@@ -60,21 +111,31 @@
     width:20%;
 }
 #column-shopee-status{
-    width:15%;
+    width:20%;
 }
 #column-update-status{
-    width:15%;
+    width:17%;
 }
-#column-set{
-    width:10%;
+
+.column-checkbox{
+    width: 3%;;
+}
+.column-sku{
+    width: 15%;
 }
 .column-product-img{
+    width:25%;
     text-align: left;
 }.column-product-name{
     color: #0084FF;
+    width:20%;
+}
+.column-shopee-status{
+    width:20%;
 }
 .column-update-status{
     color:#2BA92E;
+    width:17%;
 }
 
 .footer-align{

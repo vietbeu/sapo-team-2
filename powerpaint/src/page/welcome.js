@@ -20,7 +20,7 @@ class WelcomePage extends Component {
         return ( 
             <div className='welcome-page'>
                 <div className='header'>
-                    <Header isShowMenu={this.showMenuDialog} text={'Xin chào '+localStorage.getItem('username')}/>
+                    <Header logo={true} isShowMenu={this.showMenuDialog} text={'Xin chào '+localStorage.getItem('username')}/>
                 </div>
                 <div className='body-welcome'>
                     {body}

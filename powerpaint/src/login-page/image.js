@@ -37,7 +37,7 @@ class Image extends Component {
                         repositionOnResize={true}
                         modal
                         closeOnDocumentClick
-                        contentStyle={{width: "80%"}}
+                        contentStyle={{width: "60%",borderRadius:'6px'}}
                     >
                         <span className='info-popup'> <InfoPopup/> </span>
                     </Popup></span></h2>

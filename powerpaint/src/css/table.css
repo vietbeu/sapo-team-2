@@ -20,7 +20,7 @@ table th{
 }
 .data-row{
     height:15vh;
-    border-bottom: 1px solid #C4CDD5;
+    border-top: 1px solid #C4CDD5;
     border-collapse: collapse;
     color: #7B7B7B;
     font-size:1.2vw;

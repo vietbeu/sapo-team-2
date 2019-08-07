@@ -1,7 +1,10 @@
 export const serverIP = '192.168.9.253';
-
 export const port=8181;
-
 export const key ='26f76c014a453d1fb248f35e2a42d3c655fd97a9e671b79d3dfa59eb876bb43e';
-
 export const partner_id = '840386';
+export const  URL_authorization ='https://partner.shopeemobile.com/api/v1/shop/auth_partner';
+export const URL_GetItemsList='https://partner.uat.shopeemobile.com/api/v1/items/get';
+export const URL_GetItemDetail='https://partner.uat.shopeemobile.com/api/v1/item/get';
+export const URL_UpdateItemImg='https://partner.shopeemobile.com/api/v1/item/img/update';
+export const URL_InsertItemImg='https://partner.shopeemobile.com/api/v1/item/img/insert';
+export const URL_DeleteItemImg='https://partner.shopeemobile.com/api/v1/item/img/delete';

@@ -2,14 +2,14 @@
 .first-page .image-background{
   background-image: url(../images/img3.jpg);
   float: left;
-  width:62%;height: 115vh;
+  width:65%;height: 115vh;
   background-position: center;
   background-size: cover;
   transition-property: background-image;
   transition-duration: 2s;
 }
 .first-page .image-background h1{
-  margin-top:40vh;
+  margin-top:50vh;
   margin-left: 10%;
   margin-right: 10%;
   font-size: 2.5vw;
@@ -36,13 +36,17 @@
   border-bottom:  #C4CDD5 solid 2px;
 }
 .info-popup p{
-  font-size: 2.6vw;
+  font-size: 2vw;
   color:#333333;
   margin-left: 5%;
 }
-.logo-popup img{
-  margin-top:1%;
+.logo-popup{
+  float: left;
   width: 30%;
+}
+.logo-popup img{
+  margin-top:20%;
+  width: 100%;
   height:auto;
   
 }
@@ -50,12 +54,13 @@
   margin:2% 0%;
 }
 .contact-popup{
-  width:60%;
-  margin-top: 5%;
-  float: right;
+  width:70%;
+  margin-top: 6%;
+  float: left;
 }
 .contact-item{
-  margin-bottom:5%;
+  margin-bottom:8%;
+  font-size:1.5vw;
 }
 .font-icon i{
   width: 5%;
@@ -66,7 +71,7 @@
 
 .first-page .form-container{
   width: 35%;
-  margin-right:2% ; 
+  padding: 0% 2%;
   float: right;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background: #FFFFFF;
@@ -80,11 +85,13 @@
   vertical-align: center;
   font-size: 2.5vw;
   font-family: inherit;
+  line-height: 10vh;
 }
 
 .form label{
   font-size: 2.15vw;
   width: 90%;
+  margin-bottom: 0%;
 }
 .form .input{
   margin: 3vh 0%;

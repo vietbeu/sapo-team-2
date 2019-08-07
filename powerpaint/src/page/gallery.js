@@ -3,6 +3,7 @@ import '../css/panel.css';
 import '../css/gallery.css';
 import Page from './page';
 import BodyGallery from '../component/gallery-body';
+import AddShopButton from '../component/add-shop-button';
 class GalleryPage extends Component {
     state = {}
    
@@ -15,7 +16,7 @@ class GalleryPage extends Component {
                     <div id='location'>KÊNH SHOPEE/ Thư viện ảnh</div>
                 </span>
                 <span id='header-button'>
-                    <button>Thêm gian hàng</button>
+                    <AddShopButton/>
                 </span>
             </>
         )

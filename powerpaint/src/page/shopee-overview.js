@@ -7,6 +7,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import Page from './page';
 import { serverIP,port } from '../component/const';
+import AddShopButton from '../component/add-shop-button';
 class ShopeeOverview extends Component {
     state = {
         isHiddenPopupAddShop:true,
@@ -31,7 +32,7 @@ class ShopeeOverview extends Component {
         const authen = 'Bearer '+localStorage.getItem('token');
         console.log(authen);
         axios.post('http://'+serverIP+':'+port+'/api/v1/shop',{
-            shop_id:Math.random()*1000 ,
+            shop_id:this.state.shop_id ,
             name:shop_name
         },
         {headers: {
@@ -81,7 +82,7 @@ class ShopeeOverview extends Component {
                     <div id='location'>KÊNH SHOPEE/ Tổng quan</div>
                 </span>
                 <span id='header-button'>
-                    <button>Thêm gian hàng</button>
+                    <AddShopButton/>
                 </span>
             </>
         )

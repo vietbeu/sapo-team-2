@@ -4,12 +4,13 @@ import '../css/navbar.css'
 class NavBar extends Component {
     state = { 
         isHiddenSubMenu:true,
-        isHiddenBar:false,
+        isHiddenBar:true,
      }
     componentDidMount(){
         let name = String(localStorage.getItem('username')).replace(/ /g, "+");
         document.getElementById('bottom-avatar').style.backgroundImage =
         'url(https://ui-avatars.com/api/?rounded=true&size=50&background=27AE60&color=FFFFFF&name='+name+')';
+        this.styleCloseBar();
     }
 
     handleSubMenu=()=>{

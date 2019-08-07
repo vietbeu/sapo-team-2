@@ -13,10 +13,14 @@ class Header extends Component {
        this.props.isShowMenu();
     }
     render() { 
+        let logo;
+        if (this.props.logo===true) logo = (
+            <div className='header-logo'></div>
+        ); 
+        else logo = null;
         return ( 
             <div className = 'header-content'>
-                <div className='header-logo'>
-                </div>
+                {logo}
                 <div className='welcome'>
                     <span className='wel-text'>
                     {this.props.text}

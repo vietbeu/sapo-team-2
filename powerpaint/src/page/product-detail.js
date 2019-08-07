@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Page from './page';
 import BodyProductDetail from '../component/product-detail-body';
+import AddShopButton from '../component/add-shop-button';
 
 class ProductDetailPage extends Component {
     state = {  }
@@ -13,7 +14,7 @@ class ProductDetailPage extends Component {
                     <div id='location'>KÊNH SHOPEE/ Thông tin chi tiết sản phẩm</div>
                 </span>
                 <span id='header-button'>
-                    <button>Thêm gian hàng</button>
+                    <AddShopButton/>
                 </span>
             </>
         )
