@@ -1,6 +1,6 @@
 .body-userinfo{
     position: relative;
-    width: 100%;height:105vh;
+    width: 100%;height:115vh;
     background: #F9FAFC;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -113,6 +113,11 @@
 .row2-change-pass #confirm-pass{
     float: right;
     width: 50%;
+}
+#bt-changepass{
+    width: 20%;
+    margin-left: 40%;
+    
 }
 .info-content input{
     background: #FFFFFF;

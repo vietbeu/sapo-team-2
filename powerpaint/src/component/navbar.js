@@ -10,7 +10,7 @@ class NavBar extends Component {
         let name = String(localStorage.getItem('username')).replace(/ /g, "+");
         document.getElementById('bottom-avatar').style.backgroundImage =
         'url(https://ui-avatars.com/api/?rounded=true&size=50&background=27AE60&color=FFFFFF&name='+name+')';
-        this.styleCloseBar();
+        //this.styleCloseBar();
     }
 
     handleSubMenu=()=>{
@@ -78,7 +78,7 @@ class NavBar extends Component {
                         <span className='nav-icon'><i className="fa fa-cube fa-2x" aria-hidden="true"></i></span>
                         <span className='nav-text'>Sản phẩm</span>
                     </div>
-                    <div className='navbar-body-row'>
+                    <div className='navbar-body-row' onClick={()=>{this.redirect('/gallery')}}>
                         <span className='nav-icon'><i className="fa fa-picture-o fa-2x" aria-hidden="true"></i></span>
                         <span className='nav-text'>Thư viện ảnh</span>
                     </div>

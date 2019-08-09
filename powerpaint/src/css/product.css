@@ -56,12 +56,19 @@
 }
 #checkbox-icon{
     width: 100%;
-    position: relative;
     height: 5vh;
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
     border-radius: 5px;
     border-collapse: collapse;  
+    position: relative;
+}
+#checkbox-icon input{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    width: 100%;
+    left: 0%;
 }
 #checkbox-row{
     width: 40%;
@@ -71,7 +78,6 @@
     box-sizing: border-box;
     border-radius: 5px;
     border-collapse: collapse;
-    
 }
 #checkbox-row input{
     position: absolute;

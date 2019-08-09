@@ -3,6 +3,7 @@ import '../css/user-info-manage-body.css';
 import SettingMenu from './setting';
 
 
+
 class UserInfoManagementBody extends Component {
     constructor(props){
         super(props);
@@ -65,24 +66,78 @@ class UserInfoManagementBody extends Component {
  
 export default UserInfoManagementBody;
 
-const ChangePassForm=(props)=>{
-    if (!props.isHidden) { return null;}
+class ChangePassForm extends Component {
+    state = {  }
+
+    changeCurPass=(e)=>{
+        this.setState({curPass:e.target.value});
+    }
+    changeNewPass=(e)=>{
+        this.setState({newPass:e.target.value})
+    }
+    changeConfirmPass=(e)=>{
+        this.setState({confirmPass:e.target.value})
+    }
+
+    validatePass = (text) => {
+        const regexp = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
+        const result = regexp.exec(text);
+        if (result !== null) {
+            return { isPassValid: true,
+                     errorPassMessage: ''};
+        } else {
+            return { isPassValid: false,
+                     errorPassMessage: 'Mật khẩu cần có ít nhất 8 kí tự, ít nhất có 1 chữ cái viết hoa, 1 chữ cái thường và 1 chữ số '};
+        }
+    }
+    validationPass = (e) => {
+        const {isPassValid,errorPassMessage} = this.validatePass(this.state.pass);
+        this.setState({
+            isPassValid: isPassValid,
+            errorPassMessage: errorPassMessage
+        })
+    }
+
+
+    validationConfirmPass = () => {
+        if (this.state.confirmPass === this.state.pass)
+            this.setState( {isConfirmPassValid: true, errorConfirmMessage: ''})
+        else this.setState({isConfirmPassValid: false, errorConfirmMessage: 'Không khớp với mật khẩu '})
+    }
+    render() { 
+        if (!this.props.isHidden) { return null;}
     return (
         <>
             <div className='row1-change-pass'>
                 <label>Mật khẩu hiện tại</label>
-                <div><input type='text'></input></div>
+                <div><input type='text' onChange={this.changeCurPass}></input></div>
             </div>
             <div className='row2-change-pass'>
                 <span id='new-pass'>
                     <label>Mật khẩu mới</label>
-                    <div><input type='text'></input></div>
+                    <div><input type='password' onChange={this.changeNewPass} onKeyUp={this.validationPass}></input></div>
+                    <div className='error'>
+                        <FormError isHidden={this.state.isPassValid} errorMessage={this.state.errorPassMessage} />
+                    </div>
                 </span>
                 <span id ='confirm-pass'>
-                <label>Mật khẩu mới</label>
-                <div><input type='text'></input></div>
+                    <label>Xác nhận mật khẩu mới</label>
+                    <div><input type='password' onChange={this.changeConfirmPass} onKeyUp={this.validationConfirmPass}></input></div>
+                    <div className='error'>
+                        <FormError isHidden={this.state.isConfirmPassValid} 
+                        errorMessage={this.state.errorConfirmMessage} />
+                    </div>
                 </span>
             </div> 
+            <button id='bt-changepass'>OK</button>
         </>   
         )
+    }
 }
+
+const FormError=(props) =>{
+    if (props.isHidden) { return null;}
+    return ( <div>{props.errorMessage}</div>)
+}
+ 
+

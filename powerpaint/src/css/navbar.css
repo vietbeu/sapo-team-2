@@ -17,6 +17,7 @@
     background-repeat: no-repeat;
     position: absolute;
     left:0%;
+    display:none;
 }
 .navbar-header #bar-icon{
     position: absolute;
@@ -25,6 +26,7 @@
     right: 5%;
     width: 20%;
     text-align: center;
+    width: 100%;
 }
 .navbar-header i{
     color: #C9D3DF;
@@ -55,6 +57,7 @@
     transform: translateY(-50%);
     left:5%;
     right:5%;
+    text-align: center;
 }
 .nav-text{
     position: absolute;
@@ -62,6 +65,7 @@
     font-size: 1.3 vw;
     top:50%;
     transform:translateY(-50%);
+    display: none;
 }
 .row-bottom{
     width: 100%;
@@ -76,7 +80,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 30%;
+    width: 90%;
     height: 80%;
     background-position: center center;
     background-size: contain;
@@ -92,6 +96,7 @@
     width: 100%;
     background: #10253F;
     font-size: 1.1vw;
+    display: none;
 }
 
 .sub-menu-row{
