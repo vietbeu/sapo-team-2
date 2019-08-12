@@ -59,6 +59,11 @@ table th{
 }
 .active-status{
     text-align: center;
+    color : #55C54D;
+}
+.deactive-status{
+    text-align: center;
+    color: #EB3838;
 }
 .data-row #data-num{
     text-align: center;

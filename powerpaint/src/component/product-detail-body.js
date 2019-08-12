@@ -9,7 +9,7 @@ import {API_Shopee} from './API';
 class BodyProductDetail extends Component {
     state = { 
         item_id:localStorage.getItem('item-id-detail'),
-        shop_id:94115363,
+        shop_id:localStorage.getItem('shop-id-detail'),
         images : JSON.parse(localStorage.getItem('img-detail')),
         name : localStorage.getItem('name-detail'),
         sku : localStorage.getItem('sku-detail'),
@@ -18,12 +18,13 @@ class BodyProductDetail extends Component {
     
     async componentDidMount(){
         let images = this.state.images;
+        let shop_id=this.state.shop_id;
         if (window.location.href.indexOf('file')>0) {
             let file = await decodeURIComponent(window.location.href.split('file=')[1]);
             this.setState({file: file})
             const authen = 'Bearer '+localStorage.getItem('token');
             await Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
-            {"item_id":localStorage.getItem('item-id-detail'),"img_order":2,"photo_url":file,"shop_id":205134},
+            {"item_id":localStorage.getItem('item-id-detail'),"img_order":2,"photo_url":file,"shop_id":shop_id},
                 {headers: {
                     'Authorization': authen,
                 }})
@@ -275,7 +276,7 @@ class BodyProductDetail extends Component {
                         'Authorization': authen,
                     }})
                     .then ( rsp => {
-                        if (rsp.success===1){
+                        if (rsp.data.success===1){
                             let url=rsp.data.url;
                             images.push(url);
                             this.updateStateImg(images);
@@ -304,32 +305,7 @@ class BodyProductDetail extends Component {
                 console.log(url);
             }
     }
-    downscaleImage(dataUrl, newWidth, imageType, imageArguments) {
-        "use strict";
-        var image, oldWidth, oldHeight, newHeight, canvas, ctx, newDataUrl;
     
-        // Provide default values
-        imageType = imageType || "image/jpeg";
-        imageArguments = imageArguments || 0.7;
-    
-        // Create a temporary image so that we can compute the height of the downscaled image.
-        image = new Image();
-        image.src = dataUrl;
-        oldWidth = image.width;
-        oldHeight = image.height;
-        newHeight = Math.floor(oldHeight / oldWidth * newWidth)
-    
-        // Create a temporary canvas to draw the downscaled image on.
-        canvas = document.createElement("canvas");
-        canvas.width = newWidth;
-        canvas.height = newHeight;
-    
-        // Draw the downscaled image on the canvas and return the new data URL.
-        ctx = canvas.getContext("2d");
-        ctx.drawImage(image, 0, 0, newWidth, newHeight);
-        newDataUrl = canvas.toDataURL(imageType, imageArguments);
-        return newDataUrl;
-    }
     handleCLickImgItem=(e)=>{
         this.handleCLickMenuImgItem(e.target.getAttribute('value'));
     }

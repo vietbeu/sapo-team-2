@@ -4,8 +4,10 @@ import '../css/table.css'
 import ProductItem from './product-item';
 import Pagination from './pagination';
 import {API_Shopee} from './API';
-import {partner_id, URL_GetItemsList, URL_GetItemDetail} from './const';
+import {partner_id, URL_GetItemsList, URL_GetItemDetail,serverIP,port} from './const';
+import Axios from 'axios';
 import Swal from 'sweetalert2';
+
 
 class BodyProDuct extends Component {
     state = { 
@@ -13,43 +15,45 @@ class BodyProDuct extends Component {
         itemPerPage:20,
         listItems:[],
         listItemsDetail:[],
-        shop_id:205134,
+       // shop_id:94115363,
         searchKey:'',
         listCheckBox:[],
      }
     componentDidMount(){
-      this.getProductItem();
+      let listShop = JSON.parse(localStorage.getItem('listShop'));
+      console.log(listShop[0].shop_id);
+      this.setState({shop_id: listShop[0].shop_id});
+      this.getProductItem(listShop[0].shop_id);
     }
 
-    async getProductItem(){
-      let shopid=this.state.shop_id;
+    async getProductItem(shopid){
       let timestamp = Date.now() / 1000 | 0;
       let more=true;
       let offset=0;
       let URL_getItemsList = URL_GetItemsList;
-      let URL_getItemDetail = URL_GetItemDetail;
-      
+      let URL_getItemDetail = URL_GetItemDetail;    
       let listItems=[]; let listItemsDetail=[];
       while(more){
         let body_getItemList = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
                             ',"pagination_offset": '+offset+', "pagination_entries_per_page": '+100+'}';
-        listItems= await API_Shopee(URL_getItemsList, body_getItemList);
+        //listItems= await API_Shopee(URL_getItemsList, body_getItemList);
+        listItems= await Axios.get('http://192.168.9.253:8181/api/v1/test/getItemList?offset='+offset+'&shopid='+shopid+'&entries='+100)
         offset+=100;
         more =listItems.data.more;
         listItems.data.items.map(async x =>{
           let body_getItemDetail = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
                                     ',"item_id": '+x.item_id+'}';
-          let itemsDetail = await API_Shopee(URL_getItemDetail, body_getItemDetail);
+          //let itemsDetail = await API_Shopee(URL_getItemDetail, body_getItemDetail);
+        let itemsDetail = await Axios.get('http://192.168.9.253:8181/api/v1/test/getItemDetail?item_id='+x.item_id+'&shopid='+shopid);
           await listItemsDetail.push(itemsDetail.data);
           //console.log(listItemsDetail);
+          this.setState((prevState,props)=>{ return {listItemsDetail: listItemsDetail}});
         })
-      this.setState((prevState,props)=>{ return {listItemsDetail: listItemsDetail}});
-    }
-      //this.setState({listItemsDetail: listItemsDetail});
+      }
     }
     changeShop = (e) => {
       this.setState({shop_id:e.target.value});
-      this.getProductItem();
+      this.getProductItem(e.target.value);
       console.log(this.state.shop_id)
     }
   
@@ -107,7 +111,49 @@ class BodyProDuct extends Component {
       this.handleSelectProduct(checkBoxes[i]);
     }
   }
-
+  handleChageOperation=(e)=>{
+    let option = e.target.value;
+    if (option == 1) {this.updateToShopee();}
+    if (option == 0) this.deleteProduct();
+  }
+  updateToShopee=()=>{
+    let listFail=[];
+    Swal.fire({
+      title: 'Bạn đã chắc chắn chưa?',
+      text: "Chúng tôi sẽ cập nhật hình ảnh của tất cả sản phẩm bạn đã chọn",
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'OK'
+    })
+    .then((result) => {
+      if (result.value) {
+        let listCheckBox = this.state.listCheckBox;
+        console.log(listCheckBox);
+        let listImgsSelected = JSON.parse(localStorage.getItem('listImgsSelected'));
+        for (let i=0;i<listCheckBox.length;i++){
+          let item_id = listCheckBox[i];
+          let shop_id = this.state.shop_id;
+          const authen = 'Bearer '+localStorage.getItem('token');
+          Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/updateItemImg',{
+            partner_id:partner_id,
+            shopid:shop_id,
+            item_id:item_id,
+            images:listImgsSelected,
+          },{headers: {'Authorization': authen,}})
+          .then (rsp => {
+            if (rsp.data.error == null) console.log(1);
+            else listFail.push(item_id)})
+          .catch(error => 
+            Swal.fire('Fail!','Đã có lỗi xảy ra! Cập nhật ảnh thất bại','error')
+            )      
+        }
+        console.log(listFail);
+        if (listFail.length==0)  Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success')    
+      }
+    })  
+  }
     render() { 
         let listShop=JSON.parse(localStorage.getItem('listShop'));
         const currentPage = this.state.currentPage;
@@ -122,7 +168,8 @@ class BodyProDuct extends Component {
         const numOfPage = Math.ceil(activeList.length / itemPerPage);
         const currentList = activeList.slice(indexOfFirstItem, indexOfLastItem);
         const renderList = currentList.map((x) => {
-            return <ProductItem key={x.item.item_id} data={x} onSelectProduct={this.handleSelectProduct} />;
+            return <ProductItem key={x.item.item_id} data={x} onSelectProduct={this.handleSelectProduct} 
+                    shop_id={this.state.shop_id}/>;
           });
         const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
 
@@ -133,11 +180,11 @@ class BodyProDuct extends Component {
             <div id='checkbox-row'>
             <input type='checkbox' onClick={this.selectAllProduct}/>
             <span>{'Đã chọn '+this.state.listCheckBox.length+' danh mục'}</span>
-            <select>
+            <select onChange={this.handleChageOperation}>
               <option hidden>Chọn thao tác</option>
-              <option>Thay thế hình ảnh</option>
-              <option>Cập nhật lên Shopee</option>
-              <option>Xoá sản phẩm</option>
+              <option value={2}>Thay thế hình ảnh</option>
+              <option value={1}>Cập nhật lên Shopee</option>
+              <option value={0}>Xoá sản phẩm</option>
             </select>  
             </div>  
           </th>

@@ -9,17 +9,17 @@ class BodyGallery extends Component {
      // images_gallery:[],
       images_gallery: JSON.parse(localStorage.getItem('images_gallery')),
       currentImgs:[],
-      shop_id:94115363,
+      //shop_id:94115363,
       listImgsSelected:[],
-      isHideWarningDialog: false,
+      isHideWarningDialog: true,
     }
     componentDidMount(){
       let images=this.state.images_gallery;
       let currentImgs;
+      let listShop=JSON.parse(localStorage.getItem('listShop'));
       if(images.length>0){
         for (let i=0;i<images.length;i++) {
-          console.log(images[i].shop_id==this.state.shop_id);
-          if (images[i].shop_id==this.state.shop_id) currentImgs= images[i].photos;
+          if (images[i].shop_id==listShop[0].shop_id) currentImgs= images[i].photos;
         }
       }
       this.setState({currentImgs:currentImgs});
@@ -142,6 +142,34 @@ class BodyGallery extends Component {
     hideWarningDialog=()=>{
       this.setState({isHideWarningDialog:true});
     }
+    redirectProductPage=()=>{
+      let listImgs=this.state.listImgsSelected;
+      localStorage.setItem('listImgsSelected',JSON.stringify(listImgs));
+      window.location.replace('/product');
+    }
+
+    handleDeleteImg=(e) => {
+      let url =e.target.getAttribute('src');
+      Swal.fire({
+          title: 'Xoá ảnh này?',
+          text: "",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.value) {
+             Axios.delete("http://"+serverIP+':'+port+'/api/v1/delete?url='+url,
+             {headers: {
+              'Authorization': 'Bearer '+localStorage.getItem('token'),
+             }})
+             .then ( rsp =>{
+               console.log(rsp)
+             })
+          }
+        })
+  }
 
     render() { 
         let listShop=JSON.parse(localStorage.getItem('listShop'));
@@ -158,15 +186,16 @@ class BodyGallery extends Component {
                 <button value={key} src={x} onClick={this.editPhoto}  className='edit-bt'>
                     <i src={x} className="fa fa-pencil" value={key} aria-hidden="true"></i>
                     </button>
-                <button value={key}  onClick={this.handleDeleteImg} className='edit-bt'>
-                    <i className="fa fa-trash" aria-hidden="true" value={key}></i>
+                <button value={key} src={x} onClick={this.handleDeleteImg} className='edit-bt'>
+                    <i className="fa fa-trash" aria-hidden="true" src={x}  value={key}></i>
                     </button>
             </span>
           </span>
         )})
         return (
           <>
-            <WarningDialog isHidden={this.state.isHideWarningDialog} onClickCancel={this.hideWarningDialog}/>
+            <WarningDialog isHidden={this.state.isHideWarningDialog} 
+            onClickCancel={this.hideWarningDialog} onClickOK={this.redirectProductPage}/>
             <div id='gallery-content'>
                 <div id='select-acc'>
                     <span>
@@ -174,6 +203,7 @@ class BodyGallery extends Component {
                             {listSelectShop}
                         </select>
                         <button onClick={this.getGallery}>GET</button>
+                        <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button>
                     </span>
                     <div className = 'up-img' onClick={this.handleCLickAddUrlImg}>Thêm ảnh từ URL</div>
                     <div className = 'up-img' onClick={this.handleCLickUpImg}>Thêm ảnh từ máy tính</div>
@@ -194,8 +224,11 @@ export default BodyGallery;
 
 class WarningDialog extends Component {
   state = {  }
-  clickCancel=(e)=>{
+  clickCancel=()=>{
     this.props.onClickCancel();
+  }
+  clickOK=()=>{
+    this.props.onClickOK();
   }
   render() { 
     if (this.props.isHidden === true) return null;
@@ -210,7 +243,7 @@ class WarningDialog extends Component {
           tất cả hình ảnh sản phẩm</div>
         </div>
         <div id='footer-wn-dl'>
-          <button id='bt-ok' >Chọn sản phẩm</button>
+          <button id='bt-ok' onClick={this.clickOK}>Chọn sản phẩm</button>
           <button id='bt-cancel' onClick={this.clickCancel}>Huỷ</button>
         </div>
       </dialog>

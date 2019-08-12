@@ -109,16 +109,10 @@ class RegisterForm extends Component {
         else this.setState({isConfirmPassValid: false, errorConfirmMessage: 'Không khớp với mật khẩu '})
     }
 
-    validationAll = () => {
-        if (this.state.isPhoneValid===false) return false;
-        if (this.state.isEmailValid===false) return false;
-        if (this.state.isPassValid===false)  return false;
-        if (this.state.isConfirmPassValid===false) return false;
-        return true; 
-    }
     handleSubmit = (e) => {
         e.preventDefault();
-        if (this.validationAll===true){
+        if (this.state.isPhoneValid===true && this.state.isEmailValid===true
+         && this.state.isPassValid===true && this.state.isConfirmPassValid=== true){
             axios.post('http://192.168.9.253:8181/api/v1/registration', {
                 username: this.state.name,
                 email: this.state.email,

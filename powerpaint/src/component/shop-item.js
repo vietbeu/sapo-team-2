@@ -17,10 +17,13 @@ class ShopItem extends Component {
         localStorage.setItem('shop-id',e.target.getAttribute('id'));
         localStorage.setItem('shop-create_date',e.target.getAttribute('date'));
         localStorage.setItem('shop-name',e.target.getAttribute('name'));
-        window.location.replace('/shop/id='+localStorage.getItem('shop-id'))
+        window.location.href='/shop';
     }
     render() { 
         let shop=this.props.shop;
+        let shopStatus;
+        if (shop.status===1) shopStatus=<td className='active-status'>Đang hoạt động</td>
+        else shopStatus = <td className='deactive-status'>Ngừng kết nối </td>
         return (
             <>
                 <tr className='data-row'>
@@ -28,7 +31,7 @@ class ShopItem extends Component {
                     name={shop.name} onClick={this.clickShop}>{shop.name}</td>
                     <td className='link-shop'>{'https://shopee.vn/shop/'+shop.shop_id}</td>
                     <td className='connect-date'>{this.formatDay(shop.createDate)}</td>
-                    <td className='active-status'>Đang hoạt động</td>
+                    {shopStatus}
                     {/*<td id='data-num'>40</td>
                     <td id='data-num'>60</td>*/}
                 </tr>   

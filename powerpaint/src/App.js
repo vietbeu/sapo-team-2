@@ -11,9 +11,10 @@ import Product from './page/product';
 import ProductDetailPage from './page/product-detail';
 import Test from './component/test';
 import GalleryPage from './page/gallery';
+import ResetPassForm from './login-page/reset-pass';
 class App extends Component {
   render() { 
-    let id=localStorage.getItem('shop-id');
+    let id=205134;
     return (
       <BrowserRouter>
         <div>
@@ -23,11 +24,12 @@ class App extends Component {
             <Route path="/signup" render={()=><FirstPage active={2}/>} />
             <Route path="/welcome" render={()=><WelcomePage/>} />
             <Route path='/userinfo' render={()=><UserInfoManagement/>}/>
-            <Route path={'/product/shopid='+id} render={()=><Product/>} />
-            <Route path={'/shop/id='+id} 
+            <Route path='/product/detail' render={()=><ProductDetailPage/>} />
+            <Route path={'/product'} render={()=><Product/>} />
+            <Route path={'/shop'} 
                 render={()=><ShopOverview/>} />
             <Route path='/overview' render={()=><ShopeeOverview/>} />
-            <Route path='/product/detail' render={()=><ProductDetailPage/>} />
+            <Route path='/reset-pass' render={()=><ResetPassForm/>}/>
             <Route path='/test' render={()=><Test/>} />
             <Route path='/gallery' render={()=><GalleryPage/>} />
           </Switch>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../css/user-info-manage-body.css';
 import SettingMenu from './setting';
-
-
+import Axios from 'axios';
+import {serverIP,port} from './const';
 
 class UserInfoManagementBody extends Component {
     constructor(props){
@@ -79,7 +79,7 @@ class ChangePassForm extends Component {
         this.setState({confirmPass:e.target.value})
     }
 
-    validatePass = (text) => {
+    validateNewPass = (text) => {
         const regexp = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
         const result = regexp.exec(text);
         if (result !== null) {
@@ -90,32 +90,53 @@ class ChangePassForm extends Component {
                      errorPassMessage: 'Mật khẩu cần có ít nhất 8 kí tự, ít nhất có 1 chữ cái viết hoa, 1 chữ cái thường và 1 chữ số '};
         }
     }
-    validationPass = (e) => {
-        const {isPassValid,errorPassMessage} = this.validatePass(this.state.pass);
+    validationNewPass = (e) => {
+        const {isPassValid,errorPassMessage} = this.validateNewPass(this.state.newPass);
         this.setState({
             isPassValid: isPassValid,
             errorPassMessage: errorPassMessage
         })
     }
 
-
     validationConfirmPass = () => {
-        if (this.state.confirmPass === this.state.pass)
+        if (this.state.confirmPass === this.state.newPass)
             this.setState( {isConfirmPassValid: true, errorConfirmMessage: ''})
         else this.setState({isConfirmPassValid: false, errorConfirmMessage: 'Không khớp với mật khẩu '})
     }
+
+    validationAll = () =>{
+        if (this.state.isPassValid===false) return false;
+        if (this.state.isConfirmPassValid===false) return false;
+        return true;
+    }
+    submitNewPass = () => {
+        if (this.validationAll){
+            const authen = 'Bearer '+localStorage.getItem('token');
+            Axios.post('http://' + serverIP + ':'+port+'/api/v1/user/user/changepassword',{
+                old_password:this.state.curPass,
+                new_password:this.state.newPass,
+            },
+            {headers: {
+                'Authorization': authen,
+            }})
+            .then (res =>{
+                console.log(res);
+            })
+        }
+    }
+
     render() { 
         if (!this.props.isHidden) { return null;}
     return (
         <>
             <div className='row1-change-pass'>
                 <label>Mật khẩu hiện tại</label>
-                <div><input type='text' onChange={this.changeCurPass}></input></div>
+                <div><input type='password' onChange={this.changeCurPass}></input></div>
             </div>
             <div className='row2-change-pass'>
                 <span id='new-pass'>
                     <label>Mật khẩu mới</label>
-                    <div><input type='password' onChange={this.changeNewPass} onKeyUp={this.validationPass}></input></div>
+                    <div><input type='password' onChange={this.changeNewPass} onKeyUp={this.validationNewPass}></input></div>
                     <div className='error'>
                         <FormError isHidden={this.state.isPassValid} errorMessage={this.state.errorPassMessage} />
                     </div>
@@ -129,7 +150,7 @@ class ChangePassForm extends Component {
                     </div>
                 </span>
             </div> 
-            <button id='bt-changepass'>OK</button>
+            <button id='bt-changepass' onClick={this.submitNewPass}>OK</button>
         </>   
         )
     }

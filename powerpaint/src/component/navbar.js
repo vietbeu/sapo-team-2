@@ -22,7 +22,7 @@ class NavBar extends Component {
         else if (isHideMenu === false )this.setState({isHiddenSubMenu: true})
     }
     redirect = (url) =>{
-        window.location.replace(url);
+        window.location.href=url;
     }
 
     styleCloseBar(){
@@ -74,7 +74,7 @@ class NavBar extends Component {
                         <span className='nav-icon'><i className="fa fa-home fa-2x" aria-hidden="true"></i></span>
                         <span className='nav-text'>Tổng quan</span>
                     </div>
-                    <div className='navbar-body-row' onClick={()=>this.redirect('/product/shopid='+localStorage.getItem('shop-id'))}>
+                    <div className='navbar-body-row' onClick={()=>this.redirect('/product')}>
                         <span className='nav-icon'><i className="fa fa-cube fa-2x" aria-hidden="true"></i></span>
                         <span className='nav-text'>Sản phẩm</span>
                     </div>

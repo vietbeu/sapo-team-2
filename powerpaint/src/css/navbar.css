@@ -96,7 +96,7 @@
     width: 100%;
     background: #10253F;
     font-size: 1.1vw;
-    display: none;
+    display: inline;
 }
 
 .sub-menu-row{

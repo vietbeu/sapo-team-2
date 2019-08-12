@@ -9,7 +9,7 @@ class ProductItem extends Component {
         localStorage.setItem('status-detail',product.item.status);
         localStorage.setItem('img-detail',JSON.stringify(product.item.images));
         localStorage.setItem('item-id-detail',product.item.item_id);
-        window.location.replace('/product/detail?id='+product.item.item_id)
+        window.location.href='/product/detail?id='+product.item.item_id;
     }
     handleSelectProduct=(e)=>{
         this.props.onSelectProduct(e.target);

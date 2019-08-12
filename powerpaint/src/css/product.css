@@ -49,6 +49,9 @@
     margin-top:2%;
     width: 100%;
 }
+.tb-product-content table{
+    width: 100%;
+}
 #bulk-action{
     width: 3%;
     font-weight: normal;

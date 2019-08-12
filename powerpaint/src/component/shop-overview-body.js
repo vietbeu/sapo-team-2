@@ -32,7 +32,7 @@ class BodyShopOverView extends Component {
                     );
                     setTimeout(
                         () => {
-                          window.location.replace('/overview');
+                          window.location.href='/overview';
                         },
                         2 * 1000
                       );
