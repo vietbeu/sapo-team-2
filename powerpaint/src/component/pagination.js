@@ -29,33 +29,12 @@ class Pagination extends Component {
     render() { 
         let button=[];let i;
         let numOfPage=this.props.numOfPage; 
-        if (numOfPage<3) for (i=1;i<= numOfPage;i++) button[i]=<button className='index-button' value={i} key={i} 
-            onClick={this.changePage}>{i}</button>;
-        else if(this.props.currentPage==1) {
-            for (i=0;i<3;i++){
-                button[i] = <button className='index-button'value={i+1} key ={i+1} 
-                onClick={this.changePage}>{i+1}</button>
-            }
-        }else if (this.props.currentPage==numOfPage){
-            for (i=0;i<3;i++){
-                button[i] = <button className='index-button'value={numOfPage-2+i} key ={numOfPage-2+i} 
-                onClick={this.changePage}>{numOfPage-2+i}</button>
-            }
-        }
-        else for (let i=0 ; i < 3 ; i++){
-            let valueOfButton = this.props.currentPage-1+i;
-            if( valueOfButton<=0 || valueOfButton>numOfPage) button[i]=null;
-            else button[i] =<button className='index-button'value={valueOfButton} key ={valueOfButton} 
-                onClick={this.changePage}>{valueOfButton}</button>;
-        }
-        let firstItem = this.props.firstItem+1;
-        if(this.props.numOfItem===0) firstItem=0;
-        let lastItem =this.props.lastItem;
-        if (lastItem > this.props.numOfItem) lastItem=this.props.numOfItem;
-        return ( 
-            <div className='tb-footer'>
-                <span id='footer-left'>{'Hiển thị kết quả từ '+firstItem+'-'+lastItem
-                                        +' trên tổng số '+this.props.numOfItem+' kết quả'}</span>
+        let buttonFooter;
+        if (numOfPage===1){
+            buttonFooter = null;
+        }else{
+            buttonFooter = (
+                <>
                 <span id='footer-middle'>
                      Hiển thị <select onChange={this.getItemPerPage}>
                                 <option>20</option>
@@ -68,6 +47,37 @@ class Pagination extends Component {
                     {button}    
                     <button className='index-button' onClick={this.changePage} value={this.props.numOfPage}>Trang cuối</button>
                 </span>
+                </>
+            )
+            if (numOfPage<3) for (i=1;i<= numOfPage;i++) button[i]=<button className='index-button' value={i} key={i} 
+                onClick={this.changePage}>{i}</button>;
+            else if(this.props.currentPage==1) {
+                for (i=0;i<3;i++){
+                    button[i] = <button className='index-button'value={i+1} key ={i+1} 
+                    onClick={this.changePage}>{i+1}</button>
+                }
+            }else if (this.props.currentPage==numOfPage){
+                for (i=0;i<3;i++){
+                    button[i] = <button className='index-button'value={numOfPage-2+i} key ={numOfPage-2+i} 
+                    onClick={this.changePage}>{numOfPage-2+i}</button>
+                }
+            }
+            else for (let i=0 ; i < 3 ; i++){
+                let valueOfButton = this.props.currentPage-1+i;
+                if( valueOfButton<=0 || valueOfButton>numOfPage) button[i]=null;
+                else button[i] =<button className='index-button'value={valueOfButton} key ={valueOfButton} 
+                    onClick={this.changePage}>{valueOfButton}</button>;
+            }
+        }
+        let firstItem = this.props.firstItem+1;
+        if(this.props.numOfItem===0) firstItem=0;
+        let lastItem =this.props.lastItem;
+        if (lastItem > this.props.numOfItem) lastItem=this.props.numOfItem;
+        return ( 
+            <div className='tb-footer'>
+                <span id='footer-left'>{'Hiển thị kết quả từ '+firstItem+'-'+lastItem
+                                        +' trên tổng số '+this.props.numOfItem+' kết quả'}</span>
+                {buttonFooter}
             </div>              
          );
     }

@@ -7,6 +7,7 @@ import {API_Shopee} from './API';
 import {partner_id, URL_GetItemsList, URL_GetItemDetail,serverIP,port} from './const';
 import Axios from 'axios';
 import Swal from 'sweetalert2';
+import ListCategories from './list-categoties';
 
 
 class BodyProDuct extends Component {
@@ -18,6 +19,8 @@ class BodyProDuct extends Component {
        // shop_id:94115363,
         searchKey:'',
         listCheckBox:[],
+        searchList:[],
+        maxImg : 0,
      }
     componentDidMount(){
       let listShop = JSON.parse(localStorage.getItem('listShop'));
@@ -37,14 +40,14 @@ class BodyProDuct extends Component {
         let body_getItemList = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
                             ',"pagination_offset": '+offset+', "pagination_entries_per_page": '+100+'}';
         //listItems= await API_Shopee(URL_getItemsList, body_getItemList);
-        listItems= await Axios.get('http://192.168.9.253:8181/api/v1/test/getItemList?offset='+offset+'&shopid='+shopid+'&entries='+100)
+        listItems= await Axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemList?offset='+offset+'&shopid='+shopid+'&entries='+100)
         offset+=100;
         more =listItems.data.more;
         listItems.data.items.map(async x =>{
           let body_getItemDetail = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
                                     ',"item_id": '+x.item_id+'}';
           //let itemsDetail = await API_Shopee(URL_getItemDetail, body_getItemDetail);
-        let itemsDetail = await Axios.get('http://192.168.9.253:8181/api/v1/test/getItemDetail?item_id='+x.item_id+'&shopid='+shopid);
+        let itemsDetail = await Axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemDetail?item_id='+x.item_id+'&shopid='+shopid);
           await listItemsDetail.push(itemsDetail.data);
           //console.log(listItemsDetail);
           this.setState((prevState,props)=>{ return {listItemsDetail: listItemsDetail}});
@@ -154,6 +157,48 @@ class BodyProDuct extends Component {
       }
     })  
   }
+
+  showResult=(listCategories,lv1,lv2,lv3)=>{
+    let searchResultList=[];let curList= this.state.listItemsDetail;
+    if(lv3!==''){
+      curList.map(x => {
+        if (x.item.category_id==lv3) searchResultList.push(x);
+      });
+        this.setState({searchList:searchResultList}); 
+    }
+    else if (lv2!==''){
+      let categoriesLv3=[];
+      listCategories.map(x => {
+        if (x.parent_id ==lv2) categoriesLv3.push(x);
+      })
+      for (let i=0; i<categoriesLv3.length;i++){
+        curList.map(x => {
+          if (x.item.category_id==categoriesLv3[i].category_id) searchResultList.push(x);
+        });
+      }
+      this.setState({searchList:searchResultList}); 
+    }
+    else if (lv1!==''){
+      let categoriesLv3=[],categoriesLv2=[];
+      listCategories.map(x => {
+        if (x.parent_id ==lv1) categoriesLv2.push(x);
+      })
+      for (let i=0; i<categoriesLv2.length;i++){
+        listCategories.map(x => {
+          if (x.parent_id ==categoriesLv2[i].category_id) categoriesLv3.push(x);
+        })
+      }
+      for (let i=0; i<categoriesLv3.length;i++){
+        curList.map(x => {
+          // console.log(x.item.category_id);
+          // console.log(categoriesLv3[i]);
+          if (x.item.category_id==categoriesLv3[i].category_id) searchResultList.push(x);
+        });
+      }
+      console.log(searchResultList);
+      this.setState({searchList:searchResultList}); 
+    }
+  }
     render() { 
         let listShop=JSON.parse(localStorage.getItem('listShop'));
         const currentPage = this.state.currentPage;
@@ -162,7 +207,8 @@ class BodyProDuct extends Component {
         const indexOfFirstItem = indexOfLastItem - itemPerPage;
         let   listItemsDetail = this.state.listItemsDetail;
         let activeList=[];
-        if(this.state.searchKey==='' || this.state.searchKey=== null)  activeList=listItemsDetail;
+        console.log(this.state.searchList.length);
+        if(this.state.searchList.length===0 && (this.state.searchKey==='' || this.state.searchKey=== null))  activeList=listItemsDetail;
         else activeList=this.state.searchList;
         let numOfItem=activeList.length;
         const numOfPage = Math.ceil(activeList.length / itemPerPage);
@@ -210,6 +256,7 @@ class BodyProDuct extends Component {
                     <select onChange={this.changeShop}>
                         {listSelectShop}
                     </select>
+                    <ListCategories onChangeCategory={this.showResult}/>
                  </div>
                  <div className='product-table'>
                      <div className='product-tb-content'>

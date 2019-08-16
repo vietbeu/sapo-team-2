@@ -3,7 +3,7 @@ import '../css/product-detail.css';
 import Swal from 'sweetalert2';
 import img from '../images/img3.jpg'
 import Axios from 'axios';
-import { serverIP,port,partner_id, URL_UpdateItemImg, URL_InsertItemImg, URL_DeleteItemImg } from './const';
+import { serverIP,port,partner_id,sightengine, URL_UpdateItemImg, URL_InsertItemImg, URL_DeleteItemImg } from './const';
 import {API_Shopee} from './API';
 
 class BodyProductDetail extends Component {
@@ -177,35 +177,45 @@ class BodyProductDetail extends Component {
             confirmButtonText: 'Thêm ảnh',
             showLoaderOnConfirm: true,
         })
-        if (url) {
-            const authen = 'Bearer '+localStorage.getItem('token');
-            Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
-            {"item_id":localStorage.getItem('item-id-detail'),"photo_url":url,"shop_id":shop_id},
-                {headers: {
-                    'Authorization': authen,
-                }})
-            .then ((rsp)=> {
-                if (rsp.data.success==1){
-                    images.push(rsp.data.url);
-                    this.updateStateImg(images);
-                    Swal.fire({
-                        title: 'Ảnh vừa tải lên',
-                        imageUrl: url,
-                        imageAlt: 'The uploaded picture'
-                    })
-                }else Swal.fire(
-                    'Fail!',
-                    'Vui lòng chọn ảnh có dung lương nhỏ hơn 2MB và định dạng jpeg/jpg/png',
-                    'error'
-                )
+        if (url) {          
+            sightengine.check(['nudity','wad']).set_url(url)
+            .then(rsp => {
+              if(rsp.data.nudity.safe < 0.9) {
+                Swal.fire('Fail!','Ảnh có nội dung không phù hợp','error')
+              } else {
+                const authen = 'Bearer '+localStorage.getItem('token');
+                Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
+                {"item_id":localStorage.getItem('item-id-detail'),"photo_url":url,"shop_id":shop_id},
+                    {headers: {
+                        'Authorization': authen,
+                    }})
+                .then ((rsp)=> {
+                    if (rsp.data.success==1){
+                        images.push(rsp.data.url);
+                        this.updateStateImg(images);
+                        Swal.fire({
+                            title: 'Ảnh vừa tải lên',
+                            imageUrl: url,
+                            imageAlt: 'The uploaded picture'
+                        })
+                    }else Swal.fire(
+                        'Fail!',
+                        'Vui lòng chọn ảnh có dung lương nhỏ hơn 2MB và định dạng jpeg/jpg/png',
+                        'error'
+                    )
                 })
-            .catch(error =>
-                Swal.fire(
-                    'Fail!',
-                    'Tải ảnh lên thất bại!',
-                    'error'
-                  ))
-          }
+                .catch(error =>
+                    Swal.fire(
+                        'Fail!',
+                        'Tải ảnh lên thất bại!',
+                        'error'
+                    ))
+                }
+            }).catch(function(err) {
+              // Handle error
+            });                    
+            
+            } 
     }
      handleCLickUpImg=async(e)=>{
         let shop_id=this.state.shop_id;
@@ -237,65 +247,45 @@ class BodyProductDetail extends Component {
                 let newURL;
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    // var image = new Image();
-                    // image.onload=function(){
-                    //     var canvas=document.createElement("canvas");
-                    //     var context=canvas.getContext("2d");
-                    //     if (image.width>image.height){
-                    //     canvas.width=750;
-                    //     const scaleFactor = canvas.width / image.width;
-                    //     canvas.height=image.height*scaleFactor;
-                    //     }else{
-                    //         canvas.height=750;
-                    //         const scaleFactor = canvas.height / image.height;
-                    //         canvas.width=image.width*scaleFactor;    
-                    //     }
-                    //     context.drawImage(image,
-                    //         0,
-                    //         0,
-                    //         image.width,
-                    //         image.height,
-                    //         0,
-                    //         0,
-                    //         canvas.width,
-                    //         canvas.height
-                    //     );
-                        
-                    //     newURL=canvas.toDataURL();
-                    //     // images.push(newURL);
-                    //     // console.log(newURL)
-                    //     // localStorage.setItem('img-detail',JSON.stringify(images));
-                        
-                    //  }
                     newURL=e.target.result;
-                    console.log(newURL);
-                    const authen = 'Bearer '+localStorage.getItem('token');
-                    Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
-                    {"item_id":localStorage.getItem('item-id-detail'),"photo_url":newURL,"shop_id":shop_id},
-                                {headers: {
-                        'Authorization': authen,
-                    }})
-                    .then ( rsp => {
-                        if (rsp.data.success===1){
-                            let url=rsp.data.url;
-                            images.push(url);
-                            this.updateStateImg(images);
-                            Swal.fire({
-                                title: 'Ảnh vừa tải lên',
-                                imageUrl: e.target.result,
-                                imageAlt: 'The uploaded picture'
+                    sightengine.check(['nudity','wad']).set_url(newURL)
+                    .then(rsp => {
+                        if(rsp.data.nudity.safe < 0.9) {
+                            Swal.fire('Fail!','Ảnh có nội dung không phù hợp','error')
+                        }
+                        else {
+                            const authen = 'Bearer '+localStorage.getItem('token');
+                            Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
+                            {"item_id":localStorage.getItem('item-id-detail'),"photo_url":newURL,"shop_id":shop_id},
+                                        {headers: {
+                                'Authorization': authen,
+                            }})
+                            .then ( rsp => {
+                                if (rsp.data.success===1){
+                                    let url=rsp.data.url;
+                                    images.push(url);
+                                    this.updateStateImg(images);
+                                    Swal.fire({
+                                        title: 'Ảnh vừa tải lên',
+                                        imageUrl: e.target.result,
+                                        imageAlt: 'The uploaded picture'
+                                    })
+                                }else Swal.fire(
+                                    'Fail!',
+                                    'Lưu ảnh thất bại!',
+                                    'error'
+                                )
                             })
-                        }else Swal.fire(
-                            'Fail!',
-                            'Lưu ảnh thất bại!',
-                            'error'
-                        )
-
-                    })
-                
+                        }
+                    }).catch(function(err) {
+                      // Handle error
+                    });                    
             }
             console.log(reader.readAsDataURL(file))
           }}
+    }
+    handleShowGallery=(e)=>{
+        
     }
     readFile=(file)=>{
         console.log(file);
@@ -306,14 +296,14 @@ class BodyProductDetail extends Component {
             }
     }
     
-    handleCLickImgItem=(e)=>{
-        this.handleCLickMenuImgItem(e.target.getAttribute('value'));
-    }
-    handleCLickMenuImgItem(index){
-        let menuItem =document.getElementsByClassName('menu-img-item');
-        for (let i=0 ; i < menuItem.length; i++) menuItem[i].style.color='#7B7B7B';
-        menuItem[index-1].setAttribute('style','color:#0084FF;');
-    }
+    // handleCLickImgItem=(e)=>{
+    //     this.handleCLickMenuImgItem(e.target.getAttribute('value'));
+    // }
+    // handleCLickMenuImgItem(index){
+    //     let menuItem =document.getElementsByClassName('menu-img-item');
+    //     for (let i=0 ; i < menuItem.length; i++) menuItem[i].style.color='#7B7B7B';
+    //     menuItem[index-1].setAttribute('style','color:#0084FF;');
+    // }
 
     editPhoto=(e)=>{
         let url = e.target.getAttribute('src');
@@ -396,9 +386,10 @@ class BodyProductDetail extends Component {
                     </div>
                     <div id='right-detail-content'>
                         <div id='menu-img'>
-                            <div className='menu-img-item' value={1} onClick={this.handleCLickImgItem}>Ảnh sản phẩm</div>
-                            <div className='menu-img-item' value={2} onClick={this.handleCLickAddUrlImg}>Thêm ảnh từ URL</div>
-                            <div className='menu-img-item' value={3} onClick={this.handleCLickUpImg}>Thêm ảnh từ máy tính</div>
+                            <div id='item-1' value={1} onClick={this.handleCLickImgItem}>Ảnh sản phẩm</div>
+                            <div id='item-2' value={2} onClick={this.handleCLickAddUrlImg}>Thêm ảnh từ URL</div>
+                            <div id='item-3' value={3} onClick={this.handleCLickUpImg}>Thêm ảnh từ máy tính</div>
+                            <div id='item-4' value={4} onClick={this.handleShowGallery}>Thêm ảnh từ thư viện ảnh</div>
                         </div>
                         <div id='img-field'>
                             {shopeeImgs}              

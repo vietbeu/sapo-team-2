@@ -3,14 +3,16 @@ import img from '../images/img-1.jpg'
 import Swal from 'sweetalert2';
 import {serverIP,port} from './const';
 import Axios from 'axios';
+import { async } from 'q';
 
 class BodyGallery extends Component {
     state = { 
      // images_gallery:[],
       images_gallery: JSON.parse(localStorage.getItem('images_gallery')),
       currentImgs:[],
-      //shop_id:94115363,
+      shop_id:JSON.parse(localStorage.getItem('listShop'))[0].shop_id,
       listImgsSelected:[],
+      numOfImgSelected:0,
       isHideWarningDialog: true,
     }
     componentDidMount(){
@@ -40,16 +42,25 @@ class BodyGallery extends Component {
     changeShop=(e)=>{
       this.setState({shop_id:e.target.value});
       let images=this.state.images_gallery;
+      let listImgsSelected=this.state.listImgsSelected;
       let currentImgs;
-      console.log(images);
       if(images.length>0){
         for (let i=0;i<images.length;i++) {
-          console.log(images[i].shop_id==e.target.value);
+         // console.log(images[i].shop_id==e.target.value);
           if (images[i].shop_id==e.target.value) currentImgs= images[i].photos;
         }
       }
-      console.log(currentImgs);
+      //console.log(currentImgs);
       this.setState({currentImgs:currentImgs});
+      let imgItems = document.getElementsByClassName('img-content');
+      for (let i=0 ; i<imgItems.length ; i++)imgItems[i].setAttribute('style','outline: none'); 
+      for (let i=0 ; i<imgItems.length ; i++)
+        for (let j=0;j<listImgsSelected.length;j++)
+          if (imgItems[i].getAttribute('src')==listImgsSelected[j]) {
+            console.log(imgItems[i].getAttribute('src'));
+            console.log(listImgsSelected[j]);
+            imgItems[i].setAttribute('style','outline:  2px solid red');       
+          }
     }
     async handleCLickAddUrlImg(e){
         const {value: url} = await Swal.fire({
@@ -72,36 +83,91 @@ class BodyGallery extends Component {
                 }});
           }
     }
-    async handleCLickUpImg(e){
-        const {value: file} = await Swal.fire({
-            title: 'Thêm ảnh từ máy tính ',
-            input: 'file',
-            inputAttributes: {
-              
-              'aria-label': 'Upload your profile picture'
-            }
-          }) 
-          if (file) {
-            console.log(file);
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                let url = e.target.result;
-                const authen = 'Bearer '+localStorage.getItem('token');
-                console.log(authen);
-                Axios.post('http://' + serverIP + ':'+port+'/api/v1/uploadTest?item_id=123&img_order=1',{photo_url:url},
-                            {headers: {
-                    'Authorization': authen,
-                }});
-              Swal.fire({
-                title: 'Ảnh vừa tải lên',
-                imageUrl: e.target.result,
-                imageAlt: 'The uploaded picture'
-              })
-            }
-            console.log(reader.readAsDataURL(file))
+    handleCLickUpImg=async(e)=>{
+      let shop_id=this.state.shop_id;
+      let images=this.state.images_gallery;
+      const {value: file} =  await Swal.fire({
+        title: 'Thêm ảnh từ máy tính ',
+        input: 'file',
+        inputAttributes: {
+          'aria-label': 'Upload your picture'
           }
+        }) 
+      if (file) {
+        if (file.type != "image/jpeg" && file.type != "image/jpg" && file.type != "image/png")
+          Swal.fire('Fail!','Vui lòng chọn file có định dạng jpeg/jpg/png!','error' );
+        else if(file.size > 2097152) 
+          Swal.fire('Fail!','Vui lòng chọn ảnh có dung lượng nhỏ hơn 2MB!','error');
+        else {
+          let newURL;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            newURL=e.target.result;
+            const authen = 'Bearer '+localStorage.getItem('token');
+            Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
+                {"item_id":null,"photo_url":newURL,"shop_id":shop_id},
+                              {headers: {'Authorization': authen,
+            }})
+            .then ( rsp => {
+              if (rsp.data.success===1){
+                let url=rsp.data.url;
+                for (let i=0;i<images.length;i++) {
+                  if (images[i].shop_id==shop_id) images[i].photos.push(url);
+                }
+                this.updateStateImg(images);
+                Swal.fire({title: 'Ảnh vừa tải lên',imageUrl: e.target.result,imageAlt: 'The uploaded picture'})
+              }else Swal.fire('Fail!', 'Lưu ảnh thất bại!','error' )
+            })   
+          }
+          console.log(reader.readAsDataURL(file))
+        }}
+  }
+  handleCLickAddUrlImg=async(e)=>{
+    let shop_id=this.state.shop_id;
+    let images = this.state.images_gallery;
+    const {value: url} = await Swal.fire({
+        title: 'Thêm ảnh từ URL',
+        input: 'url',
+        inputPlaceholder:'Hãy nhập URL',
+        inputAttributes: {
+          autocapitalize: 'off',
+        },
+        showCancelButton: true,
+        cancelButtonText:'Huỷ',
+        confirmButtonText: 'Thêm ảnh',
+        showLoaderOnConfirm: true,
+    })
+    if (url) {
+        const authen = 'Bearer '+localStorage.getItem('token');
+        Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
+        {"item_id":localStorage.getItem('item-id-detail'),"photo_url":url,"shop_id":shop_id},
+            {headers: {
+                'Authorization': authen,
+            }})
+        .then ((rsp)=> {
+            if (rsp.data.success==1){
+              for (let i=0;i<images.length;i++) 
+                if (images[i].shop_id==shop_id) images[i].photos.push(rsp.data.url);
+              this.updateStateImg(images);
+              Swal.fire({ title: 'Ảnh vừa tải lên',imageUrl: url,imageAlt: 'The uploaded picture'})
+            }else Swal.fire(
+                'Fail!',
+                'Vui lòng chọn ảnh có dung lương nhỏ hơn 2MB và định dạng jpeg/jpg/png',
+                'error'
+            )
+            })
+        .catch(error =>
+            Swal.fire(
+                'Fail!',
+                'Tải ảnh lên thất bại!',
+                'error'
+              ))
+      }
+}
+    updateStateImg=(images)=>{
+      this.setState({images_gallery:images});
+      localStorage.setItem('images_gallery',JSON.stringify(images));
     }
-
     showEditImgMenu=(e)=>{
       let buttons = document.getElementsByClassName('edit-bt');
       for(let i = 0 ; i< buttons.length;i++) 
@@ -121,12 +187,14 @@ class BodyGallery extends Component {
       
       if (index>=0){
         listImgsSelected.splice(index,1);
+        this.setState({numOfImgSelected: listImgsSelected.length});
         console.log(listImgsSelected);
         for (let i=0 ; i<imgItems.length ; i++)
           if (imgItems[i].getAttribute('value')===value) imgItems[i].setAttribute('style','outline: none');           
       }else{
-        if (listImgsSelected.length<=3){
+        if (listImgsSelected.length<=8){
           listImgsSelected.push(url);
+          this.setState({numOfImgSelected: listImgsSelected.length});
           console.log(listImgsSelected);
           for (let i=0 ; i<imgItems.length ; i++)
             if (imgItems[i].getAttribute('value')===value) imgItems[i].setAttribute('style','outline:  2px solid red');   
@@ -149,6 +217,9 @@ class BodyGallery extends Component {
     }
 
     handleDeleteImg=(e) => {
+      let shop_id=this.state.shop_id;
+      let images =this.state.images_gallery;
+      let listImgsSelected=this.state.listImgsSelected;
       let url =e.target.getAttribute('src');
       Swal.fire({
           title: 'Xoá ảnh này?',
@@ -160,13 +231,22 @@ class BodyGallery extends Component {
           confirmButtonText: 'OK'
         }).then((result) => {
           if (result.value) {
-             Axios.delete("http://"+serverIP+':'+port+'/api/v1/delete?url='+url,
+             Axios.delete("http://"+serverIP+':'+port+'/api/v1/image/delete',
              {headers: {
               'Authorization': 'Bearer '+localStorage.getItem('token'),
-             }})
-             .then ( rsp =>{
-               console.log(rsp)
+             },
+             data:{
+               'URLs':[url],
+             }
+            })
+             .then ( rsp => {
+              for (let i=0;i<images.length;i++) 
+                if (images[i].shop_id==shop_id) images[i].photos.splice(images[i].photos.indexOf(url),1);
+              this.updateStateImg(images);
+              listImgsSelected.splice(listImgsSelected.indexOf(url),1);
+               Swal.fire('Thành công!','Xoá ảnh thành công','success')
              })
+             .catch(e => Swal.fire('Xoá ảnh thất bại!','Xin vui lòng thử lại sau','error') )
           }
         })
   }
@@ -203,7 +283,9 @@ class BodyGallery extends Component {
                             {listSelectShop}
                         </select>
                         <button onClick={this.getGallery}>GET</button>
-                        <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button>
+                        <span>
+                          <span>{'Đã chọn '+this.state.numOfImgSelected+' ảnh'}</span>
+                        </span>
                     </span>
                     <div className = 'up-img' onClick={this.handleCLickAddUrlImg}>Thêm ảnh từ URL</div>
                     <div className = 'up-img' onClick={this.handleCLickUpImg}>Thêm ảnh từ máy tính</div>
@@ -212,7 +294,10 @@ class BodyGallery extends Component {
                  <div className='gallery-table'>
                     {imgRenderList}
                  </div>
-                 <div className='footer-align'></div>
+                 <div className='footer-gallery'>
+                  <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button>
+                  {/*<button>Xoá</button>*/}
+                 </div>
             </div>
           </>
           );

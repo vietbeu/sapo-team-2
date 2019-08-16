@@ -70,7 +70,7 @@ class NavBar extends Component {
                     <div id='bar-icon'><i className="fa fa-bars fa-2x" aria-hidden="true" onClick={this.clickBarIcon}></i></div>
                 </div>
                 <div className='navbar-body'>
-                    <div className='navbar-body-row'>
+                    <div className='navbar-body-row' onClick={()=>this.redirect('/overview')}>
                         <span className='nav-icon'><i className="fa fa-home fa-2x" aria-hidden="true"></i></span>
                         <span className='nav-text'>Tổng quan</span>
                     </div>

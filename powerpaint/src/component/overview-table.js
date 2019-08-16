@@ -4,7 +4,7 @@ import axios from 'axios';
 import Crypto from 'crypto-js';
 import Swal from 'sweetalert2';
 import ShopItem from './shop-item';
-import {key,serverIP,port} from './const';
+import {key,serverIP,port,partner_id} from './const';
 
 class Table extends Component {
     state = {  
@@ -23,6 +23,7 @@ class Table extends Component {
         }})
         .then( (response)=> {
             this.setState({listShop:response.data});
+            this.getCategories(response.data[0].shop_id)
         })
         .catch((error) => {
             Swal.fire(
@@ -64,23 +65,29 @@ class Table extends Component {
         })  
     }
     
-   /* componentDidMount(){
-        const partner_id = 840386;
-        const shopid = 205134;
-        let timestamp = Date.now() / 1000 | 0;
-        let URL_getShopInfo = 'https://partner.uat.shopeemobile.com/api/v1/shop/get';
-        let body_getShopInfo = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+'}';
-        this.API_getShopInfo(URL_getShopInfo, body_getShopInfo);
-
-        /*let URL_getOrdersList = 'https://partner.uat.shopeemobile.com/api/v1/orders/basics';
-        let body_getOdersList = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
-        ', ""
-
-}*/
+   getCategories=(shopid)=>{
+        let listCategories=[];
+        const authen = 'Bearer '+localStorage.getItem('token');
+        axios.post('http://' + serverIP + ':'+port+'/api/v1/test/getCategories',{
+          partner_id: partner_id,
+          shopid: shopid,
+        },
+        {headers: {
+            'Authorization': authen,
+        }}) 
+        .then (rsp =>{
+          listCategories=rsp.data.categories;
+          localStorage.setItem('list-categories',JSON.stringify(listCategories));
+        })     
+      }
     render() { 
         let list = this.state.listShop;
         let listShop = list.map((x)=><ShopItem shop={x} key={x.id}/>);
-        localStorage.setItem('listShop',JSON.stringify(list));
+        let listActiveShop=[] ;
+        list.map(x => {
+            if (x.status===1) listActiveShop.push(x);
+        })
+        localStorage.setItem('listShop',JSON.stringify(listActiveShop));
         return (
             <div className='table-sh'>
                 <table>
