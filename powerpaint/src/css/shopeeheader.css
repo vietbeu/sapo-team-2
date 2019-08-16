@@ -1,5 +1,5 @@
 .header-text{
-    padding-left:3%;
+    padding-left:4%;
     position:absolute;
     vertical-align: middle;
     font-size: 1.3vw;
@@ -11,7 +11,7 @@
 
 #header-button{
     position: absolute;
-    left:95%;
+    left:98%;
     top: 50%;
     transform: translateY(-50%);
     width: 30%;
@@ -26,7 +26,7 @@
     padding: 2% 5%;
 }
 .header-text i{
-    float:left;
+    width: 5%;
     color:  #7B7B7B;
 }
 .header-text #logo-shopee{
@@ -37,16 +37,15 @@
     height:5vh;
     width: 10%;
     position: absolute;
-    left:10%;
+    margin-left: 3%;
     top:50%;
     transform: translateY(-50%);
 }
 .header-text #location{
-    float:left;
     top:50%;
     transform: translateY(-50%);
     position: absolute;
-    left:20%;
+    left:18%;
     color: #000000;
 }
 
@@ -54,5 +53,5 @@
     color: #333333;
     font-weight: bold;
     font-size: 1.3vw;
-    margin-left: 2.5%;
+    margin-left: 3%;
 }

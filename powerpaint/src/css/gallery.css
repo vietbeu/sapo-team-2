@@ -17,7 +17,7 @@
     cursor: pointer;
 }
 .gallery-table{
-    height: 72vh;
+    height: 70vh;
     margin-top:3vh;
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
@@ -25,6 +25,17 @@
     padding: 1vh ;
     overflow: scroll;
     overflow-x: hidden;
+}
+.footer-gallery{
+    position: relative;
+    height: 7vh;
+}
+.footer-gallery button{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    right: 0%;
+    padding: 0% 3%;
 }
 .gallery-table .image-container{
     padding: 1%;

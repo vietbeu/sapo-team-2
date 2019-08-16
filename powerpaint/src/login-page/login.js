@@ -85,6 +85,15 @@ class Login extends Component {
 	}
     render() {
 		let activeComponent; 
+		let loginFB=(
+			<div className='more'>		
+				<div>Bạn có thể đăng nhập nhanh bằng tài khoản</div>
+				<button>
+					<i className="fa fa-facebook fa-2x" aria-hidden="true"></i>
+					<span id='face-login'>Facebook</span> 
+				</button>
+			</div>
+		);
 		if (this.state.active===1) {
 			activeComponent=<LoginForm  onClickForgetPass={this.showForgetPassForm}/>;		
 		}
@@ -93,6 +102,7 @@ class Login extends Component {
 		}
 		else {
 			activeComponent=<ForgetPass/>;
+			loginFB=null;
 		}
         return (
 			<React.Fragment>
@@ -102,13 +112,7 @@ class Login extends Component {
 				</div>
 				<div className='form'>
 					{activeComponent}		
-					<div className='more'>		
-						<div>Bạn có thể đăng nhập nhanh bằng tài khoản</div>
-						<button>
-							<i className="fa fa-facebook fa-2x" aria-hidden="true"></i>
-							<span id='face-login'>Facebook</span> 
-						</button>
-					</div>
+					{loginFB}
 				</div>
 				
 			</React.Fragment>

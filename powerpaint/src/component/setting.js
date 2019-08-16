@@ -3,7 +3,11 @@ import '../css/header.css'
 class SettingMenu extends Component {
     state = {  }
     redirect=()=>{
-        window.location.replace('/userinfo');
+        window.location.href='/userinfo';
+    }
+    logOut=()=>{
+        localStorage.clear();
+        window.location.href='/login';
     }
     render() { 
         return (
@@ -20,7 +24,7 @@ class SettingMenu extends Component {
                 <div>
                     <button>
                         <span><i className="fa fa-power-off" aria-hidden="true"></i></span>
-                        <span id='setting-item'>Đăng xuất</span>
+                        <span id='setting-item' onClick={this.logOut}>Đăng xuất</span>
                     </button>
                 </div>
             </dialog>

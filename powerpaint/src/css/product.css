@@ -111,6 +111,7 @@
 
 #column-sku{
     width: 15%;
+    text-align: left;
 }
 #column-product-img{
     width:25%;
@@ -118,6 +119,7 @@
 }
 #column-product-name{
     width:20%;
+    text-align: left;
 }
 #column-shopee-status{
     width:20%;
@@ -131,13 +133,16 @@
 }
 .column-sku{
     width: 15%;
+    text-align: left;
 }
 .column-product-img{
     width:25%;
     text-align: left;
+    position: relative;
 }.column-product-name{
     color: #0084FF;
     width:20%;
+    text-align: left;
 }
 .column-shopee-status{
     width:20%;
@@ -149,4 +154,15 @@
 
 .footer-align{
     height:5vh;
+}
+
+.alt-img{
+    vertical-align: top;background: red;
+    width:20%;
+}
+.imgs-text{
+    vertical-align: bottom;
+    position: absolute;
+    left: 32%;
+    bottom: 15%;
 }

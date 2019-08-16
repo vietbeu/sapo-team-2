@@ -25,7 +25,7 @@
     position: relative;
 }
 #left-detail-content{
-    width:40%;
+    width:35%;
     position: absolute;
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
@@ -34,7 +34,7 @@
     height: 65vh;
 }
 #right-detail-content{
-    width:55%;
+    width:60%;
     position: absolute;
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
@@ -58,10 +58,28 @@
     margin-bottom: 4vh;
 }
 
-.menu-img-item{
-    width:33%;
-    float: left;
+.menu-img{
     height: 8vh;
+}
+.menu-img-item{
+    width:25%;
+    float: left;text-align: center;
+}
+#item-1{
+    width: 20%;
+    float: left;text-align: center;
+}
+#item-2{
+    float: left;
+    width: 20%;text-align: center;
+}
+#item-3{
+    float: left;
+    width: 30%;text-align: center;
+}
+#item-4{
+    float: left;
+    width: 30%;
 }
 .menu-img-item:hover{
     cursor: pointer;

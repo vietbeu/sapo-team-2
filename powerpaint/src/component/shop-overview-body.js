@@ -5,12 +5,14 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 class BodyShopOverView extends Component {
-    state = {  }
+    state = { 
+        status: localStorage.getItem('shop-status'),
+     }
 
-    deleteAcount=()=>{
+    deleteAccount=()=>{
         Swal.fire({
             title: 'Are you sure?',
-            text: "Bạn có chắc chắn muốn xoá shop?",
+            text: "Bạn có chắc chắn muốn ngừng kết nối shop?",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -19,7 +21,6 @@ class BodyShopOverView extends Component {
           }).then((result) => {
             if (result.value) {
                 const authen = 'Bearer '+localStorage.getItem('token');
-                console.log(authen);
                 axios.delete('http://' + serverIP + ':'+port+'/api/v1/shop/'+localStorage.getItem('shop-id'),
                 {headers: {
                     'Authorization': authen,
@@ -27,9 +28,10 @@ class BodyShopOverView extends Component {
                 .then(()=>{
                     Swal.fire(
                         'Succes!',
-                        'Xoá shop thành công! ',
+                        'Ngừng kết nối shop thành công! ',
                         'success'
                     );
+                    this.setState({status:'0'});
                     setTimeout(
                         () => {
                           window.location.href='/overview';
@@ -40,15 +42,33 @@ class BodyShopOverView extends Component {
                 .catch((error) => {
                     Swal.fire(
                         'Fail!',
-                        'Xoá shop thất bại! Xin vui lòng thử lại sau !',
+                        'Ngừng kết nối shop thất bại! Xin vui lòng thử lại sau !',
                         'error'
                     );
                 }) 
             }
           })
-        
+    }
+    connectAccount = () => {
+        const authen = 'Bearer '+localStorage.getItem('token');
+        axios.post('http://' + serverIP + ':'+port+'/api/v1/shop/activate/'+localStorage.getItem('shop-id'),{},
+            {headers: {'Authorization': authen,}})
+        .then(()=>{
+            Swal.fire('Succes!','Kết nối shop thành công! ','success');
+            this.setState({status:'1'});
+        })
+        .catch (e=>Swal.fire('Fail!','Kết nối shop thất bại! ','error'))
     }
     render() { 
+        let buttonChangeShopStatus;
+        let status;
+        if (this.state.status==='1') {
+            buttonChangeShopStatus=<button onClick={this.deleteAccount}>Gỡ bỏ tài khoản này</button>;
+            status='Đang kết nối';
+        }else  if (this.state.status==='0')  {
+            buttonChangeShopStatus=<button onClick={this.connectAccount}>Kết nối tài khoản này</button>
+            status='Ngừng kết nối';
+        }
         return (
             <>
             <div id='title-overview-table'>{'Thông tin chi tiết gian hàng '+localStorage.getItem('shop-name')} </div>
@@ -86,7 +106,7 @@ class BodyShopOverView extends Component {
                             <div id='shop-info'>
                                 <div>
                                     <i className="fa fa-globe" aria-hidden="true"></i>
-                                    Đang kết nối 
+                                    {status} 
                                     <span> {localStorage.getItem('shop-name')}</span>
                                 </div>
                                 <div className='link-shop'>{'https://shopee.vn/shop/'+localStorage.getItem('shop-id')}</div>
@@ -94,7 +114,7 @@ class BodyShopOverView extends Component {
                             </div>
                         </div>
                         <div id='right-tb-footer'>
-                            <button onClick={this.deleteAcount}>Gỡ bỏ tài khoản này</button>
+                            {buttonChangeShopStatus}
                         </div>
                     </div>
                 </div>

@@ -22,8 +22,8 @@ class LoginForm extends Component {
             'Authorization': authen,
         }})
         .then( (response)=> {
-            if (response.data.length>0) window.location.replace('/overview');
-            else window.location.replace('/welcome')
+            if (response.data.length>0) window.location.href='/overview';
+            else window.location.href='/welcome';
         })
         .catch((error) => {
         }) 
@@ -41,7 +41,7 @@ class LoginForm extends Component {
                localStorage.setItem('email',response.data.email);
                localStorage.setItem('phone',response.data.phone);
                localStorage.setItem('id',response.data.id);
-               localStorage.setItem('shop',response.data.shop);
+               //localStorage.setItem('shop',response.data.shop);
                localStorage.setItem('token',response.data.token);
                this.getShop();
             }
