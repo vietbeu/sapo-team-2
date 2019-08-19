@@ -5,6 +5,7 @@ import img from '../images/img3.jpg'
 import Axios from 'axios';
 import { serverIP,port,partner_id,sightengine, URL_UpdateItemImg, URL_InsertItemImg, URL_DeleteItemImg } from './const';
 import {API_Shopee} from './API';
+import { async } from 'q';
 
 class BodyProductDetail extends Component {
     state = { 
@@ -16,7 +17,32 @@ class BodyProductDetail extends Component {
         status: localStorage.getItem('status-detail'),
     }
     
-    async componentDidMount(){
+    componentDidMount=async()=>{
+        window.onbeforeunload = function () {
+
+            return  "Are you sure want to LOGOUT the session ?";
+        };        
+        // window.addEventListener("beforeunload", function (event) {
+        //     event.preventDefault();
+        //     Swal.fire({
+        //         title: 'Are you sure?',
+        //         text: "You won't be able to revert this!",
+        //         type: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#3085d6',
+        //         cancelButtonColor: '#d33',
+        //         confirmButtonText: 'Yes, delete it!'
+        //       }).then((result) => {
+        //         if (result.value) {
+        //           Swal.fire(
+        //             'Deleted!',
+        //             'Your file has been deleted.',
+        //             'success'
+        //           )
+        //         }
+        //       });
+        //     event.returnValue = "Hellooww";
+        // })
         let images = this.state.images;
         let shop_id=this.state.shop_id;
         if (window.location.href.indexOf('file')>0) {
@@ -180,7 +206,7 @@ class BodyProductDetail extends Component {
         if (url) {          
             sightengine.check(['nudity','wad']).set_url(url)
             .then(rsp => {
-              if(rsp.data.nudity.safe < 0.9) {
+              if(rsp.nudity.safe < 0.9) {
                 Swal.fire('Fail!','Ảnh có nội dung không phù hợp','error')
               } else {
                 const authen = 'Bearer '+localStorage.getItem('token');
@@ -220,9 +246,6 @@ class BodyProductDetail extends Component {
      handleCLickUpImg=async(e)=>{
         let shop_id=this.state.shop_id;
         let images=this.state.images;
-        // let menuItem =document.getElementsByClassName('menu-img-item');
-        // for (let i=0 ; i < menuItem.length; i++) menuItem[i].style.color='#7B7B7B';
-        // menuItem[e.target.getAttribute('value')-1].setAttribute('style','color:#0084FF;');
         const {value: file} =  await Swal.fire({
             title: 'Thêm ảnh từ máy tính ',
             input: 'file',
@@ -247,22 +270,30 @@ class BodyProductDetail extends Component {
                 let newURL;
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    newURL=e.target.result;
-                    sightengine.check(['nudity','wad']).set_url(newURL)
-                    .then(rsp => {
-                        if(rsp.data.nudity.safe < 0.9) {
-                            Swal.fire('Fail!','Ảnh có nội dung không phù hợp','error')
-                        }
-                        else {
-                            const authen = 'Bearer '+localStorage.getItem('token');
-                            Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
-                            {"item_id":localStorage.getItem('item-id-detail'),"photo_url":newURL,"shop_id":shop_id},
-                                        {headers: {
-                                'Authorization': authen,
-                            }})
-                            .then ( rsp => {
-                                if (rsp.data.success===1){
-                                    let url=rsp.data.url;
+                    newURL=e.target.result;                 
+                    const authen = 'Bearer '+localStorage.getItem('token');
+                    Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
+                    {"item_id":localStorage.getItem('item-id-detail'),"photo_url":newURL,"shop_id":shop_id},
+                                {headers: {
+                        'Authorization': authen,
+                    }})
+                    .then ( rsp => {
+                        if (rsp.data.success===1){
+                            let url=rsp.data.url;
+                            sightengine.check(['nudity']).set_url(url)
+                            .then(rsp => {
+                                //console.log(JSON.parse(rsp.data).nudity);
+                                if(rsp.nudity.safe < 0.9) {
+                                    Swal.fire('Fail!','Ảnh có nội dung không phù hợp','error');
+                                    Axios.delete("http://"+serverIP+':'+port+'/api/v1/image/delete',
+                                    {headers: {
+                                     'Authorization': 'Bearer '+localStorage.getItem('token'),
+                                    },
+                                    data:{
+                                      'URLs':[url],
+                                    }
+                                   })                                    
+                                }else{
                                     images.push(url);
                                     this.updateStateImg(images);
                                     Swal.fire({
@@ -270,19 +301,18 @@ class BodyProductDetail extends Component {
                                         imageUrl: e.target.result,
                                         imageAlt: 'The uploaded picture'
                                     })
-                                }else Swal.fire(
-                                    'Fail!',
-                                    'Lưu ảnh thất bại!',
-                                    'error'
-                                )
-                            })
-                        }
-                    }).catch(function(err) {
-                      // Handle error
-                    });                    
+                                }
+                            })        
+                        }else Swal.fire(
+                            'Fail!',
+                            'Lưu ảnh thất bại!',
+                            'error'
+                        )
+                    })
+                
             }
             console.log(reader.readAsDataURL(file))
-          }}
+            }}
     }
     handleShowGallery=(e)=>{
         

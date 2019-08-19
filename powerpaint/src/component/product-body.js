@@ -74,9 +74,10 @@ class BodyProDuct extends Component {
       this.searchResult(e.target.value);
     }
     searchResult = (k) => {
-      let key=this.convertString(k);
+      let key=this.convertString(k);console.log(key);
       let searchResultList=[];let curList= this.state.listItemsDetail;
       curList.map(x => {
+        console.log(this.convertString(x.item.status).indexOf(key));
           if( this.convertString(x.item.name).indexOf(key)>=0 || this.convertString(x.item.item_sku).indexOf(key)>=0 
           || this.convertString(x.item.status).indexOf(key)>=0 ) searchResultList.push(x);
       });
@@ -90,22 +91,41 @@ class BodyProDuct extends Component {
       str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ|Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "u");
       str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ|Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "y");
       str = str.replace(/đ|Đ/g, "d");
-      str.toLowerCase();
-      return str;
+      return str.toLowerCase();
   }
 
   handleSelectProduct=(box)=>{
-    let checkBox=this.state.listCheckBox;
-    let itemId = box.value;
-    if (box.checked && checkBox.indexOf(itemId)<0) {
-      checkBox.push(itemId);
-      this.setState({listCheckBox: checkBox});
+    let checkBoxes=this.state.listCheckBox;
+    let item = JSON.parse(box.value);
+    let maxImg = this.state.maxImg;
+    let numImg = item.images.length;
+    let numImgs=[];
+    if (box.checked && checkBoxes.indexOf(item)<0) {
+      checkBoxes.push(item);
+      if (numImg > maxImg) { maxImg=numImg;this.setState({maxImg:numImg});}
+      this.setState({listCheckBox: checkBoxes});
     }
     else if (!box.checked){
-      let i= checkBox.indexOf(itemId);
-      if(i>=0) checkBox.splice(i,1);
-      this.setState({listCheckBox:checkBox})
+      let i= checkBoxes.indexOf(item);
+      for (let i=0 ; i< checkBoxes.length ; i++){
+        if (checkBoxes[i].item_id == item.item_id) console.log(i);
+        checkBoxes.splice(i,1);
+        break;
+      }
+      // console.log(checkBoxes); 
+      // console.log(item); 
+      // console.log(i);
+      // if(i>=0) checkBoxes.splice(i,1);
+      if (numImg == maxImg) {
+        checkBoxes.map( x => {
+          numImgs.push(x.images.length);
+        })
+        maxImg = Math.max(...numImgs);
+      }
+      this.setState({listCheckBox:checkBoxes})
     };
+    console.log(maxImg);
+    console.log(checkBoxes);
   }
   selectAllProduct=(e)=>{
     let checkBoxes= document.getElementsByName('checkbox');
@@ -118,6 +138,7 @@ class BodyProDuct extends Component {
     let option = e.target.value;
     if (option == 1) {this.updateToShopee();}
     if (option == 0) this.deleteProduct();
+    if (option == 2) this.chooseImgsForProducts();
   }
   updateToShopee=()=>{
     let listFail=[];
@@ -136,7 +157,7 @@ class BodyProDuct extends Component {
         console.log(listCheckBox);
         let listImgsSelected = JSON.parse(localStorage.getItem('listImgsSelected'));
         for (let i=0;i<listCheckBox.length;i++){
-          let item_id = listCheckBox[i];
+          let item_id = listCheckBox[i].item_id;
           let shop_id = this.state.shop_id;
           const authen = 'Bearer '+localStorage.getItem('token');
           Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/updateItemImg',{
@@ -156,6 +177,11 @@ class BodyProDuct extends Component {
         if (listFail.length==0)  Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success')    
       }
     })  
+  }
+  chooseImgsForProducts=()=>{
+    localStorage.setItem('products-selected',JSON.stringify(this.state.listCheckBox));
+    localStorage.setItem('max-imgs',9 - this.state.maxImg);
+    window.location.href='/gallery';
   }
 
   showResult=(listCategories,lv1,lv2,lv3)=>{
@@ -225,11 +251,12 @@ class BodyProDuct extends Component {
           <th id='bulk-action' colSpan='6'>
             <div id='checkbox-row'>
             <input type='checkbox' onClick={this.selectAllProduct}/>
-            <span>{'Đã chọn '+this.state.listCheckBox.length+' danh mục'}</span>
+            <span>{'Đã chọn '+this.state.listCheckBox.length+' sản phẩm'}</span>
             <select onChange={this.handleChageOperation}>
               <option hidden>Chọn thao tác</option>
-              <option value={2}>Thay thế hình ảnh</option>
-              <option value={1}>Cập nhật lên Shopee</option>
+              <option value={3}>Thêm hình ảnh sản phẩm</option>
+              <option value={2}>Chọn hình ảnh</option>
+              <option value={1}>Thay thế hình ảnh sản phẩm</option>
               <option value={0}>Xoá sản phẩm</option>
             </select>  
             </div>  

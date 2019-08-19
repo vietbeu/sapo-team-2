@@ -61,25 +61,25 @@
 .menu-img{
     height: 8vh;
 }
-.menu-img-item{
+/* .menu-img-item{
     width:25%;
     float: left;text-align: center;
-}
+} */
 #item-1{
     width: 20%;
-    float: left;text-align: center;
+    float: left;text-align: center;height:8vh;
 }
 #item-2{
     float: left;
-    width: 20%;text-align: center;
+    width: 20%;text-align: center;height:8vh;
 }
 #item-3{
     float: left;
-    width: 30%;text-align: center;
+    width: 30%;text-align: center;height:8vh;
 }
 #item-4{
     float: left;
-    width: 30%;
+    width: 30%;height:8vh;
 }
 .menu-img-item:hover{
     cursor: pointer;
@@ -98,7 +98,6 @@
     display: inline-block;
     text-align: center;
     margin-right: 2%;
-    margin-bottom: 2%;
 }
 .img-item :hover{
     opacity: 0.5;

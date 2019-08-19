@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { serverIP,port} from '../component/const';
 
 class RegisterForm extends Component {
     state = { }
@@ -113,7 +114,7 @@ class RegisterForm extends Component {
         e.preventDefault();
         if (this.state.isPhoneValid===true && this.state.isEmailValid===true
          && this.state.isPassValid===true && this.state.isConfirmPassValid=== true){
-            axios.post('http://192.168.9.253:8181/api/v1/registration', {
+            axios.post('http://'+serverIP+':'+port+'/api/v1/registration', {
                 username: this.state.name,
                 email: this.state.email,
                 password: this.state.pass,
@@ -121,11 +122,22 @@ class RegisterForm extends Component {
             })
             .then(function (response) {
                 if(response.data.success===1) {
-                    Swal.fire(
-                        'Đăng ký thành công!',
-                        'Bạn có thể đăng nhập bằng tài khoản này!',
-                        'success'
-                      )
+                    // Swal.fire(
+                    //     'Đăng ký thành công!',
+                    //     'Bạn có thể đăng nhập bằng tài khoản này!',
+                    //     'success'
+                    //   )
+                    Swal.fire({
+                        title: 'Đăng kí thành công',
+                        text: "Bạn có thể đăng nhập bằng tài khoản này",
+                        type: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                      }).then((result) => {
+                        if (result.value) {
+                          window.location.href='/login';
+                        }
+                      })                    
                 }else Swal.fire(
                     'Đăng ký thất bại!',
                     'Email đã tồn tại!',

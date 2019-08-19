@@ -132,6 +132,7 @@
 
 .forget-pass-form label{
   font-size: 1.4vw;
+  margin-bottom: 3vh;
 }
 .more div{
   font-size:1.5vw;
@@ -156,4 +157,43 @@
   font-family: inherit;
   font-size: 1.5vw;
   color: #FFFFFF;
+}
+
+#reset-form{
+  position: relative;
+  width:100%;
+}
+#reset-form form{
+  position: absolute;
+  left:50%;
+  transform: translateX(-50%);
+  width: 100%;
+}
+#reset-form form label{
+  font-size:1.4vw;
+}
+#reset-form .input-row{
+  width: 100%;
+}
+.input-row input{
+  font-size: 1.4vw;
+  width: 100%;
+  min-width: 100px;
+  padding: 1vh 1vw;
+  border: #C4CDD5 solid 1px;
+  border-radius:5px;
+  box-sizing: border-box;
+  margin-top: 3vh;
+}
+#reset-form button{
+  position: absolute;
+  background-color :#0084FF;
+  color: white;
+  font-size: 1.5vw;
+  border: none;
+  right: 0%;
+  margin-top:3vh;
+  width: 30%;
+  padding: 2%;
+  border-radius: 5px;
 }

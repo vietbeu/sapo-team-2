@@ -265,10 +265,10 @@ class BodyGallery extends Component {
             <span className='img-button'>
                 <button value={key} src={x} onClick={this.editPhoto}  className='edit-bt'>
                     <i src={x} className="fa fa-pencil" value={key} aria-hidden="true"></i>
-                    </button>
+                </button>
                 <button value={key} src={x} onClick={this.handleDeleteImg} className='edit-bt'>
                     <i className="fa fa-trash" aria-hidden="true" src={x}  value={key}></i>
-                    </button>
+                </button>
             </span>
           </span>
         )})

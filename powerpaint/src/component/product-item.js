@@ -14,7 +14,7 @@ class ProductItem extends Component {
     }
     handleSelectProduct=(e)=>{
         this.props.onSelectProduct(e.target);
-        console.log(e.target.value);
+        //console.log(e.target.value);
     }
     render() { 
         let product = this.props.data;
@@ -45,7 +45,8 @@ class ProductItem extends Component {
         }
         return ( 
             <tr className='data-row' >
-                <td className='column-checkbox'><input name='checkbox'type='checkbox' value={product.item.item_id} onClick={this.handleSelectProduct}/></td>
+                <td className='column-checkbox'><input name='checkbox'type='checkbox' value={JSON.stringify(product.item)} 
+                onClick={this.handleSelectProduct} /></td>
                 <td className='column-sku'>{product.item.item_sku}</td>
                 <td className='column-product-img' onClick={this.redirectProductDetail}>
                     <img  width ='30%'src ={product.item.images[0]} alt='img'/>

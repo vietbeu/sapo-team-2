@@ -9,7 +9,7 @@ class ListCategories extends Component {
     }
 
     handleChangeCateLv1=(e)=>{
-        this.setState({lv1: e.target.value});
+        this.setState({lv1: e.target.value,lv2:'',lv3:''});
         this.props.onChangeCategory(this.state.listCategories,e.target.value,'','');
     }
     handleChangeCateLv2=(e)=>{

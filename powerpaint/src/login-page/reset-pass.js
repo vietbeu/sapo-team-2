@@ -80,7 +80,11 @@ class ResetPassForm extends Component {
     render() { 
         return ( 
             <div id='reset-form'>
+                <label>
+                    Tạo mật khẩu mới
+                </label>
                 <form onSubmit={this.handleSubmit}>
+                    <label>Bạn đang thay đổi mật khẩu của bạn</label>
                     <div className='input-row'>
                         <input type='password' required placeholder='Mật khẩu mới' onChange={this.handleChangePass}
                         onKeyUp={this.validationNewPass}/>
@@ -95,7 +99,7 @@ class ResetPassForm extends Component {
                         <FormError isHidden={this.state.isConfirmPassValid} errorMessage={this.state.errorConfirmMessage} />
                         </div>
                     </div>
-                    <button type='submit'>OK</button>
+                    <button type='submit'>Gửi</button>
                 </form>
             </div>
          );

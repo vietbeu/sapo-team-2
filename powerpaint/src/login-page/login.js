@@ -3,6 +3,7 @@ import '../css/login-page.css';
 import LoginForm from './login-form';
 import RegisterForm from './register-form';
 import ForgetPass from './forget-pass';
+import ResetPassForm from './reset-pass';
 //import axios from 'axios';
 
 class Login extends Component {
@@ -100,8 +101,12 @@ class Login extends Component {
 		else if (this.state.active===2) {
 			activeComponent =<RegisterForm onClickForgetPass={this.showForgetPassForm}/>;	
 		}
-		else {
+		else if(this.state.active===3) {
 			activeComponent=<ForgetPass/>;
+			loginFB=null;
+		}
+		else {
+			activeComponent=<ResetPassForm/>
 			loginFB=null;
 		}
         return (

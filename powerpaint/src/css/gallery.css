@@ -22,7 +22,7 @@
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
     border-radius: 5px;
-    padding: 1vh ;
+    padding: 1vh;
     overflow: scroll;
     overflow-x: hidden;
 }
@@ -37,23 +37,13 @@
     right: 0%;
     padding: 0% 3%;
 }
-.gallery-table .image-container{
-    padding: 1%;
-    border: 1px solid #C4CDD5;
-    box-sizing: border-box;
-    border-radius: 5px;
-    width: 10.5vw;
-    height: 10.5vw;
-}
-
 .img-item{
-    width: 10%;
+    width: 12.5%;
     padding:1% 0%;
     position: relative;
     display: inline-block;
     text-align: center;
-    margin-right: 2%;
-    margin-bottom: 2%;
+    margin-right: 0%;
 }
 #warning-dialog{
     font-size: 1.2vw;
