@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
 
 class ProductItem extends Component {
-    state = {  }
+    state = { 
+        product: this.props.data,
+     }
+    componentDidMount(){
+        let listCheckBox=[];
+        if(this.props.listCheckBox != null) listCheckBox=this.props.listCheckBox;
+        let checkboxes = document.getElementsByName('checkbox');
+        for (let i=0; i<listCheckBox.length ; i++){
+            if (listCheckBox[i].item.item_id===this.state.product.item.item_id)
+            for (let i=0; i<checkboxes.length ; i++){
+                let item_id=checkboxes[i].getAttribute('id');
+                if (item_id==this.state.product.item.item_id) checkboxes[i].checked=true;
+            }
+        }
+    }
     redirectProductDetail=()=>{
-        let product = this.props.data;
+        let product = this.state.product;
         localStorage.setItem('sku-detail',product.item.item_sku);
         localStorage.setItem('name-detail',product.item.name);
         localStorage.setItem('status-detail',product.item.status);
@@ -17,7 +31,7 @@ class ProductItem extends Component {
         //console.log(e.target.value);
     }
     render() { 
-        let product = this.props.data;
+        let product = this.state.product;
         let category = product.item.category_id;
         let status;
         switch(product.item.status) {
@@ -45,8 +59,8 @@ class ProductItem extends Component {
         }
         return ( 
             <tr className='data-row' >
-                <td className='column-checkbox'><input name='checkbox'type='checkbox' value={JSON.stringify(product.item)} 
-                onClick={this.handleSelectProduct} /></td>
+                <td className='column-checkbox'><input name='checkbox'type='checkbox' key={product.item.item_id} id={product.item.item_id}
+                value={JSON.stringify(product.item)} onClick={this.handleSelectProduct} /></td>
                 <td className='column-sku'>{product.item.item_sku}</td>
                 <td className='column-product-img' onClick={this.redirectProductDetail}>
                     <img  width ='30%'src ={product.item.images[0]} alt='img'/>

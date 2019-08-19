@@ -101,16 +101,17 @@ class BodyProDuct extends Component {
     let numImg = item.images.length;
     let numImgs=[];
     if (box.checked && checkBoxes.indexOf(item)<0) {
-      checkBoxes.push(item);
+      checkBoxes.push({item:item,shop_id:this.state.shop_id});
       if (numImg > maxImg) { maxImg=numImg;this.setState({maxImg:numImg});}
       this.setState({listCheckBox: checkBoxes});
     }
     else if (!box.checked){
-      let i= checkBoxes.indexOf(item);
+      //let i= checkBoxes.indexOf({item:item,shop_id:this.state.shop_id});
       for (let i=0 ; i< checkBoxes.length ; i++){
-        if (checkBoxes[i].item_id == item.item_id) console.log(i);
+        console.log(checkBoxes[i].item.item_id);
+        if (checkBoxes[i].item.item_id == item.item_id) {console.log(i);
         checkBoxes.splice(i,1);
-        break;
+        break;}
       }
       // console.log(checkBoxes); 
       // console.log(item); 
@@ -118,7 +119,7 @@ class BodyProDuct extends Component {
       // if(i>=0) checkBoxes.splice(i,1);
       if (numImg == maxImg) {
         checkBoxes.map( x => {
-          numImgs.push(x.images.length);
+          numImgs.push(x.item.images.length);
         })
         maxImg = Math.max(...numImgs);
       }
@@ -241,7 +242,7 @@ class BodyProDuct extends Component {
         const currentList = activeList.slice(indexOfFirstItem, indexOfLastItem);
         const renderList = currentList.map((x) => {
             return <ProductItem key={x.item.item_id} data={x} onSelectProduct={this.handleSelectProduct} 
-                    shop_id={this.state.shop_id}/>;
+                    shop_id={this.state.shop_id} listCheckBox={this.state.listCheckBox}/>;
           });
         const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
 

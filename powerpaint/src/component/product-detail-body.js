@@ -6,6 +6,8 @@ import Axios from 'axios';
 import { serverIP,port,partner_id,sightengine, URL_UpdateItemImg, URL_InsertItemImg, URL_DeleteItemImg } from './const';
 import {API_Shopee} from './API';
 import { async } from 'q';
+import Popup from 'reactjs-popup';
+import BodyGallery from './gallery-body';
 
 class BodyProductDetail extends Component {
     state = { 
@@ -419,7 +421,15 @@ class BodyProductDetail extends Component {
                             <div id='item-1' value={1} onClick={this.handleCLickImgItem}>Ảnh sản phẩm</div>
                             <div id='item-2' value={2} onClick={this.handleCLickAddUrlImg}>Thêm ảnh từ URL</div>
                             <div id='item-3' value={3} onClick={this.handleCLickUpImg}>Thêm ảnh từ máy tính</div>
-                            <div id='item-4' value={4} onClick={this.handleShowGallery}>Thêm ảnh từ thư viện ảnh</div>
+                            <Popup
+                                trigger={<div id='item-4' value={4}> Thêm ảnh từ thư viện ảnh</div>}
+                                modal
+                                closeOnDocumentClick
+                                contentStyle={{width: "90%",borderRadius:'6px'}}
+                            >
+                                <BodyGallery/>
+                            </Popup>                            
+                            {/* <div id='item-4' value={4} onClick={this.handleShowGallery}>Thêm ảnh từ thư viện ảnh</div> */}
                         </div>
                         <div id='img-field'>
                             {shopeeImgs}              

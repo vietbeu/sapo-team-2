@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import img from '../images/img-1.jpg'
 import Swal from 'sweetalert2';
-import {serverIP,port} from './const';
+import {serverIP,port,partner_id} from './const';
 import Axios from 'axios';
 import { async } from 'q';
 
@@ -184,6 +184,7 @@ class BodyGallery extends Component {
       let value = e.target.getAttribute('value');
       let index = listImgsSelected.indexOf(url);
       let imgItems = document.getElementsByClassName('img-content');
+      let maxImg=parseInt(localStorage.getItem('max-imgs'));
       
       if (index>=0){
         listImgsSelected.splice(index,1);
@@ -192,7 +193,7 @@ class BodyGallery extends Component {
         for (let i=0 ; i<imgItems.length ; i++)
           if (imgItems[i].getAttribute('value')===value) imgItems[i].setAttribute('style','outline: none');           
       }else{
-        if (listImgsSelected.length<=8){
+        if (listImgsSelected.length <= maxImg - 1){
           listImgsSelected.push(url);
           this.setState({numOfImgSelected: listImgsSelected.length});
           console.log(listImgsSelected);
@@ -251,6 +252,45 @@ class BodyGallery extends Component {
         })
   }
 
+  updateToShopee=()=>{
+    let listFail=[];
+    Swal.fire({
+      title: 'Bạn đã chắc chắn chưa?',
+      text: "Chúng tôi sẽ cập nhật hình ảnh của tất cả sản phẩm bạn đã chọn",
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'OK'
+    })
+    .then((result) => {
+      if (result.value) {
+        let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
+        //console.log(listCheckBox);
+        let listImgsSelected = this.state.listImgsSelected;
+        for (let i=0;i<listCheckBox.length;i++){
+          let item_id = listCheckBox[i].item.item_id;
+          let shop_id = listCheckBox[i].shop_id;
+          const authen = 'Bearer '+localStorage.getItem('token');
+          Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/updateItemImg',{
+            partner_id:partner_id,
+            shopid:shop_id,
+            item_id:item_id,
+            images:listImgsSelected,
+          },{headers: {'Authorization': authen,}})
+          .then (rsp => {
+            if (rsp.data.error == null) console.log(1);
+            else listFail.push(item_id)})
+          .catch(error => 
+            Swal.fire('Fail!','Đã có lỗi xảy ra! Cập nhật ảnh thất bại','error')
+            )      
+        }
+        console.log(listFail);
+        if (listFail.length==0)  Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success')    
+      }
+    })  
+  }
+
     render() { 
         let listShop=JSON.parse(localStorage.getItem('listShop'));
         const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
@@ -297,6 +337,7 @@ class BodyGallery extends Component {
                  <div className='footer-gallery'>
                   <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button>
                   {/*<button>Xoá</button>*/}
+                  <button id='bt-update' onClick={this.updateToShopee}>Cập nhật lên Shopee</button>
                  </div>
             </div>
           </>
