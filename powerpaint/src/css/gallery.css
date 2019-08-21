@@ -10,8 +10,8 @@
 .up-img{
     float:right;
     color: #007BFF;
-    width:20%;
     text-align: right;
+    padding-left: 1%;
 }
 .up-img:hover{
     cursor: pointer;
@@ -22,7 +22,7 @@
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
     border-radius: 5px;
-    padding: 1vh;
+    padding: 2vh;
     overflow: scroll;
     overflow-x: hidden;
 }
@@ -37,14 +37,52 @@
     right: 0%;
     padding: 0% 3%;
 }
-.img-item{
-    width: 12.5%;
-    padding:1% 0%;
-    position: relative;
+.img-item-gl{
+    width: 11.5%;
     display: inline-block;
+    height:10vw;
     text-align: center;
-    margin-right: 0%;
+    vertical-align: middle;
+    position: relative;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    margin-right: 1%;
+    margin-bottom: 1%;
 }
+.img-item-gl :hover{
+    opacity: 0.5;
+}
+.img-item-gl img{
+    width: 100%;
+    /* height: 10vw; */
+    max-height: 10vw;
+    position: absolute;
+    margin: auto auto;
+    top:50%;
+    transform: translateY(-50%);
+    left: 0%;
+}
+.img-button-gl{
+    z-index: 2;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10%;
+    width: 100%;
+    text-align: center;
+    padding: 0% 5%;
+}
+.img-button-gl button{
+    width: 20%;
+    font-size: 1.2vw;
+    background: inherit;
+    border: none;
+}
+.edit-bt{
+    display: none;
+}
+
 #warning-dialog{
     font-size: 1.2vw;
     width: 50%;

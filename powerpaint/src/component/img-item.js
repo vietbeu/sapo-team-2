@@ -7,7 +7,19 @@ class ImgItem extends Component {
         showButton:false,
         isChosen:false
     }
-
+    componentDidMount(){
+        let listImgsSelected = this.props.listImgsSelected;
+        let index = listImgsSelected.indexOf(this.state.src);
+        if (index>=0)   {
+            this.setState({isChosen:true});
+            let imgItems = document.getElementsByClassName('img-item-gl');
+            for (let i=0 ; i<imgItems.length ; i++){
+                if (imgItems[i].getAttribute('value')=== this.state.src) {
+                  imgItems[i].setAttribute('style','outline:1px solid red');  
+                }            
+            }
+        }
+    }
     showEditImgMenu=(e)=>{
         this.setState({showButton:true})
     }
@@ -16,7 +28,7 @@ class ImgItem extends Component {
     }
     handleCLickImgItem=(e)=>{
         let isChosen = this.state.isChosen;
-        let imgItems = document.getElementsByClassName('img-item');
+        let imgItems = document.getElementsByClassName('img-item-gl');
         let listImgsSelected = this.props.listImgsSelected;
         let maxImg = parseInt(localStorage.getItem('max-imgs'));
         if (isChosen===true ){
@@ -27,7 +39,7 @@ class ImgItem extends Component {
             }
             this.setState({isChosen:false});      
         }
-        else if  (isChosen===false  && listImgsSelected.length <= maxImg - 1) {
+        else if  (isChosen===false  && listImgsSelected.length <= 8) {
             for (let i=0 ; i<imgItems.length ; i++){
                 if (imgItems[i].getAttribute('value')=== this.state.src) {
                   imgItems[i].setAttribute('style','outline:1px solid red');  
@@ -42,11 +54,10 @@ class ImgItem extends Component {
     }
     render() { 
         let src = this.props.src;
-        let key = this.props.key;
         let showButton = this.state.showButton;
         let editButton;
         if (showButton === true) editButton= (
-            <span className='img-button'>
+            <span className='img-button-gl'>
                 <button onClick={this.editPhoto}  className='edit-bt-gallery'>
                     <i className="fa fa-pencil" aria-hidden="true"></i>
                 </button>
@@ -58,12 +69,12 @@ class ImgItem extends Component {
         else editButton=null;
         return (
             <>
-            <span className='img-item' value={src} key={key} onClick={this.handleCLickImgItem}
+            <span className='img-item-gl' value={src} key={src} onClick={this.handleCLickImgItem}
                 onMouseOver={this.showEditImgMenu} onMouseLeave={this.hideEditImgMenu}>
-                <img className='img-content'  src={src} alt='img' />
-                <span className='img-button'>
+                <img className='img-content-gl'  src={src} alt='img' />
+                <span className='img-button-gl'>
                 {editButton}
-            </span>       
+                </span>       
             </span>
             </>
           );

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import '../css/login-page.css';
+import { serverIP,port } from '../component/const';
 
 class ResetPassForm extends Component {
     state = {  }
@@ -41,7 +42,7 @@ class ResetPassForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         if (this.state.isPassValid===true && this.state.isConfirmPassValid=== true){
-            axios.post('http://192.168.9.253:8181/api/v1/user/resetPassword/step2', {
+            axios.post('http://'+serverIP+':'+port+'/api/v1/user/resetPassword/step2', {
                 token: window.location.href.split('token=')[1],
                 new_password: this.state.pass,
             })

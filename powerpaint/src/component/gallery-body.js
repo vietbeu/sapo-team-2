@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import {serverIP,port,partner_id} from './const';
 import Axios from 'axios';
 import { async } from 'q';
+import ImgItem from './img-item';
 
 class BodyGallery extends Component {
     state = { 
@@ -178,27 +179,19 @@ class BodyGallery extends Component {
       let buttons = document.getElementsByClassName('edit-bt');
       for(let i = 0 ; i< buttons.length;i++) buttons[i].style.display='none';   
     }
-    handleCLickImgItem=(e) =>{
-      let url = e.target.getAttribute('src');
+    handleCLickImgItem=(src,isChosen) =>{
       let listImgsSelected = this.state.listImgsSelected;
-      let value = e.target.getAttribute('value');
-      let index = listImgsSelected.indexOf(url);
-      let imgItems = document.getElementsByClassName('img-content');
+      let index = listImgsSelected.indexOf(src);
       let maxImg=parseInt(localStorage.getItem('max-imgs'));
-      
       if (index>=0){
         listImgsSelected.splice(index,1);
         this.setState({numOfImgSelected: listImgsSelected.length});
-        console.log(listImgsSelected);
-        for (let i=0 ; i<imgItems.length ; i++)
-          if (imgItems[i].getAttribute('value')===value) imgItems[i].setAttribute('style','outline: none');           
+        console.log(listImgsSelected);        
       }else{
-        if (listImgsSelected.length <= maxImg - 1){
-          listImgsSelected.push(url);
+        if (listImgsSelected.length <= 8){
+          listImgsSelected.push(src);
           this.setState({numOfImgSelected: listImgsSelected.length});
-          console.log(listImgsSelected);
-          for (let i=0 ; i<imgItems.length ; i++)
-            if (imgItems[i].getAttribute('value')===value) imgItems[i].setAttribute('style','outline:  2px solid red');   
+          console.log(listImgsSelected); 
         }else {
           this.showWarning();
         }
@@ -217,11 +210,10 @@ class BodyGallery extends Component {
       window.location.replace('/product');
     }
 
-    handleDeleteImg=(e) => {
+    handleDeleteImg=(url) => {
       let shop_id=this.state.shop_id;
       let images =this.state.images_gallery;
       let listImgsSelected=this.state.listImgsSelected;
-      let url =e.target.getAttribute('src');
       Swal.fire({
           title: 'Xoá ảnh này?',
           text: "",
@@ -250,6 +242,41 @@ class BodyGallery extends Component {
              .catch(e => Swal.fire('Xoá ảnh thất bại!','Xin vui lòng thử lại sau','error') )
           }
         })
+  }
+
+  deleteListImgs=()=>{
+    let listImgsSelected = this.state.listImgsSelected;
+    let shop_id=this.state.shop_id;
+    let images =this.state.images_gallery;
+    Swal.fire({
+      title: 'Xoá '+listImgsSelected.length+' ảnh đã chọn?',
+      text: "",
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'OK'
+    }).then((result) => {   
+      if (result.value) {
+        Axios.delete("http://"+serverIP+':'+port+'/api/v1/image/delete',
+        {headers: {
+         'Authorization': 'Bearer '+localStorage.getItem('token'),
+        },
+        data:{
+          'URLs':listImgsSelected,
+        }
+        })
+        .then ( rsp => {
+          for (let j=0;j<listImgsSelected.length;j++){
+            for (let i=0;i<images.length;i++) 
+              if (images[i].shop_id==shop_id) images[i].photos.splice(images[i].photos.indexOf(listImgsSelected[j]),1);
+            this.updateStateImg(images);
+          }
+          this.setState({listImgsSelected:[]});
+          Swal.fire('Thành công!','Xoá ảnh thành công','success')
+         })
+         .catch(e => Swal.fire('Xoá ảnh thất bại!','Xin vui lòng thử lại sau','error') )      
+    }}) 
   }
 
   updateToShopee=()=>{
@@ -299,18 +326,20 @@ class BodyGallery extends Component {
         if(currentImgs.length>0) imgRenderList=currentImgs.map(x=>{
           let key  =currentImgs.indexOf(x);
           return(
-          <span className='img-item' value={key} key={key} onClick={this.handleCLickImgItem}
-          onMouseOver={this.showEditImgMenu} onMouseLeave={this.hideEditImgMenu}>
-            <img className='img-content' value={key}  src={x} alt='img' />
-            <span className='img-button'>
-                <button value={key} src={x} onClick={this.editPhoto}  className='edit-bt'>
-                    <i src={x} className="fa fa-pencil" value={key} aria-hidden="true"></i>
-                </button>
-                <button value={key} src={x} onClick={this.handleDeleteImg} className='edit-bt'>
-                    <i className="fa fa-trash" aria-hidden="true" src={x}  value={key}></i>
-                </button>
-            </span>
-          </span>
+          // <span className='img-item' value={key} key={key} onClick={this.handleCLickImgItem}
+          // onMouseOver={this.showEditImgMenu} onMouseLeave={this.hideEditImgMenu}>
+          //   <img className='img-content' value={key}  src={x} alt='img' />
+          //   <span className='img-button'>
+          //       <button value={key} src={x} onClick={this.editPhoto}  className='edit-bt'>
+          //           <i src={x} className="fa fa-pencil" value={key} aria-hidden="true"></i>
+          //       </button>
+          //       <button value={key} src={x} onClick={this.handleDeleteImg} className='edit-bt'>
+          //           <i className="fa fa-trash" aria-hidden="true" src={x}  value={key}></i>
+          //       </button>
+          //   </span>
+          // </span>
+          <ImgItem src={x} key={x} onDeleteImg={this.handleDeleteImg}
+            listImgsSelected={this.state.listImgsSelected} onSelectImg={this.handleCLickImgItem}/>
         )})
         return (
           <>
@@ -336,7 +365,7 @@ class BodyGallery extends Component {
                  </div>
                  <div className='footer-gallery'>
                   <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button>
-                  {/*<button>Xoá</button>*/}
+                  <button onClick={this.deleteListImgs}>Xoá</button>
                   <button id='bt-update' onClick={this.updateToShopee}>Cập nhật lên Shopee</button>
                  </div>
             </div>
