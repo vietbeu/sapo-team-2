@@ -29,7 +29,7 @@ class App extends Component {
             <Route path={'/shop'} 
                 render={()=><ShopOverview/>} />
             <Route path='/overview' render={()=><ShopeeOverview/>} />
-            <Route path='/reset-pass' render={()=><ResetPassForm/>}/>
+            <Route path='/reset' render={()=><FirstPage active={4}/>}/>
             <Route path='/test' render={()=><Test/>} />
             <Route path='/gallery' render={()=><GalleryPage/>} />
           </Switch>

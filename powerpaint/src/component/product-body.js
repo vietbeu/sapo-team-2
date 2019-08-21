@@ -8,6 +8,9 @@ import {partner_id, URL_GetItemsList, URL_GetItemDetail,serverIP,port} from './c
 import Axios from 'axios';
 import Swal from 'sweetalert2';
 import ListCategories from './list-categoties';
+import Popup from 'reactjs-popup';
+import ListProductSelected from './list-product-selected';
+import FilerCondition from './filter-condition';
 
 
 class BodyProDuct extends Component {
@@ -99,11 +102,15 @@ class BodyProDuct extends Component {
     let item = JSON.parse(box.value);
     let maxImg = this.state.maxImg;
     let numImg = item.images.length;
-    let numImgs=[];
+    let numImgs=[]; let check=0;
     if (box.checked && checkBoxes.indexOf(item)<0) {
-      checkBoxes.push({item:item,shop_id:this.state.shop_id});
-      if (numImg > maxImg) { maxImg=numImg;this.setState({maxImg:numImg});}
-      this.setState({listCheckBox: checkBoxes});
+      for (let i=0 ; i< checkBoxes.length ; i++)
+        if (checkBoxes[i].item.item_id == item.item_id) {check+=1;break}
+      if (check===0){
+        checkBoxes.push({item:item,shop_id:this.state.shop_id});
+        if (numImg > maxImg) { maxImg=numImg;this.setState({maxImg:numImg});}
+        this.setState({listCheckBox: checkBoxes});
+      }
     }
     else if (!box.checked){
       //let i= checkBoxes.indexOf({item:item,shop_id:this.state.shop_id});
@@ -126,7 +133,9 @@ class BodyProDuct extends Component {
       this.setState({listCheckBox:checkBoxes})
     };
     console.log(maxImg);
-    console.log(checkBoxes);
+    checkBoxes.forEach(x => {
+      console.log(x.item.item_id);
+    });
   }
   selectAllProduct=(e)=>{
     let checkBoxes= document.getElementsByName('checkbox');
@@ -226,33 +235,59 @@ class BodyProDuct extends Component {
       this.setState({searchList:searchResultList}); 
     }
   }
-    render() { 
-        let listShop=JSON.parse(localStorage.getItem('listShop'));
-        const currentPage = this.state.currentPage;
-        const itemPerPage = this.state.itemPerPage;
-        const indexOfLastItem = currentPage * itemPerPage;
-        const indexOfFirstItem = indexOfLastItem - itemPerPage;
-        let   listItemsDetail = this.state.listItemsDetail;
-        let activeList=[];
-        console.log(this.state.searchList.length);
-        if(this.state.searchList.length===0 && (this.state.searchKey==='' || this.state.searchKey=== null))  activeList=listItemsDetail;
-        else activeList=this.state.searchList;
-        let numOfItem=activeList.length;
-        const numOfPage = Math.ceil(activeList.length / itemPerPage);
-        const currentList = activeList.slice(indexOfFirstItem, indexOfLastItem);
-        const renderList = currentList.map((x) => {
-            return <ProductItem key={x.item.item_id} data={x} onSelectProduct={this.handleSelectProduct} 
-                    shop_id={this.state.shop_id} listCheckBox={this.state.listCheckBox}/>;
-          });
-        const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
+  showStatusFilterResult=(status)=>{
+    let searchResultList=[];let curList= this.state.listItemsDetail;
+    curList.map(x => {
+        if(x.item.status === status) searchResultList.push(x);
+    });
+    this.setState({searchList:searchResultList});       
+  }
 
-        let thRow;
-        if(this.state.listCheckBox.length>0) thRow=(
+    render() { 
+      let listShop=JSON.parse(localStorage.getItem('listShop'));
+      const currentPage = this.state.currentPage;
+      const itemPerPage = this.state.itemPerPage;
+      const indexOfLastItem = currentPage * itemPerPage;
+      const indexOfFirstItem = indexOfLastItem - itemPerPage;
+      let   listItemsDetail = this.state.listItemsDetail;
+      let activeList=[];
+      console.log(this.state.searchList.length);
+      if(this.state.searchList.length===0 && (this.state.searchKey==='' || this.state.searchKey=== null))  activeList=listItemsDetail;
+      else activeList=this.state.searchList;
+      let numOfItem=activeList.length;
+      const numOfPage = Math.ceil(activeList.length / itemPerPage);
+      const currentList = activeList.slice(indexOfFirstItem, indexOfLastItem);
+      const renderList = currentList.map((x) => {
+        return <ProductItem key={x.item.item_id} data={x} onSelectProduct={this.handleSelectProduct} 
+                    shop_id={this.state.shop_id} listCheckBox={this.state.listCheckBox}/>;
+      });
+      const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
+        
+      let thRowDefault = (
+        <>
+          <th id='bulk-action'>
+            <div id='checkbox-icon'>
+            <input type='checkbox' onClick={this.selectAllProduct}/>
+            </div>
+          </th>
+          <th id='column-sku'>Mã SKU</th>
+          <th id='column-product-img'>Ảnh sản phẩm</th>
+          <th id='column-product-name'>Sản phẩm</th>
+          <th id='column-shopee-status'>Trạng thái trên Shopee</th>
+          <th id='column-update-status'>Trạng thái cập nhật</th>
+        </>
+      )
+      let thRow,listCheckBox=this.state.listCheckBox,count = 0; 
+      if(this.state.listCheckBox.length>0) 
+      for (let i=0;i<listCheckBox.length;i++)
+        if (listCheckBox[i].shop_id== this.state.shop_id) count+=1;
+      if (count >0)  
+        thRow=(
           <>
           <th id='bulk-action' colSpan='6'>
             <div id='checkbox-row'>
             <input type='checkbox' onClick={this.selectAllProduct}/>
-            <span>{'Đã chọn '+this.state.listCheckBox.length+' sản phẩm'}</span>
+            <span>{'Đã chọn '+count+' sản phẩm'}</span>
             <select onChange={this.handleChageOperation}>
               <option hidden>Chọn thao tác</option>
               <option value={3}>Thêm hình ảnh sản phẩm</option>
@@ -263,34 +298,38 @@ class BodyProDuct extends Component {
             </div>  
           </th>
           </>
-        );else thRow=(
-          <>
-            <th id='bulk-action'>
-              <div id='checkbox-icon'>
-              <input type='checkbox' onClick={this.selectAllProduct}/>
-              </div>
-            </th>
-            <th id='column-sku'>Mã SKU</th>
-            <th id='column-product-img'>Ảnh sản phẩm</th>
-            <th id='column-product-name'>Sản phẩm</th>
-            <th id='column-shopee-status'>Trạng thái trên Shopee</th>
-            <th id='column-update-status'>Trạng thái cập nhật</th>
-          </>
-        );      
-
+        );else thRow = thRowDefault;
+               
         return ( 
+          <>
+            <Popup
+                trigger={<button className="button"> Xem danh sách sản phẩm đã chọn </button>}
+                modal
+                closeOnDocumentClick
+                contentStyle={{width: "80%",borderRadius:'6px'}}
+              >
+              <ListProductSelected listProductSelected={this.state.listCheckBox}/>
+            </Popup>          
             <div id='product-overview-content'>
                 <div id='select-acc'>
                     <select onChange={this.changeShop}>
                         {listSelectShop}
                     </select>
-                    <ListCategories onChangeCategory={this.showResult}/>
+                    {/* <ListCategories onChangeCategory={this.showResult}/> */}
                  </div>
                  <div className='product-table'>
                      <div className='product-tb-content'>
                         <div className='search-bar'>
-                            <span id='icon-search'><i className="fa fa-search" aria-hidden="true"></i></span>
-                            <span><input onChange={this.changeSearchBar} type='text' placeholder='Tìm kiếm sản phẩm'></input></span>
+                          <Popup
+                            trigger={<button id="bt-filter"> Lọc sản phẩm </button>}
+                            position="bottom center"
+                            on="click"
+                            contentStyle={{width:'20%',marginLeft:'3%',marginTop:'1%'}}
+                          >
+                            <FilerCondition onChangeCategory={this.showResult} onChangeStatusFilter={this.showStatusFilterResult}/>
+                          </Popup>                                    
+                          <span id='icon-search'><i className="fa fa-search" aria-hidden="true"></i></span>
+                          <span><input onChange={this.changeSearchBar} type='text' placeholder='Tìm kiếm sản phẩm'></input></span>
                         </div>
                         <div className='tb-product-content'>
                             <table>
@@ -311,6 +350,7 @@ class BodyProDuct extends Component {
                  </div>
                  <div className='footer-align'></div>
             </div>
+            </>
          );
     }
 }

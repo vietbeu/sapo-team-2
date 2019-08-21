@@ -1,0 +1,17 @@
+.filter-form{
+   padding: 5% 1% ;
+   font-size: 1.2vw;
+}
+.filter-form label{
+    text-align: left;
+}
+.filter-form select{
+    font-size: 1vw;
+    width: 15vw;
+    padding:3px;
+    margin-top:  5%;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    background: #f8f8f8;
+}

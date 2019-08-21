@@ -98,13 +98,15 @@
     display: inline-block;
     text-align: center;
     margin-right: 2%;
+    
 }
 .img-item :hover{
     opacity: 0.5;
 }
 .img-item img{
-    width: 10vw;
-    height: 10vw;
+    width: 90%;
+    /* height: 10vw; */
+    max-height: 10vw;
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
     border-radius: 5px;
@@ -155,4 +157,8 @@
     color: #FFFFFF;
     float:right;
     padding: 2% 5%;
+}
+
+.edit-bt-gallery{
+    display: inline;
 }
