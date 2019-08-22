@@ -3,7 +3,7 @@ import '../css/product-detail.css';
 import Swal from 'sweetalert2';
 import img from '../images/img3.jpg'
 import Axios from 'axios';
-import { serverIP,port,partner_id,sightengine, URL_UpdateItemImg, URL_InsertItemImg, URL_DeleteItemImg } from './const';
+import { serverIP,port,partner_id,sightengine, URL_UpdateItemImg, URL_InsertItemImg, URL_DeleteItemImg, serverFrIP, portFr } from './const';
 import {API_Shopee} from './API';
 import { async } from 'q';
 import Popup from 'reactjs-popup';
@@ -101,49 +101,52 @@ class BodyProductDetail extends Component {
         let shopid=this.state.shop_id;
         let item_id=this.state.item_id;
         let myImgs=this.state.images;
-        let img='[';
-        for (let i=0;i<myImgs.length-1;i++){
-            img+='"'+myImgs[i]+'",'
-        }
-        img+='"'+myImgs[myImgs.length-1]+'"]'
-        let timestamp = Date.now() / 1000 | 0;
-        let URL_updateItemImg = URL_UpdateItemImg;
-       // let body_updateItemImg = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
-         //                     ',"item_id": '+item_id+', "images":'+img+' }';
-         let body_updateItemImg = '"partner_id": '+partner_id+', "shopid": '+shopid+
-                              ',"item_id": '+item_id+', "images":'+img;
-                              console.log(img);
-        //API_Shopee(URL_updateItemImg, body_updateItemImg)
-        const authen = 'Bearer '+localStorage.getItem('token');
-        let images=this.state.images;
-        Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/updateItemImg',{
-            partner_id:partner_id,
-            shopid:shopid,
-            item_id:item_id,
-            images:myImgs
-        },
-            {headers: {
-                'Authorization': authen,
-            }})
-        .then (rsp => {
-            if (rsp.data.error == null)
+        if (myImgs.length>9) Swal.fire('','Mỗi sản phẩm chỉ được tối đa 9 ảnh! ','warning')
+        else{
+            let img='[';
+            for (let i=0;i<myImgs.length-1;i++){
+                img+='"'+myImgs[i]+'",'
+            }
+            img+='"'+myImgs[myImgs.length-1]+'"]'
+            let timestamp = Date.now() / 1000 | 0;
+            let URL_updateItemImg = URL_UpdateItemImg;
+        // let body_updateItemImg = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
+            //                     ',"item_id": '+item_id+', "images":'+img+' }';
+            let body_updateItemImg = '"partner_id": '+partner_id+', "shopid": '+shopid+
+                                ',"item_id": '+item_id+', "images":'+img;
+                                console.log(img);
+            //API_Shopee(URL_updateItemImg, body_updateItemImg)
+            const authen = 'Bearer '+localStorage.getItem('token');
+            let images=this.state.images;
+            Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/updateItemImg',{
+                partner_id:partner_id,
+                shopid:shopid,
+                item_id:item_id,
+                images:myImgs
+            },
+                {headers: {
+                    'Authorization': authen,
+                }})
+            .then (rsp => {
+                if (rsp.data.error == null)
+                    Swal.fire(
+                        'Success!',
+                        'Update ảnh trên Shopee thành công!',
+                        'success'
+                    )
+                else Swal.fire(
+                    'Fail!',
+                    'Cập nhật ảnh thất bại!',
+                    'error'
+                )})
+            .catch(error => 
                 Swal.fire(
-                    'Success!',
-                    'Update ảnh trên Shopee thành công!',
-                    'success'
-                )
-            else Swal.fire(
-                'Fail!',
-                'Cập nhật ảnh thất bại!',
-                'error'
-            )})
-        .catch(error => 
-            Swal.fire(
-                'Fail!',
-                'Đã có lỗi xảy ra! Cập nhật ảnh thất bại',
-                'error'
-            ))      
-      }
+                    'Fail!',
+                    'Đã có lỗi xảy ra! Cập nhật ảnh thất bại',
+                    'error'
+                ))      
+        }
+    }
       
     insertImgToShopee = () =>{
         let shopid=this.state.shop_id;
@@ -314,10 +317,15 @@ class BodyProductDetail extends Component {
                 
             }
             console.log(reader.readAsDataURL(file))
-            }}
+        }}
     }
-    handleShowGallery=(e)=>{
-        
+    selectImgsFromGallery=(listImgs)=>{
+        let images = this.state.images;
+        const authen = 'Bearer '+localStorage.getItem('token');
+        for (let i=0;i<listImgs.length;i++){
+            images.push(listImgs[i]);
+            this.updateStateImg(images);
+            }
     }
     readFile=(file)=>{
         console.log(file);
@@ -340,7 +348,7 @@ class BodyProductDetail extends Component {
     editPhoto=(e)=>{
         let url = e.target.getAttribute('src');
         localStorage.setItem('indexOfImg',e.target.getAttribute('value'));
-        window.location.replace('https://www.ribbet.com/app/?_import='+url+ '&_export=http://localhost:4200/product/detail&_exclude=out,home,share& _export_title=SAVE_BUTTON_TITLE &_export_agent=browser&embed=true')
+        window.location.replace('https://www.ribbet.com/app/?_import='+url+ '&_export=http://'+serverFrIP+':'+portFr+'/product/detail&_exclude=out,home,share& _export_title=SAVE_BUTTON_TITLE &_export_agent=browser&embed=true')
         //window.location.replace('/test');
     }
 
@@ -427,7 +435,10 @@ class BodyProductDetail extends Component {
                                 closeOnDocumentClick
                                 contentStyle={{width: "90%",borderRadius:'6px'}}
                             >
-                                <BodyGallery/>
+                                {close => 
+                                <BodyGallery onSelectImgs={(list)=>{this.selectImgsFromGallery(list);
+                                close();}}/>
+                                }
                             </Popup>                            
                             {/* <div id='item-4' value={4} onClick={this.handleShowGallery}>Thêm ảnh từ thư viện ảnh</div> */}
                         </div>

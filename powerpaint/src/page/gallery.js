@@ -22,7 +22,7 @@ class GalleryPage extends Component {
         )
         return (
             <>
-                <Page text={text} body={<BodyGallery/>}/>
+                <Page text={text} body={<BodyGallery gallery={true}/>}/>
             </>
           );
     }

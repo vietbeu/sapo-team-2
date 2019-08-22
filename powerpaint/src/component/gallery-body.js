@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import img from '../images/img-1.jpg'
 import Swal from 'sweetalert2';
-import {serverIP,port,partner_id} from './const';
+import {serverIP,port,partner_id,serverFrIP,portFr} from './const';
 import Axios from 'axios';
 import { async } from 'q';
 import ImgItem from './img-item';
@@ -17,6 +17,7 @@ class BodyGallery extends Component {
       isHideWarningDialog: true,
     }
     componentDidMount(){
+      // this.getGallery();
       let images=this.state.images_gallery;
       let currentImgs;
       let listShop=JSON.parse(localStorage.getItem('listShop'));
@@ -26,6 +27,7 @@ class BodyGallery extends Component {
         }
       }
       this.setState({currentImgs:currentImgs});
+      this.checkLocation();
     }
     getGallery=()=>{
       const authen = 'Bearer '+localStorage.getItem('token');
@@ -39,7 +41,40 @@ class BodyGallery extends Component {
       })
                 
     }
-
+    checkLocation=async()=>{
+      let shop_id=this.state.shop_id;
+      let images=this.state.images_gallery;
+      if (window.location.href.indexOf('file')>0) {
+        let file = await decodeURIComponent(window.location.href.split('file=')[1]);
+        const authen = 'Bearer '+localStorage.getItem('token');
+        await Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
+        {"item_id":null,"photo_url":file,"shop_id":shop_id},
+            {headers: {
+                'Authorization': authen,
+            }})
+        .then ( rsp =>{
+            if (rsp.data.success===1){
+              let url=rsp.data.url;
+                for (let i=0;i<images.length;i++) {
+                  if (images[i].shop_id==shop_id) images[i].photos.push(url);
+                }
+                this.updateStateImg(images);
+                Swal.fire({
+                  title: 'Thành công',
+                  text: "Lưu ảnh chỉnh sửa thành công",
+                  type: 'success',
+                  confirmButtonColor: '#3085d6',
+                  confirmButtonText: 'OK'
+                }).then((result) => {
+                  if (result.value) {
+                    window.location.href='/gallery'; 
+                  }
+                })
+            }else Swal.fire('Fail!', 'Lưu ảnh thất bại!','error' )
+        })
+        .catch(error=>Swal.fire('Thất bại!', 'Đã có lỗi xảy ra! Xin vui lòng thử lại sau','error' ) )  
+      }
+    }
     changeShop=(e)=>{
       this.setState({shop_id:e.target.value});
       let images=this.state.images_gallery;
@@ -210,6 +245,10 @@ class BodyGallery extends Component {
       window.location.replace('/product');
     }
 
+    handleEditPhoto=(url)=>{
+      window.location.replace('https://www.ribbet.com/app/?_import='+url+ '&_export=http://'+serverFrIP+':'+portFr+'/gallery&_exclude=out,home,share& _export_title=SAVE_BUTTON_TITLE &_export_agent=browser&embed=true');
+
+    }
     handleDeleteImg=(url) => {
       let shop_id=this.state.shop_id;
       let images =this.state.images_gallery;
@@ -318,9 +357,24 @@ class BodyGallery extends Component {
     })  
   }
 
+  selectImgs=()=>{
+    let listImgsSelected = this.state.listImgsSelected;
+    this.props.onSelectImgs(listImgsSelected);
+  }
+
     render() { 
         let listShop=JSON.parse(localStorage.getItem('listShop'));
         const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
+        let footer;
+        if (this.props.gallery === true)  footer = (
+          <>
+          {/* <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button> */}
+          <button id='bt-delImgs' onClick={this.deleteListImgs}>Xoá hình ảnh</button>
+          <button id='bt-update' onClick={this.updateToShopee}>Cập nhật lên Shopee</button>
+          </>
+        ); else footer = (
+          <button id='bt-update' onClick={this.selectImgs}>Chọn ảnh</button>  
+        )
         let currentImgs=[];currentImgs=this.state.currentImgs;
         let imgRenderList=[];
         if(currentImgs.length>0) imgRenderList=currentImgs.map(x=>{
@@ -338,7 +392,7 @@ class BodyGallery extends Component {
           //       </button>
           //   </span>
           // </span>
-          <ImgItem src={x} key={x} onDeleteImg={this.handleDeleteImg}
+          <ImgItem src={x} key={x} onDeleteImg={this.handleDeleteImg} onEditPhoto={this.handleEditPhoto}
             listImgsSelected={this.state.listImgsSelected} onSelectImg={this.handleCLickImgItem}/>
         )})
         return (
@@ -364,9 +418,7 @@ class BodyGallery extends Component {
                     {imgRenderList}
                  </div>
                  <div className='footer-gallery'>
-                  <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button>
-                  <button onClick={this.deleteListImgs}>Xoá</button>
-                  <button id='bt-update' onClick={this.updateToShopee}>Cập nhật lên Shopee</button>
+                  {footer}
                  </div>
             </div>
           </>

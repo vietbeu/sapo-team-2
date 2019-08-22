@@ -28,14 +28,14 @@
 }
 .footer-gallery{
     position: relative;
-    height: 7vh;
+    height: 8vh;
 }
 .footer-gallery button{
     position: absolute;
     top:50%;
     transform: translateY(-50%);
     right: 0%;
-    padding: 0% 3%;
+    padding: 1vh 3%;
 }
 .img-item-gl{
     width: 11.5%;
@@ -127,9 +127,16 @@
     color: #FFFFFF;
 }
 #bt-update{
-    margin-right: 18%;
     background: #007BFF;
     border-radius: 5px;
     border: none;
     color: #FFFFFF;
+}
+#bt-delImgs{
+    color: #FFFFFF;
+    background: #EC5B3E;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    left: 0%;
 }

@@ -52,13 +52,16 @@ class ImgItem extends Component {
     handleDeleteImg=(e)=>{
         this.props.onDeleteImg(this.state.src);
     }
+    handleEditPhoto=()=>{
+        this.props.onEditPhoto(this.state.src);
+    }
     render() { 
         let src = this.props.src;
         let showButton = this.state.showButton;
         let editButton;
         if (showButton === true) editButton= (
             <span className='img-button-gl'>
-                <button onClick={this.editPhoto}  className='edit-bt-gallery'>
+                <button onClick={this.handleEditPhoto}  className='edit-bt-gallery'>
                     <i className="fa fa-pencil" aria-hidden="true"></i>
                 </button>
                 <button  onClick={this.handleDeleteImg} className='edit-bt-gallery'>
