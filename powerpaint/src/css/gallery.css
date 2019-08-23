@@ -131,6 +131,13 @@
     border-radius: 5px;
     border: none;
     color: #FFFFFF;
+    margin-right:18vw;
+}
+#bt-add{
+    background: #007BFF;
+    border-radius: 5px;
+    border: none;
+    color: #FFFFFF; 
 }
 #bt-delImgs{
     color: #FFFFFF;

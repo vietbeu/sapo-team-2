@@ -16,9 +16,19 @@ class BodyGallery extends Component {
       numOfImgSelected:0,
       isHideWarningDialog: true,
     }
-    componentDidMount(){
-      // this.getGallery();
-      let images=this.state.images_gallery;
+    async componentDidMount(){
+      const authen = 'Bearer '+localStorage.getItem('token');
+      let images;
+      await Axios.get('http://' + serverIP + ':'+port+'/api/v1/resources/search',
+          {headers: {
+              'Authorization': authen,
+          }})
+      .then ((response)=> {
+        images=response.data;
+        this.setState({images_gallery:response.data})
+        localStorage.setItem('images_gallery', JSON.stringify(response.data));
+      })
+      // let images =this.state.images_gallery;
       let currentImgs;
       let listShop=JSON.parse(localStorage.getItem('listShop'));
       if(images.length>0){
@@ -322,7 +332,7 @@ class BodyGallery extends Component {
     let listFail=[];
     Swal.fire({
       title: 'Bạn đã chắc chắn chưa?',
-      text: "Chúng tôi sẽ cập nhật hình ảnh của tất cả sản phẩm bạn đã chọn",
+      text: "Chúng tôi sẽ thay thế toàn bộ hình ảnh sẵn có của tất cả sản phẩm bạn đã chọn",
       type: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -356,7 +366,47 @@ class BodyGallery extends Component {
       }
     })  
   }
-
+  addToShopee=()=>{
+    let listFail=[];
+    let listImgsSelected = this.state.listImgsSelected;
+    let max = parseInt(localStorage.getItem('max-imgs'));
+    if (listImgsSelected.length > max) Swal.fire('','Bạn chỉ có thể thêm tối đa '+max+' ảnh cho các sản phẩm đã chọn','warning');
+    else
+    Swal.fire({
+      title: 'Bạn đã chắc chắn chưa?',
+      text: "Chúng tôi sẽ bổ sung hình ảnh vào tất cả sản phẩm bạn đã chọn",
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'OK'
+    })
+    .then((result) => {
+      if (result.value) {
+        let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
+        //console.log(listCheckBox);
+        for (let i=0;i<listCheckBox.length;i++){
+          let item_id = listCheckBox[i].item.item_id;
+          let shop_id = listCheckBox[i].shop_id;
+          const authen = 'Bearer '+localStorage.getItem('token');
+          Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/addItemImg',{
+            partner_id:partner_id,
+            shopid:shop_id,
+            item_id:item_id,
+            images:listImgsSelected,
+          },{headers: {'Authorization': authen,}})
+          .then (rsp => {
+            if (rsp.data.error == null) console.log(1);
+            else listFail.push(item_id)})
+          .catch(error => 
+            Swal.fire('Fail!','Đã có lỗi xảy ra! Cập nhật ảnh thất bại','error')
+            )      
+        }
+        console.log(listFail);
+        if (listFail.length==0)  Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success')    
+      }
+    })  
+  }
   selectImgs=()=>{
     let listImgsSelected = this.state.listImgsSelected;
     this.props.onSelectImgs(listImgsSelected);
@@ -370,7 +420,8 @@ class BodyGallery extends Component {
           <>
           {/* <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button> */}
           <button id='bt-delImgs' onClick={this.deleteListImgs}>Xoá hình ảnh</button>
-          <button id='bt-update' onClick={this.updateToShopee}>Cập nhật lên Shopee</button>
+          <button id='bt-update' onClick={this.updateToShopee}>Cập nhật và thay thế</button>
+          <button id='bt-add' onClick={this.addToShopee}>Cập nhật và bổ sung</button>
           </>
         ); else footer = (
           <button id='bt-update' onClick={this.selectImgs}>Chọn ảnh</button>  

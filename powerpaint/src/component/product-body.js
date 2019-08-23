@@ -212,7 +212,7 @@ class BodyProDuct extends Component {
     window.location.href='/gallery';
   }
   showFilterResult=(listCategories,lv1,lv2,lv3,shopeeStatus,filterChosen)=>{
-    if(arr.indexOf(lv1) <0 || arr.indexOf(shopeeStatus)<0){
+    if(filterChosen.length>0 && (arr.indexOf(lv1) <0 || arr.indexOf(shopeeStatus)<0)){
       let listResult=[];
       if (filterChosen.indexOf(listFilterCondition[1])>=0){
         listResult=this.showCategoryFilterResult(listCategories,lv1,lv2,lv3);
@@ -224,7 +224,7 @@ class BodyProDuct extends Component {
         listResult= this.showStatusFilterResult(shopeeStatus,this.state.listItemsDetail);
       }
       if (listResult.length<=0) Swal.fire('','Không có sản phẩm nào thoả mãn','info')
-    }
+    }else this.setState({onFilter:false});
   }
   showCategoryFilterResult=(listCategories,lv1,lv2,lv3)=>{
     let searchResultList=[];let curList= this.state.listItemsDetail;

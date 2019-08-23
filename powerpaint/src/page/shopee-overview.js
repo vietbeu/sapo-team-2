@@ -12,10 +12,20 @@ class ShopeeOverview extends Component {
     state = {
         isHiddenPopupAddShop:true,
       }
-    componentDidMount(){
+    async componentDidMount(){
         if (window.location.href.indexOf('shop_id')>0) {
             this.setState({isHiddenPopupAddShop:false});
             this.setState({shop_id: window.location.href.split('=')[1]})
+            const { value: shopname } = await Swal.fire({
+                title: 'Tên Shop',
+                text:'Hãy đặt tên cho shop để dễ dàng quản lý',
+                input: 'text',
+                inputPlaceholder: 'Hãy nhập tên shop'
+              })
+              
+              if (shopname) {
+                this.addShop(shopname);
+              }
         }
     }
     openNav=()=>{
@@ -88,7 +98,7 @@ class ShopeeOverview extends Component {
         )
         let body = (
             <>
-                <PopUpAddShop onAddShop={this.addShop} isHidden={this.state.isHiddenPopupAddShop}/>
+                {/* <PopUpAddShop onAddShop={this.addShop} isHidden={this.state.isHiddenPopupAddShop}/> */}
                 <div id='title-overview-table'>Thông tin tất cả gian hàng</div>
                 <div>
                     <Table/>
