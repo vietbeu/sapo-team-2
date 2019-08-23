@@ -3,7 +3,7 @@
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    top:3vh;
+    top:2vh;
     font-size: 1.3vw;
 }
 #select-acc select{
@@ -57,6 +57,9 @@
 }
 .tb-product-content table{
     width: 100%;
+}
+.tb-product-content th{
+    color: #212b35 ;
 }
 #bulk-action{
     width: 3%;
@@ -156,7 +159,6 @@
     width:20%;
 }
 .column-update-status{
-    color:#2BA92E;
     width:17%;
 }
 
@@ -172,5 +174,30 @@
     vertical-align: bottom;
     position: absolute;
     left: 32%;
-    bottom: 15%;
+    bottom: 10%;
+}
+
+.up-success{
+    color:#2BA92E;
+}
+.up-fail{
+    color: red;
+}
+#bt-show-selected-list{
+    margin-left:2.5%;
+    font-size: 1.3vw;
+    color:#0084FF;border: none;
+    background: inherit;
+    padding: 0%;
+
+}
+#bt-off-filter{
+    position: absolute;
+    left:2.5%;
+    background: #E5E5E5;
+    color:#0084FF;
+    border:1px solid #0084FF;
+    border-radius: 5px;
+    margin-top:0.5vh;
+    padding: 0 1vw;
 }

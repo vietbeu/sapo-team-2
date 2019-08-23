@@ -30,9 +30,34 @@ class ProductItem extends Component {
         this.props.onSelectProduct(e.target);
         //console.log(e.target.value);
     }
+    formatDay=(timestamp)=> {
+        let date = new Date(timestamp);
+        let month = date.getMonth()+1;
+        let year = date.getFullYear();
+        let day = date.getDate();
+        let hour = date.getHours();
+        if (hour<10) hour='0'+hour;
+        let min = date.getMinutes();
+        if (min<10) min='0'+min;
+        return day+'/'+month+'/'+year+' '+hour+':'+min;
+    }
     render() { 
         let product = this.state.product;
         let category = product.item.category_id;
+        let listUpdatedItem=this.props.listUpdatedItem,updatedStatus;
+        for ( let i=0;i<listUpdatedItem.length;i++){
+            if (listUpdatedItem[i].id==product.item.item_id){
+                if(listUpdatedItem[i].status === 1) 
+                    updatedStatus=(
+                        <>
+                        <div className='up-success'><i class="fa fa-check" aria-hidden="true"></i>{' Thành công'}</div>
+                        <div>{this.formatDay(listUpdatedItem[i].updateDate)}</div>
+                        </>
+                    )
+                else updatedStatus=<div className='up-fail'><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{' Thất bại'}</div>
+                break;
+            }else updatedStatus=<div className='no-up'>Chưa cập nhật</div>;
+        }
         let status;
         switch(product.item.status) {
             case 'NORMAL':
@@ -71,7 +96,7 @@ class ProductItem extends Component {
                 </td>
                 <td className='column-product-name' onClick={this.redirectProductDetail}>{product.item.name}</td>
                 <td className='column-shopee-status'>{status}</td>
-                <td className='column-update-status'>Thành công</td>
+                <td className='column-update-status'>{updatedStatus}</td>
             </tr>            
          );
     }

@@ -1,0 +1,54 @@
+#popup-list-product-content{
+    padding: 0% 2%;
+    font-size:1.3vw;
+}
+#plpc-header{
+    font-size:1.5vw;
+    color: #333333;
+    font-weight: bold;
+    border-bottom: 1px solid #C4CDD5;
+    line-height: 10vh;
+}
+table th{
+    color: #212B35;
+}
+#popup-list-product-content table{
+    width: 95%;
+    margin-left: 2.5%;
+}
+#cl-shopname{
+    width: 20%;
+    text-align: left;
+}
+#cl-imgs{
+    width: 35%;
+    text-align: left;
+}
+#cl-productname{
+    width:35%;
+    text-align: left;
+}
+#cl-del{
+    width: 10%;
+    text-align: right;
+}
+.column-del{
+    text-align: center;
+}
+.column-del :hover{
+    cursor: pointer;
+}
+
+#plpc-footer{
+    margin-top:0;
+    font-size:1.1vw;
+    height: 10vh;
+    position: relative;
+}
+#plpc-footer span{
+    position: absolute;
+    bottom: 0%;
+}
+#plpc-footer-align{
+    height: 4vh;
+}

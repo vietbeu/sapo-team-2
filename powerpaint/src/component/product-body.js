@@ -11,6 +11,7 @@ import ListCategories from './list-categoties';
 import Popup from 'reactjs-popup';
 import ListProductSelected from './list-product-selected';
 import FilerCondition from './filter-condition';
+import {listFilterCondition} from './filter-conditon-row';
 
 
 class BodyProDuct extends Component {
@@ -24,12 +25,15 @@ class BodyProDuct extends Component {
         listCheckBox:[],
         searchList:[],
         maxImg : 0,
+        listUpdatedItem:[],
+        onFilter:false,
      }
     componentDidMount(){
       let listShop = JSON.parse(localStorage.getItem('listShop'));
       console.log(listShop[0].shop_id);
       this.setState({shop_id: listShop[0].shop_id});
       this.getProductItem(listShop[0].shop_id);
+      this.getUpdatedItems(listShop[0].shop_id);
     }
 
     async getProductItem(shopid){
@@ -57,9 +61,23 @@ class BodyProDuct extends Component {
         })
       }
     }
+    getUpdatedItems=(shop_id)=>{
+      let listUpdatedItem=[];
+      const authen = 'Bearer '+localStorage.getItem('token');
+      Axios.get('http://' + serverIP + ':'+port+'/api/v1/products?shopid='+shop_id,
+          {headers: {
+              'Authorization': authen,
+          }}) 
+      .then ( rsp => {
+        listUpdatedItem=rsp.data;
+        console.log(listUpdatedItem);
+        this.setState({listUpdatedItem:listUpdatedItem});
+      } )    
+    }
     changeShop = (e) => {
-      this.setState({shop_id:e.target.value});
+      this.setState({shop_id:e.target.value,onFilter:false});
       this.getProductItem(e.target.value);
+      this.getUpdatedItems(e.target.value);
       console.log(this.state.shop_id)
     }
   
@@ -133,9 +151,6 @@ class BodyProDuct extends Component {
       this.setState({listCheckBox:checkBoxes})
     };
     console.log(maxImg);
-    checkBoxes.forEach(x => {
-      console.log(x.item.item_id);
-    });
   }
   selectAllProduct=(e)=>{
     let checkBoxes= document.getElementsByName('checkbox');
@@ -143,6 +158,9 @@ class BodyProDuct extends Component {
       checkBoxes[i].checked=e.target.checked;
       this.handleSelectProduct(checkBoxes[i]);
     }
+  }
+  removeSelectedProduct=(list)=>{
+    this.setState({listCheckBox:list});
   }
   handleChageOperation=(e)=>{
     let option = e.target.value;
@@ -193,16 +211,29 @@ class BodyProDuct extends Component {
     localStorage.setItem('max-imgs',9 - this.state.maxImg);
     window.location.href='/gallery';
   }
-
-  showResult=(listCategories,lv1,lv2,lv3)=>{
+  showFilterResult=(listCategories,lv1,lv2,lv3,shopeeStatus,filterChosen)=>{
+    if(arr.indexOf(lv1) <0 || arr.indexOf(shopeeStatus)<0){
+      let listResult=[];
+      if (filterChosen.indexOf(listFilterCondition[1])>=0){
+        listResult=this.showCategoryFilterResult(listCategories,lv1,lv2,lv3);
+        if (filterChosen.indexOf(listFilterCondition[0])>=0){
+          listResult=this.showStatusFilterResult(shopeeStatus,listResult);
+        }
+      }
+      else if (filterChosen.indexOf(listFilterCondition[0])>=0) {
+        listResult= this.showStatusFilterResult(shopeeStatus,this.state.listItemsDetail);
+      }
+      if (listResult.length<=0) Swal.fire('','Không có sản phẩm nào thoả mãn','info')
+    }
+  }
+  showCategoryFilterResult=(listCategories,lv1,lv2,lv3)=>{
     let searchResultList=[];let curList= this.state.listItemsDetail;
-    if(lv3!==''){
+    if(arr.indexOf(lv3)<0){
       curList.map(x => {
         if (x.item.category_id==lv3) searchResultList.push(x);
       });
-        this.setState({searchList:searchResultList}); 
     }
-    else if (lv2!==''){
+    else if (arr.indexOf(lv2)<0){
       let categoriesLv3=[];
       listCategories.map(x => {
         if (x.parent_id ==lv2) categoriesLv3.push(x);
@@ -212,9 +243,8 @@ class BodyProDuct extends Component {
           if (x.item.category_id==categoriesLv3[i].category_id) searchResultList.push(x);
         });
       }
-      this.setState({searchList:searchResultList}); 
     }
-    else if (lv1!==''){
+    else if (arr.indexOf(lv1)<0){
       let categoriesLv3=[],categoriesLv2=[];
       listCategories.map(x => {
         if (x.parent_id ==lv1) categoriesLv2.push(x);
@@ -231,16 +261,28 @@ class BodyProDuct extends Component {
           if (x.item.category_id==categoriesLv3[i].category_id) searchResultList.push(x);
         });
       }
-      console.log(searchResultList);
-      this.setState({searchList:searchResultList}); 
-    }
+    }else searchResultList=this.state.listItemsDetail;
+    this.setState({searchList:searchResultList}); 
+    console.log(searchResultList);
+    return searchResultList;
   }
-  showStatusFilterResult=(status)=>{
-    let searchResultList=[];let curList= this.state.listItemsDetail;
-    curList.map(x => {
-        if(x.item.status === status) searchResultList.push(x);
-    });
-    this.setState({searchList:searchResultList});       
+  showStatusFilterResult=(status,list)=>{
+    let searchResultList=[];
+    if (arr.indexOf(status)<0){
+      // let curList= this.state.listItemsDetail;
+      let curList=list;
+      curList.map(x => {
+          if(x.item.status === status) searchResultList.push(x);
+      });
+      this.setState({searchList:searchResultList});    
+    } 
+    return searchResultList;  
+  }
+  turnOnFilter=()=>{
+    this.setState({onFilter:true});
+  }
+  turnOffFilter=()=>{
+    this.setState({onFilter:false});
   }
 
     render() { 
@@ -252,13 +294,13 @@ class BodyProDuct extends Component {
       let   listItemsDetail = this.state.listItemsDetail;
       let activeList=[];
       console.log(this.state.searchList.length);
-      if(this.state.searchList.length===0 && (this.state.searchKey==='' || this.state.searchKey=== null))  activeList=listItemsDetail;
+      if(this.state.onFilter===false && (this.state.searchKey==='' || this.state.searchKey=== null))  activeList=listItemsDetail;
       else activeList=this.state.searchList;
       let numOfItem=activeList.length;
       const numOfPage = Math.ceil(activeList.length / itemPerPage);
       const currentList = activeList.slice(indexOfFirstItem, indexOfLastItem);
       const renderList = currentList.map((x) => {
-        return <ProductItem key={x.item.item_id} data={x} onSelectProduct={this.handleSelectProduct} 
+        return <ProductItem key={x.item.item_id} data={x} onSelectProduct={this.handleSelectProduct} listUpdatedItem={this.state.listUpdatedItem}
                     shop_id={this.state.shop_id} listCheckBox={this.state.listCheckBox}/>;
       });
       const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
@@ -299,17 +341,26 @@ class BodyProDuct extends Component {
           </th>
           </>
         );else thRow = thRowDefault;
-               
-        return ( 
-          <>
-            <Popup
-                trigger={<button className="button"> Xem danh sách sản phẩm đã chọn </button>}
+        
+        let buttonShowSelectedItemList=null;
+        if(this.state.listCheckBox.length>0) buttonShowSelectedItemList=(
+          <Popup
+                trigger={<button id="bt-show-selected-list"> Xem danh sách sản phẩm đã chọn </button>}
                 modal
                 closeOnDocumentClick
-                contentStyle={{width: "80%",borderRadius:'6px'}}
+                contentStyle={{width: "75%",borderRadius:'6px',padding:'0%'}}
               >
-              <ListProductSelected listProductSelected={this.state.listCheckBox}/>
-            </Popup>          
+              <ListProductSelected listProductSelected={this.state.listCheckBox} onDelProductSelected={this.removeSelectedProduct}/>
+          </Popup>   
+        )
+        let buttonTurnOffFilter=null;
+        if(this.state.onFilter===true) buttonTurnOffFilter=(
+          <button id='bt-off-filter' onClick={this.turnOffFilter}>
+            <i className="fa fa-times" aria-hidden="true"></i>&nbsp;Đang lọc
+          </button>)
+        return ( 
+          <>
+            {buttonShowSelectedItemList}       
             <div id='product-overview-content'>
                 <div id='select-acc'>
                     <select onChange={this.changeShop}>
@@ -321,16 +372,17 @@ class BodyProDuct extends Component {
                      <div className='product-tb-content'>
                         <div className='search-bar'>
                           <Popup
-                            trigger={<button id="bt-filter"> Lọc sản phẩm </button>}
-                            position="bottom center"
+                            trigger={<button id="bt-filter"> Lọc sản phẩm &nbsp;<i className="fa fa-caret-down" aria-hidden="true"></i></button>}
+                            position="bottom left"
                             on="click"
-                            contentStyle={{width:'20%',marginLeft:'3%',marginTop:'1%'}}
+                            contentStyle={{width:'auto',marginLeft:'0vw',marginTop:'1%'}}
                           >
-                            <FilerCondition onChangeCategory={this.showResult} onChangeStatusFilter={this.showStatusFilterResult}/>
+                            <FilerCondition onShowResult={this.showFilterResult} onTurnOnFilter={this.turnOnFilter}/>
                           </Popup>                                    
                           <span id='icon-search'><i className="fa fa-search" aria-hidden="true"></i></span>
                           <span><input onChange={this.changeSearchBar} type='text' placeholder='Tìm kiếm sản phẩm'></input></span>
                         </div>
+                        {buttonTurnOffFilter}
                         <div className='tb-product-content'>
                             <table>
                                 <thead>
@@ -342,9 +394,11 @@ class BodyProDuct extends Component {
                                     {renderList}
                                 </tbody>
                             </table>
+                            <div className='tb-footer'>
                             <Pagination onChangeItemPerPage={this.getItemPerPage} numOfPage={numOfPage}
                               onChangePage={this.changePage} firstItem={indexOfFirstItem} lastItem={indexOfLastItem}
                               numOfItem={numOfItem} currentPage={currentPage}/>
+                            </div>
                         </div>
                     </div>
                  </div>
@@ -356,3 +410,5 @@ class BodyProDuct extends Component {
 }
  
 export default BodyProDuct;
+
+const arr =[null,undefined,'']

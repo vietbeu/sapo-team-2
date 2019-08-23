@@ -1,17 +1,37 @@
 .filter-form{
-   padding: 5% 1% ;
+   padding: 2vh ;
    font-size: 1.2vw;
+   text-align: left;
 }
 .filter-form label{
     text-align: left;
+}
+.filter-row{
+    width: auto;
+}
+.filter-row i {
+    display: inline;
 }
 .filter-form select{
     font-size: 1vw;
     width: 15vw;
     padding:3px;
-    margin-top:  5%;
+    margin-top:1vh;
+    margin-right: 1vw;
     -webkit-border-radius:4px;
     -moz-border-radius:4px;
     border-radius:4px;
     background: #f8f8f8;
+}
+.filter-detail{
+    display: inline;
+}
+#filter-bt{
+    color:#FFFFFF;
+    background: #007BFF;
+    border: 1px solid #C4CDD5;
+    box-sizing: border-box;
+    border-radius: 5px;
+    margin-top:1vh;
+    padding: 0.5vh 2vw;
 }

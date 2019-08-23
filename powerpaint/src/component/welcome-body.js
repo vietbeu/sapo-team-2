@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import '../css/welcome-body.css'
 import SettingMenu from '../component/setting'
 import Crypto from 'crypto-js'
-const key= '26f76c014a453d1fb248f35e2a42d3c655fd97a9e671b79d3dfa59eb876bb43e';
+import { partner_id, serverFrIP, portFr,key} from './const';
+
 class WelcomeBody extends Component {
     state = {  }
     redirectShopee=()=>{
-        window.location.replace('https://partner.uat.shopeemobile.com/api/v1/shop/auth_partner?id=840386&token='
-        +this.getToken('http://192.168.36.20:4200/overview',key)
-        +'&redirect=http://192.168.36.20:4200/overview')
+        window.location.href='https://partner.shopeemobile.com/api/v1/shop/auth_partner?id='+partner_id+'&token='
+        +this.getToken('http://'+serverFrIP+':'+portFr+'/overview',key)
+        +'&redirect=http://'+serverFrIP+':'+portFr+'/overview';
     }
     getToken = (url, key) => Crypto.SHA256(key+url).toString();
 
@@ -35,7 +36,7 @@ class WelcomeBody extends Component {
                     <div id='footer'>
                         <button onClick={this.redirectShopee}> Kết nối Shopee</button>
                         <div id='signup'>
-                            <span>Đăng kí tại đây</span> nếu bạn chưa có gian hàng trên Shopee.
+                            <span><a href='https://shopee.vn'>Đăng kí tại đây</a></span> nếu bạn chưa có gian hàng trên Shopee.
                         </div>
                     </div>
                 </div>

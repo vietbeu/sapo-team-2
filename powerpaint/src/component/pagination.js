@@ -30,18 +30,23 @@ class Pagination extends Component {
         let button=[];let i;
         let numOfPage=this.props.numOfPage; 
         let buttonFooter;
+        let showItemPerPageOption;
+        if(this.props.hideFooterMiddle === true) showItemPerPageOption = null;
+        else showItemPerPageOption=(
+            <span id='footer-middle'>
+                Hiển thị <select onChange={this.getItemPerPage}>
+                    <option>20</option>
+                    <option>30</option>
+                    <option>50</option>
+                </select> kết quả
+            </span>            
+        )
         if (numOfPage===1){
             buttonFooter = null;
         }else{
             buttonFooter = (
                 <>
-                <span id='footer-middle'>
-                     Hiển thị <select onChange={this.getItemPerPage}>
-                                <option>20</option>
-                                <option>30</option>
-                                <option>50</option>
-                             </select> kết quả
-                </span>
+                {showItemPerPageOption}
                 <span id='footer-right'>
                     <button className='index-button' onClick={this.changePage} value={1}>Trang đầu</button>
                     {button}    
@@ -74,11 +79,11 @@ class Pagination extends Component {
         let lastItem =this.props.lastItem;
         if (lastItem > this.props.numOfItem) lastItem=this.props.numOfItem;
         return ( 
-            <div className='tb-footer'>
+            <>
                 <span id='footer-left'>{'Hiển thị kết quả từ '+firstItem+'-'+lastItem
                                         +' trên tổng số '+this.props.numOfItem+' kết quả'}</span>
                 {buttonFooter}
-            </div>              
+            </>              
          );
     }
 }
