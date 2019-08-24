@@ -51,17 +51,18 @@ class ShopItem extends Component {
                 <tr className='data-row'>
                     <td className='shop-name' id={shop.shop_id} date={this.formatDay(shop.createDate)} 
                     name={shop.name} onClick={this.clickShop}>
-                        <span className='shop-avatar' id={shop.shop_id}>
-                            <img width='40%'  src={this.state.avatar} alt={shop.shop_id}/>
+                        <span className='shop-avatar' id={shop.shop_id} date={this.formatDay(shop.createDate)} 
+                    name={shop.name}>
+                            <img width='40%'  src={this.state.avatar} alt={shop.shop_id} id={shop.shop_id} date={this.formatDay(shop.createDate)} 
+                    name={shop.name}/>
                             </span>
                         {' '+shop.name}
                     </td>
-                    <td className='link-shop' onClick={()=> window.location.href='https://shopee.vn/shop/'+shop.shop_id}>
-                        {'https://shopee.vn/shop/'+shop.shop_id}</td>
+                    <td className='link-shop'>
+                        <a href={'https://shopee.vn/shop/'+shop.shop_id}>{'https://shopee.vn/shop/'+shop.shop_id}</a></td>
                     <td className='connect-date'>{this.formatDay(shop.createDate)}</td>
                     {shopStatus}
-                    {/*<td id='data-num'>40</td>
-                    <td id='data-num'>60</td>*/}
+                    
                 </tr>   
             </>         
           );

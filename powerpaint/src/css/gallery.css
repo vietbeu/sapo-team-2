@@ -85,7 +85,7 @@
 
 #warning-dialog{
     font-size: 1.2vw;
-    width: 50%;
+    width: 60%;
     z-index: 1;
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
@@ -98,7 +98,7 @@
     font-weight: bold;
 }
 #header-wn-dl p{
-    text-align: center;
+    text-align: left;
 }
 #body-wn-dl{
     padding: 3% 5%;

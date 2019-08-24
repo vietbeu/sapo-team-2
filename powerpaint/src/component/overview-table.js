@@ -23,7 +23,7 @@ class Table extends Component {
         }})
         .then( (response)=> {
             this.setState({listShop:response.data});
-            this.getCategories(response.data[0].shop_id)
+            if (response.data.length > 0) this.getCategories(response.data[0].shop_id)
         })
         .catch((error) => {
             Swal.fire(
@@ -82,12 +82,16 @@ class Table extends Component {
       }
     render() { 
         let list = this.state.listShop;
-        let listShop = list.map((x)=><ShopItem shop={x} key={x.id}/>);
-        let listActiveShop=[] ;
-        list.map(x => {
-            if (x.status===1) listActiveShop.push(x);
-        })
-        localStorage.setItem('listShop',JSON.stringify(listActiveShop));
+        let listShop=[];
+        if (list != []){
+            listShop = list.map((x)=><ShopItem shop={x} key={x.id}/>);
+            let listActiveShop=[] ;
+            list.map(x => {
+                if (x.status===1) listActiveShop.push(x);
+            })
+            localStorage.setItem('listShop',JSON.stringify(listActiveShop));
+        }
+        
         return (
             <div className='table-sh'>
                 <table>

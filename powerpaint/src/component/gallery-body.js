@@ -15,6 +15,7 @@ class BodyGallery extends Component {
       listImgsSelected:[],
       numOfImgSelected:0,
       isHideWarningDialog: true,
+      typeWarning:0,
     }
     async componentDidMount(){
       const authen = 'Bearer '+localStorage.getItem('token');
@@ -238,13 +239,13 @@ class BodyGallery extends Component {
           this.setState({numOfImgSelected: listImgsSelected.length});
           console.log(listImgsSelected); 
         }else {
-          this.showWarning();
+          this.showWarning(0);
         }
       }
     }
 
-    showWarning=()=>{
-      this.setState({isHideWarningDialog: false});
+    showWarning=(type)=>{
+      this.setState({isHideWarningDialog: false,typeWarning:type});
     }
     hideWarningDialog=()=>{
       this.setState({isHideWarningDialog:true});
@@ -329,6 +330,7 @@ class BodyGallery extends Component {
   }
 
   updateToShopee=()=>{
+    // this.showWarning(1);
     let listFail=[];
     Swal.fire({
       title: 'Bạn đã chắc chắn chưa?',
@@ -448,15 +450,13 @@ class BodyGallery extends Component {
         )})
         return (
           <>
-            <WarningDialog isHidden={this.state.isHideWarningDialog} 
-            onClickCancel={this.hideWarningDialog} onClickOK={this.redirectProductPage}/>
+            <WarningDialog isHidden={this.state.isHideWarningDialog} type={this.state.typeWarning}onClickOK={this.hideWarningDialog}/>
             <div id='gallery-content'>
                 <div id='select-acc'>
                     <span>
                         <select onChange={this.changeShop}>
                             {listSelectShop}
                         </select>
-                        <button onClick={this.getGallery}>GET</button>
                         <span>
                           <span>{'Đã chọn '+this.state.numOfImgSelected+' ảnh'}</span>
                         </span>
@@ -481,31 +481,75 @@ export default BodyGallery;
 
 
 class WarningDialog extends Component {
-  state = {  }
-  clickCancel=()=>{
-    this.props.onClickCancel();
+  state = {  
+    type:this.props.type,
   }
   clickOK=()=>{
     this.props.onClickOK();
   }
   render() { 
+    let header,body,footer,type=this.state.type;
+    console.log(type);
     if (this.props.isHidden === true) return null;
-    else return (
+    else {
+      if (type==0){
+        header='Thông báo cập nhật hình ảnh lên Shopee';
+        body='Hiện tại bạn đã chọn quá số lượng 9 ảnh, bạn cần chọn lại số lượng hình ảnh phù hợp để chúng tôi '
+        +'hỗ trợ bạn cập nhật lên Shopee đảm bảo đúng những quy định mà Shopee đặt ra cho người bán hàng'
+        footer=<button id='bt-ok' onClick={this.clickOK}>Chọn lại</button>;
+      }
+      if (type===1){
+        header='Thông báo cập nhật và thay thế hình ảnh';
+        body=(
+          <>
+          <div>Bạn đã lựa chọn .. hình ảnh</div>
+          <div>Bạn có chắc chắn muốn thay thế toàn bộ những hình ảnh mà bạn đã lựa chọn cho 
+            tất cả những hình ảnh của sản phẩm?</div>
+          </>
+        );
+        footer=(
+          <>
+          <button>Đồng ý</button>
+          <button>Thoát</button>
+          </>
+        )
+      }
+      if (type===2){
+        header='Thông báo cập nhật hình ảnh lên Shopee';
+        body='Bạn chỉ có thể lựa chọn tối đa 6 hình ảnh, bạn cần chọn lại số lượng hình ảnh phù hợp để chúng tôi '
+        +'hỗ trợ bạn cập nhật lên Shopee đảm bảo đúng những quy định mà Shopee đã đặt ra cho người mua hàng.'
+        footer=<button id='bt-ok' onClick={this.clickOK}>Chọn lại</button>;
+      }
+      if (type===3){
+        header='Thông báo cập nhật và bổ sung hình ảnh';
+        body=(
+          <>
+          <div>Bạn đã lựa chọn .. hình ảnh</div>
+          <div>Bạn có chắc chắn muốn bổ sung toàn bộ những hình ảnh mà bạn đã lựa chọn vào hình ảnh của các sản 
+            phẩm mà bạn đã lựa chọn??</div>
+          </>
+        )
+        footer = (
+          <>
+          <button>Đồng ý</button>
+          <button>Thoát</button>
+          </>
+        )
+      }
+      return (
       <dialog id='warning-dialog' open>
         <div id='header-wn-dl'>
-          <p>Thông báo lựa chọn sản phẩm</p>
+          <p>{header}</p>
         </div>
         <div id='body-wn-dl'>
-          Hiện tại bạn đã chọn tối đa 9 ảnh và bạn cần phải chọn sản phẩm để thay thế ảnh.
-          <div>Click vào Chọn sản phẩm để chúng tôi hỗ trợ bạn lựa chọn sản phẩm phù hợp. Chúng tôi sẽ thay thế 
-          tất cả hình ảnh sản phẩm</div>
+          {body}
         </div>
         <div id='footer-wn-dl'>
-          <button id='bt-ok' onClick={this.clickOK}>Chọn sản phẩm</button>
-          <button id='bt-cancel' onClick={this.clickCancel}>Huỷ</button>
+          {footer}
         </div>
       </dialog>
       );
+    }
   }
 }
  

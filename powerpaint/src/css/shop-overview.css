@@ -37,14 +37,15 @@
 }
 #tb-content span{
     width:45%;
-    display: inline-block;
+    display: inline-flex;
     text-align: left;
     padding: 2% 5%;
     border: 1px solid #C4CDD5;
     box-sizing: border-box;
     border-radius: 5px;
     font-size: 1.4vw;
-    line-height: 3.5vw;
+    height: 22vh;
+    /* line-height: 3.5vw; */flex-direction: column;
 }
  #margin{
     display: inline-block;

@@ -7,8 +7,41 @@ import Swal from 'sweetalert2';
 class BodyShopOverView extends Component {
     state = { 
         status: localStorage.getItem('shop-status'),
+        numberOfItems:0,
+        numOfUpdatedItem:0,
+        shop_id:localStorage.getItem('shop-id'),
      }
-
+    async componentDidMount(){
+        await this.getProductItem();
+        await this.getUpdatedItems();
+    }
+    async getProductItem(){
+        // let timestamp = Date.now() / 1000 | 0;
+        let more=true;
+        let offset=0; 
+        let listItems=[]; let numberOfItems=0;
+        while(more){
+          listItems= await axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemList?offset='
+                                        +offset+'&shopid='+this.state.shop_id+'&entries='+100)
+          offset+=100;
+          more =listItems.data.more;
+          numberOfItems+= listItems.data.items.length;
+        }
+        this.setState({numberOfItems:numberOfItems});
+      }
+    getUpdatedItems=()=>{
+      let listUpdatedItem=[];
+      const authen = 'Bearer '+localStorage.getItem('token');
+      axios.get('http://' + serverIP + ':'+port+'/api/v1/products?shopid='+this.state.shop_id,
+          {headers: {
+              'Authorization': authen,
+          }}) 
+      .then ( rsp => {
+        listUpdatedItem=rsp.data;
+        console.log(listUpdatedItem);
+        this.setState({numOfUpdatedItem:listUpdatedItem.length});
+      } )    
+    }
     deleteAccount=()=>{
         Swal.fire({
             title: 'Are you sure?',
@@ -77,8 +110,14 @@ class BodyShopOverView extends Component {
                     <div id='account-info-table'>
                         <div id='table-caption'>Thông tin của tài khoản</div>
                         <div id='tb-content'>
-                            <span >TỔNG SỐ ĐƠN HÀNG<div>30</div></span>
-                            <span id='margin'>TỔNG SỐ SẢN PHẨM<div>40</div></span>
+                            <span >TỔNG SỐ SẢN PHẨM
+                                <div></div><br/>
+                                <div></div><br/>
+                                <div>{this.state.numberOfItems}</div></span>
+                            <span id='margin'>TỔNG SỐ SẢN PHẨM ĐÃ CẬP NHẬT LẠI ẢNH
+                                <div></div><br/>
+                                <div>{this.state.numOfUpdatedItem}</div>
+                            </span>
                         </div>
                     </div>
                     <div id='account-info-table'>
@@ -87,7 +126,7 @@ class BodyShopOverView extends Component {
                             <ul>
                                 <li><span>Hướng dẫn cách thêm gian hàng</span></li>
                                 <li><span>Hướng dẫn cách sử dụng tool chỉnh ảnh trên shopee</span></li>
-                                <li><span>Hướng dẫn cách quản lý ảnh hiệu quả với Sapo Decorate</span></li>
+                                <li><span>Hướng dẫn cách quản lý ảnh hiệu quả với Sapo Editor</span></li>
                             </ul>
                         </div>
                     </div>
@@ -109,7 +148,11 @@ class BodyShopOverView extends Component {
                                     {status} 
                                     <span> {localStorage.getItem('shop-name')}</span>
                                 </div>
-                                <div className='link-shop'>{'https://shopee.vn/shop/'+localStorage.getItem('shop-id')}</div>
+                                <div className='link-shop'>
+                                    <a href={'https://shopee.vn/shop/'+this.state.shop_id}>
+                                        {'https://shopee.vn/shop/'+this.state.shop_id}
+                                    </a>
+                                </div>
                                 <div>{'Ngày kết nối: '+localStorage.getItem('shop-create_date')} </div>
                             </div>
                         </div>

@@ -21,7 +21,7 @@ class WelcomeBody extends Component {
             <div className = 'body'>
                 {menu}
                 <div className='content'>
-                    <h1>Chào mừng {localStorage.getItem('username')} đến với Sapo Decorate</h1>
+                    <h1>Chào mừng {localStorage.getItem('username')} đến với Sapo Editor</h1>
                     <div className='description'>
                         <div>
                         Chúng tôi sẽ giúp bạn chỉnh sửa ảnh đơn giản và nhanh chóng, dễ dàng

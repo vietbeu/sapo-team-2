@@ -1,11 +1,11 @@
 import React from 'react';
-import logo from '../images/logonew.png'
+import logo from '../images/sapo_p.jpg'
 
 const InfoPopup = () => {
     return ( 
         <div className='popup-content'>
             <div className='popup-title'>
-                <p>Thông tin liên hệ với đội ngũ hỗ trợ của Sapo Decorate</p>
+                <p>Thông tin liên hệ với đội ngũ hỗ trợ của Sapo Editor</p>
             </div>
             <span className='logo-popup'><img src={logo} alt='logo'/></span>
             <span className='contact-popup'>

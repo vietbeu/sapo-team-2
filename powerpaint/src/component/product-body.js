@@ -40,19 +40,19 @@ class BodyProDuct extends Component {
       let timestamp = Date.now() / 1000 | 0;
       let more=true;
       let offset=0;
-      let URL_getItemsList = URL_GetItemsList;
-      let URL_getItemDetail = URL_GetItemDetail;    
+      // let URL_getItemsList = URL_GetItemsList;
+      // let URL_getItemDetail = URL_GetItemDetail;    
       let listItems=[]; let listItemsDetail=[];
       while(more){
-        let body_getItemList = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
-                            ',"pagination_offset": '+offset+', "pagination_entries_per_page": '+100+'}';
+        // let body_getItemList = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
+        //                     ',"pagination_offset": '+offset+', "pagination_entries_per_page": '+100+'}';
         //listItems= await API_Shopee(URL_getItemsList, body_getItemList);
         listItems= await Axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemList?offset='+offset+'&shopid='+shopid+'&entries='+100)
         offset+=100;
         more =listItems.data.more;
         listItems.data.items.map(async x =>{
-          let body_getItemDetail = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
-                                    ',"item_id": '+x.item_id+'}';
+          // let body_getItemDetail = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
+          //                           ',"item_id": '+x.item_id+'}';
           //let itemsDetail = await API_Shopee(URL_getItemDetail, body_getItemDetail);
         let itemsDetail = await Axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemDetail?item_id='+x.item_id+'&shopid='+shopid);
           await listItemsDetail.push(itemsDetail.data);

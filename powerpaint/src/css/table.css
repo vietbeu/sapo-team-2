@@ -46,11 +46,11 @@ table th{
     color: #007BFF;
 }
 .link-shop:hover .shop-name:hover{
-    cursor: pointer;color: red;
+    cursor: pointer;
 }
-.shop-name .shop-avatar {
+/* .shop-name .shop-avatar {
     background: red;
-}
+} */
 .connect-date{
     text-align: left;
 }
