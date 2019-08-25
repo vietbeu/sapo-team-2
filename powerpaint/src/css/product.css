@@ -105,11 +105,10 @@
     border-right: 1px solid #C4CDD5;
     box-sizing: border-box;  
     padding: 0% 2%;
-    top:50%;width:58%;
+    top:50%;
     transform: translateY(-50%);
 }
 #checkbox-row select{
-    width: 35%;
     position: absolute;
     border: 1px solid #C4CDD5;
     outline: none;

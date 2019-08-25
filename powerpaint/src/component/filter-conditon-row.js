@@ -36,7 +36,7 @@ class FilterConditionRow extends Component {
             shopeeStatus=(
             <span>
                 <select className='filter-detail' onChange={this.changeStatusFilter}>
-                    <option hidden>Chọn trạng thái</option>
+                    <option hidden>Chọn điều kiện lọc</option>
                     <option value='NORMAL'>Hiển thị</option>
                     <option value='UNLIST'>Ẩn</option>
                     <option value='BANNED'>Khoá</option>
