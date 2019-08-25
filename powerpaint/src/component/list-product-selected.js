@@ -18,7 +18,7 @@ class ListProductSelected extends Component {
         for (let i=0;i<listProductSelected.length;i++)
             if (listProductSelected[i].item.item_id == item_id) {listProductSelected.splice(i,1);console.log(i);break;}
         this.setState({listProductSelected:listProductSelected});
-        this.props.onDelProductSelected(listProductSelected);
+        this.props.onDelProductSelected(listProductSelected,item_id);
     }
     render() { 
         let listShop=JSON.parse(localStorage.getItem('listShop'));

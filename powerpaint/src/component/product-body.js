@@ -159,12 +159,17 @@ class BodyProDuct extends Component {
       this.handleSelectProduct(checkBoxes[i]);
     }
   }
-  removeSelectedProduct=(list)=>{
+  removeSelectedProduct=(list,item_id)=>{
     this.setState({listCheckBox:list});
+    let checkBoxes= document.getElementsByName('checkbox');
+    for (let i=0; i<checkBoxes.length; i++){
+      let id=JSON.parse(checkBoxes[i].getAttribute('value')).item_id;
+      if ( id == item_id) checkBoxes[i].checked=false;
+    }
   }
   handleChageOperation=(e)=>{
     let option = e.target.value;
-    if (option == 1) {this.updateToShopee();}
+    // if (option == 1) {this.updateToShopee();}
     if (option == 0) this.deleteProduct();
     if (option == 2) this.chooseImgsForProducts();
   }
@@ -210,6 +215,44 @@ class BodyProDuct extends Component {
     localStorage.setItem('products-selected',JSON.stringify(this.state.listCheckBox));
     localStorage.setItem('max-imgs',9 - this.state.maxImg);
     window.location.href='/gallery';
+  }
+  deleteProduct = () => {
+    let listCheckBox=this.state.listCheckBox;let listFail=[];let listItemsDetail=this.state.listItemsDetail;
+    Swal.fire({
+      title: 'Xoá sản phẩm?',
+      text: "Chúng tôi sẽ xoá "+listCheckBox.length+' sản phẩm bạn đã chọn và bạn sẽ không thể khôi phục lại ?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Xoá',
+      cancelButtonText:'Huỷ',
+    }).then(async (result) => {
+      if (result.value) {
+        for (let i=0;i<listCheckBox.length;i++){
+          let item_id = listCheckBox[i].item.item_id;
+          let shop_id = this.state.shop_id;
+          await Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/deleteItem',{
+            partner_id:partner_id,
+            shopid:shop_id,
+            item_id:item_id,
+          },{headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}})
+          .then (rsp => {
+            if (rsp.data.msg.indexOf('success') >=0) {
+              for(let i=0;i<listItemsDetail.length;i++)
+                if (listItemsDetail[i].item.item_id===item_id) {
+                  listItemsDetail.splice(i,1);
+                  this.setState({listItemsDetail:listItemsDetail});
+                }
+            }
+            else listFail.push(item_id)})
+          .catch(error => 
+            Swal.fire('Fail!','Đã có lỗi xảy ra! Cập nhật ảnh thất bại','error')
+            )      
+        }
+        if (listFail.length==0)  Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success')    
+      }
+    })  
   }
   showFilterResult=(listCategories,lv1,lv2,lv3,shopeeStatus,filterChosen)=>{
     if(filterChosen.length>0 && (arr.indexOf(lv1) <0 || arr.indexOf(shopeeStatus)<0)){
@@ -332,9 +375,7 @@ class BodyProDuct extends Component {
             <span>{'Đã chọn '+count+' sản phẩm'}</span>
             <select onChange={this.handleChageOperation}>
               <option hidden>Chọn thao tác</option>
-              <option value={3}>Thêm hình ảnh sản phẩm</option>
               <option value={2}>Chọn hình ảnh</option>
-              <option value={1}>Thay thế hình ảnh sản phẩm</option>
               <option value={0}>Xoá sản phẩm</option>
             </select>  
             </div>  
@@ -384,7 +425,7 @@ class BodyProDuct extends Component {
                           >
                             {close =>(
                             <>
-                            <button className='exit-popup-bt' onClick={close}><i className="fa fa-times" aria-hidden="true"></i></button>
+                            {/* <button className='exit-popup-bt' onClick={close}><i className="fa fa-times" aria-hidden="true"></i></button> */}
                             <FilerCondition onShowResult={this.showFilterResult} onTurnOnFilter={this.turnOnFilter}/>
                             </>
                             )}
