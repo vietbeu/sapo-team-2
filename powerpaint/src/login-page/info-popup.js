@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from '../images/sapo_p.jpg'
 
-const InfoPopup = () => {
-    return ( 
-        <div className='popup-content'>
+class InfoPopUp extends Component {
+    state = {  }
+    close=()=>{
+        this.props.onClose();
+    }
+    render() { 
+        return (
+            <div className='popup-content'>
+            <button className='exit-popup-bt' onClick={this.close}><i className="fa fa-times" aria-hidden="true"></i></button>
             <div className='popup-title'>
                 <p>Thông tin liên hệ với đội ngũ hỗ trợ của Sapo Editor</p>
             </div>
@@ -15,7 +21,7 @@ const InfoPopup = () => {
                 </div>
                 <div className='contact-item'>
                     <span className='font-icon'><i className="fa fa-envelope" aria-hidden="true"></i></span>
-                    sapoteam2@gmail.com
+                    sapoeditor@gmail.com 
                 </div>
                 <div className='contact-item'>
                     <span className='font-icon'><i className="fa fa-map-marker" aria-hidden="true"></i></span>
@@ -27,7 +33,7 @@ const InfoPopup = () => {
                 </div>
             </span>
         </div>
-     );
+     );}
 }
  
-export default InfoPopup;
+export default InfoPopUp;

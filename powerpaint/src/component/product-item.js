@@ -44,7 +44,7 @@ class ProductItem extends Component {
     render() { 
         let product = this.state.product;
         let category = product.item.category_id;
-        let listUpdatedItem=this.props.listUpdatedItem,updatedStatus;
+        let listUpdatedItem=this.props.listUpdatedItem,updatedStatus=<div className='no-up'>Chưa cập nhật</div>;
         for ( let i=0;i<listUpdatedItem.length;i++){
             if (listUpdatedItem[i].id==product.item.item_id){
                 if(listUpdatedItem[i].status === 1) 

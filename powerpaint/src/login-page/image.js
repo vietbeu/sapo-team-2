@@ -34,12 +34,13 @@ class Image extends Component {
                     <span>
                     <Popup
                         trigger={<button id="hint"> tại đây </button>}
-                        repositionOnResize={true}
                         modal
                         closeOnDocumentClick
                         contentStyle={{width: "60%",borderRadius:'6px'}}
                     >
-                        <span className='info-popup'> <InfoPopup/> </span>
+                        {close=>(
+                        <span className='info-popup'> <InfoPopup onClose={close}/> </span>
+                        )}
                     </Popup></span></h2>
             </React.Fragment>
          );

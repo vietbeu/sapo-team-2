@@ -350,7 +350,12 @@ class BodyProDuct extends Component {
                 closeOnDocumentClick
                 contentStyle={{width: "75%",borderRadius:'6px',padding:'0%'}}
               >
-              <ListProductSelected listProductSelected={this.state.listCheckBox} onDelProductSelected={this.removeSelectedProduct}/>
+                {close=>(
+                <>
+                <button className='exit-popup-bt' onClick={close}><i className="fa fa-times" aria-hidden="true"></i></button>
+                <ListProductSelected listProductSelected={this.state.listCheckBox} onDelProductSelected={this.removeSelectedProduct}/>
+                </>
+                )}
           </Popup>   
         )
         let buttonTurnOffFilter=null;
@@ -377,7 +382,12 @@ class BodyProDuct extends Component {
                             on="click"
                             contentStyle={{width:'auto',marginLeft:'0vw',marginTop:'1%'}}
                           >
+                            {close =>(
+                            <>
+                            <button className='exit-popup-bt' onClick={close}><i className="fa fa-times" aria-hidden="true"></i></button>
                             <FilerCondition onShowResult={this.showFilterResult} onTurnOnFilter={this.turnOnFilter}/>
+                            </>
+                            )}
                           </Popup>                                    
                           <span id='icon-search'><i className="fa fa-search" aria-hidden="true"></i></span>
                           <span><input onChange={this.changeSearchBar} type='text' placeholder='Tìm kiếm sản phẩm'></input></span>

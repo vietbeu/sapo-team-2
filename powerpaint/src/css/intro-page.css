@@ -46,11 +46,11 @@
     position: absolute;
     top:15vh;
     left: 10%;
-    right: 50%;
+    right: 45%;
     color: #FFFFFF;
 }
 .body-title{
-    font-size: 2.15vw;
+    font-size: 2.25vw;
     margin-bottom: 5%;
 }
 .body-description{
@@ -59,7 +59,7 @@
 }
 .body-content button{
     margin-top:5%;
-    background: #0084FF;
+    background: linear-gradient(to right,#2ad38b,#0cceb0) ;
     border-radius: 6px;
     color: #FFFFFF;
     font-size: 1.5vw;

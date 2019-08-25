@@ -18,14 +18,14 @@ class WelcomeBody extends Component {
         if (this.props.showMenu === true) menu=<SettingMenu/>;  
         else menu=null;
         return (
-            <div className = 'body'>
+            <div className = 'body-wel'>
                 {menu}
                 <div className='content'>
                     <h1>Chào mừng {localStorage.getItem('username')} đến với Sapo Editor</h1>
                     <div className='description'>
                         <div>
                         Chúng tôi sẽ giúp bạn chỉnh sửa ảnh đơn giản và nhanh chóng, dễ dàng
-                        chỉnh sửa sản phẩm và update lại lên sàn shopee.
+                        chỉnh sửa hình ảnh sản phẩm và update lại lên sàn shopee.
                         </div>
                         <div>
                             Hãy thực hiện kết nối gian hàng trên shopee để sử dụng các tính năng của chúng tôi.

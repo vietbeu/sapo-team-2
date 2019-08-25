@@ -83,13 +83,14 @@
 }
 #lock-icon{
     text-align: center;
-    color: #F9FAFC;
+    color: #adc4b3;
     font-size: 2vw;
     margin: 8% 0%;
 }
 #lock{
     color:#64FE2E;
 }
+#unlock{color :red;}
 #shop-info  {
     font-size: 1.2vw;
     text-align: center;
@@ -106,8 +107,16 @@
     text-align: center;
     padding: 5%;
 }
-#right-tb-footer button{
+#bt-disconnect{
     background: #F1582C;  
+    color: #ffffff;
+    border:none;
+    border-radius: 5px;
+    font-size:1.3vw;
+    padding: 2% 5%;
+}
+#bt-reconnect{
+    background:rgba(255, 107, 0, 0.87);;
     color: #ffffff;
     border:none;
     border-radius: 5px;

@@ -18,33 +18,14 @@ class BodyProductDetail extends Component {
         sku : localStorage.getItem('sku-detail'),
         status: localStorage.getItem('status-detail'),
     }
-    
+    onUnload(event) { 
+        event.returnValue = "Are you sure?";
+    }
+    componentWillUnmount(){
+        window.removeEventListener("beforeunload", this.onUnload);
+    }
     componentDidMount=async()=>{
-        window.onbeforeunload = function () {
-
-            return  "Are you sure want to LOGOUT the session ?";
-        };        
-        // window.addEventListener("beforeunload", function (event) {
-        //     event.preventDefault();
-        //     Swal.fire({
-        //         title: 'Are you sure?',
-        //         text: "You won't be able to revert this!",
-        //         type: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#3085d6',
-        //         cancelButtonColor: '#d33',
-        //         confirmButtonText: 'Yes, delete it!'
-        //       }).then((result) => {
-        //         if (result.value) {
-        //           Swal.fire(
-        //             'Deleted!',
-        //             'Your file has been deleted.',
-        //             'success'
-        //           )
-        //         }
-        //       });
-        //     event.returnValue = "Hellooww";
-        // })
+        window.addEventListener("beforeunload", this.onUnload)      
         let images = this.state.images;
         let shop_id=this.state.shop_id;
         if (window.location.href.indexOf('file')>0) {
@@ -209,9 +190,9 @@ class BodyProductDetail extends Component {
             showLoaderOnConfirm: true,
         })
         if (url) {          
-            sightengine.check(['nudity','wad']).set_url(url)
+            sightengine.check(['nudity']).set_url(url)
             .then(rsp => {
-              if(rsp.nudity.safe < 0.9) {
+              if(rsp.nudity.safe < 0.9 && rsp.nudity.partial<0.9) {
                 Swal.fire('Fail!','Ảnh có nội dung không phù hợp','error')
               } else {
                 const authen = 'Bearer '+localStorage.getItem('token');
@@ -288,7 +269,7 @@ class BodyProductDetail extends Component {
                             sightengine.check(['nudity']).set_url(url)
                             .then(rsp => {
                                 //console.log(JSON.parse(rsp.data).nudity);
-                                if(rsp.nudity.safe < 0.9) {
+                                if(rsp.nudity.safe < 0.9 && rsp.nudity.partial<0.9) {
                                     Swal.fire('Fail!','Ảnh có nội dung không phù hợp','error');
                                     Axios.delete("http://"+serverIP+':'+port+'/api/v1/image/delete',
                                     {headers: {
@@ -348,7 +329,7 @@ class BodyProductDetail extends Component {
     editPhoto=(e)=>{
         let url = e.target.getAttribute('src');
         localStorage.setItem('indexOfImg',e.target.getAttribute('value'));
-        window.location.replace('https://www.ribbet.com/app/?_import='+url+ '&_export=http://'+serverFrIP+':'+portFr+'/product/detail&_exclude=out,home,share& _export_title=SAVE_BUTTON_TITLE &_export_agent=browser&embed=true')
+        window.location.href='https://www.ribbet.com/app/?_import='+url+ '&_export=http://'+serverFrIP+':'+portFr+'/product/detail&_exclude=out,home,share& _export_title=SAVE_BUTTON_TITLE &_export_agent=browser&embed=true';
         //window.location.replace('/test');
     }
 
@@ -436,8 +417,11 @@ class BodyProductDetail extends Component {
                                 contentStyle={{width: "90%",borderRadius:'6px'}}
                             >
                                 {close => 
+                                <>
+                                <button className='exit-popup-bt' onClick={close}><i className="fa fa-times" aria-hidden="true"></i></button>
                                 <BodyGallery onSelectImgs={(list)=>{this.selectImgsFromGallery(list);
                                 close();}}/>
+                                </>
                                 }
                             </Popup>                            
                             {/* <div id='item-4' value={4} onClick={this.handleShowGallery}>Thêm ảnh từ thư viện ảnh</div> */}

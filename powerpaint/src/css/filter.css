@@ -1,10 +1,11 @@
 .filter-form{
-   padding: 2vh ;
+   padding: 1vh ;
    font-size: 1.2vw;
    text-align: left;
 }
 .filter-form label{
     text-align: left;
+    margin:0;
 }
 .filter-row{
     width: auto;

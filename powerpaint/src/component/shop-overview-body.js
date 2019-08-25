@@ -44,8 +44,8 @@ class BodyShopOverView extends Component {
     }
     deleteAccount=()=>{
         Swal.fire({
-            title: 'Are you sure?',
-            text: "Bạn có chắc chắn muốn ngừng kết nối shop?",
+            title: 'Ngừng kết nối?',
+            text: "Thao tác này sẽ ngừng kết nối tài khoản Sapo Editor với tài khoản hiện tại",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -94,13 +94,15 @@ class BodyShopOverView extends Component {
     }
     render() { 
         let buttonChangeShopStatus;
-        let status;
+        let status,lockIcon;
         if (this.state.status==='1') {
-            buttonChangeShopStatus=<button onClick={this.deleteAccount}>Gỡ bỏ tài khoản này</button>;
+            buttonChangeShopStatus=<button id='bt-disconnect' onClick={this.deleteAccount}>Gỡ bỏ tài khoản này</button>;
             status='Đang kết nối';
+            lockIcon=<span id='lock'><i className="fa fa-lock fa-stack-1x "></i></span>
         }else  if (this.state.status==='0')  {
-            buttonChangeShopStatus=<button onClick={this.connectAccount}>Kết nối tài khoản này</button>
+            buttonChangeShopStatus=<button id='bt-reconnect'onClick={this.connectAccount}>Kết nối tài khoản này</button>
             status='Ngừng kết nối';
+            lockIcon=<span id='unlock'><i className="fa fa-lock fa-stack-1x "></i></span>
         }
         return (
             <>
@@ -139,7 +141,7 @@ class BodyShopOverView extends Component {
                             <div id='lock-icon'>
                                 <span className="fa-stack fa-lg">
                                     <i className="fa fa-circle-thin fa-stack-2x"></i>
-                                    <span id='lock'><i className="fa fa-lock fa-stack-1x "></i></span>
+                                    {lockIcon}
                                 </span>
                             </div>
                             <div id='shop-info'>

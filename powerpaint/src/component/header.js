@@ -15,7 +15,7 @@ class Header extends Component {
     render() { 
         let logo;
         if (this.props.logo===true) logo = (
-            <div className='header-logo'></div>
+            <div className='header-logo' onClick={()=> window.location.href='/overview'}></div>
         ); 
         else logo = null;
         return ( 

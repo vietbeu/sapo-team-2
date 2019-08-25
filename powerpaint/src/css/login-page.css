@@ -38,7 +38,8 @@
 .info-popup p{
   font-size: 2vw;
   color:#333333;
-  margin-left: 5%;
+  margin-left: 2.5%;
+  font-weight: bold;
 }
 .logo-popup{
   float: left;
@@ -196,4 +197,14 @@
   width: 30%;
   padding: 2%;
   border-radius: 5px;
+}
+
+.exit-popup-bt{
+  position: absolute;
+  right: 0.5%;
+  top:0%;
+  background: inherit;
+  border: none;
+  color: #7b7b7b;
+  opacity: 0.5;
 }

@@ -45,7 +45,7 @@ class ShopItem extends Component {
         let shop=this.props.shop;
         let shopStatus;
         if (shop.status===1) shopStatus=<td className='active-status'>Đang hoạt động</td>
-        else shopStatus = <td className='deactive-status'>Ngừng kết nối </td>
+        else shopStatus = <td className='deactive-status'>Ngừng hoạt động </td>
         return (
             <>
                 <tr className='data-row'>

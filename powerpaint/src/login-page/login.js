@@ -13,63 +13,11 @@ class Login extends Component {
 			active: props.active
 		}
 	}
-    /*componentDidMount(){
-		console.log('start');
-        //this.testAPI();
-		/*axios.get('http://192.168.9.253:8181/api/v1/hello')
+    componentDidMount(){
+		if (this.state.active===1) this.clickLogin();
+		if (this.state.active===2) this.clickRegister();
+	}
 		
-		.then(function (response) {
-			console.log(response.data.funct)
-		})
-		
-		.catch(function (error) {
-			
-			console.log(error);
-		})*/
-
-		/*axios.post('http://192.168.9.253:8181/api/v1/login', {
-			email: 'tranphung@gmail.com',
-			password: '123456'
-		  })
-		.then(function (response) {
-			console.log(response.data)
-		})
-		
-		.catch(function (error) {
-			
-			console.log(error);
-		})
-		axios.post('http://192.168.9.253:8181/api/v1/registration', {
-			username:"avs",
-			email: 'tranphung1@gmail.com',
-			
-			password: '123456',password_confirm:'123456'
-		  })
-		.then(function (response) {
-			console.log(response.data)
-		})
-		
-		.catch(function (error) {
-			
-			console.log(error);
-		})
-}*/
-    /*testAPI = () => {
-		let headers = new Headers();
-
-		headers.append('Content-Type', 'application/json');
-		headers.append('Accept', 'application/json');
-	  
-		headers.append('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
-		headers.append('Access-Control-Allow-Credentials', 'true');
-		headers.append("Access-Control-Allow-Headers", "Origin, X-Requested-With,");
-		headers.append('GET', 'POST', 'OPTIONS');
-        fetch('https://cors-anywhere.herokuapp.com/http://192.168.9.253:8181/api/v1/hello',{headers:headers,credentials: 'include',
-		method: 'GET',})
-        .then(rsp => rsp.json())
-		.then(data =>console.log(data))
-		.catch(() => console.log("Can’t access response. Blocked by browser?"))      
-    }*/
 	clickLogin = () => {
 		this.setState({active:1});
 		document.getElementById("login").style.borderBottom= '#0084FF solid 2px';
@@ -117,7 +65,7 @@ class Login extends Component {
 				</div>
 				<div className='form'>
 					{activeComponent}		
-					{loginFB}
+					{/* {loginFB} */}
 				</div>
 				
 			</React.Fragment>
