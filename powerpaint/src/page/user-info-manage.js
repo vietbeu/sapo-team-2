@@ -19,7 +19,7 @@ class UserInfoManagement extends Component {
         return (
             <React.Fragment>
             <div className='header' >
-                <Header logo={true} isShowMenu={this.showMenuDialog} text='< Tổng quan'/>
+                <Header logo={true} isShowMenu={this.showMenuDialog}/>
             </div>
             <div className='body-userinfo'>
                 {body}

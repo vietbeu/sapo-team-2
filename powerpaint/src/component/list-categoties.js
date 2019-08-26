@@ -10,15 +10,18 @@ class ListCategories extends Component {
     }
 
     handleChangeCateLv1=(e)=>{
-        this.setState({lv1: e.target.value,lv2:'',lv3:'',isHiddenLv2:false,isHiddenLv3:true});
-        this.props.onChangeCategory(this.state.listCategories,e.target.value,'','');
+        let category=JSON.parse(e.target.value);
+        this.setState({lv1: category.category_id,lv2:'',lv3:'',isHiddenLv2:false,isHiddenLv3:true});
+        this.props.onChangeCategory(this.state.listCategories,category.category_id,'','',category.category_name);
     }
     handleChangeCateLv2=(e)=>{
-        this.setState({lv2:e.target.value,isHiddenLv3:false});
-        this.props.onChangeCategory(this.state.listCategories,this.state.lv1,e.target.value,'');
+        let category=JSON.parse(e.target.value);
+        this.setState({lv2:category.category_id,isHiddenLv3:false});
+        this.props.onChangeCategory(this.state.listCategories,this.state.lv1,category.category_id,'',category.category_name);
     }
     handleChangeCateLv3=(e)=>{
-        this.props.onChangeCategory(this.state.listCategories,this.state.lv1,this.state.lv2,e.target.value);
+        let category=JSON.parse(e.target.value);
+        this.props.onChangeCategory(this.state.listCategories,this.state.lv1,this.state.lv2,category.category_id,category.category_name);
     }
     
     render() { 
@@ -32,16 +35,16 @@ class ListCategories extends Component {
         listCategories.map(x => {
             if (x.parent_id ===0) categoriesLv1.push(x);
             })
-        let listCateLv1=categoriesLv1.map(x => <option value={x.category_id} key ={x.category_id}>{x.category_name}</option> );
+        let listCateLv1=categoriesLv1.map(x => <option value={JSON.stringify(x)} key ={x.category_id}>{x.category_name}</option> );
         let listCateLv2=[], listCateLv3=[];
         listCategories.map(x => {
             if (x.parent_id ==lv1) categoriesLv2.push(x);
         })
-        listCateLv2=categoriesLv2.map(x => <option value={x.category_id} key ={x.category_id}>{x.category_name}</option> )
+        listCateLv2=categoriesLv2.map(x => <option value={JSON.stringify(x)} key ={x.category_id}>{x.category_name}</option> )
         listCategories.map(x => {
             if (x.parent_id ==lv2) categoriesLv3.push(x);
         })
-        listCateLv3=categoriesLv3.map(x => <option value={x.category_id} key ={x.category_id}>{x.category_name}</option> )
+        listCateLv3=categoriesLv3.map(x => <option value={JSON.stringify(x)} key ={x.category_id}>{x.category_name}</option> )
 
         if (isHiddenLv2 === false) boxLv2 = (
             <select onChange={this.handleChangeCateLv2}>

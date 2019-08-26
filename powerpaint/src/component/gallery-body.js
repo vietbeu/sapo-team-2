@@ -134,7 +134,7 @@ class BodyGallery extends Component {
           if (imgItems[i].getAttribute('src')==listImgsSelected[j]) {
             console.log(imgItems[i].getAttribute('src'));
             console.log(listImgsSelected[j]);
-            imgItems[i].setAttribute('style','outline:  2px solid red');       
+            imgItems[i].setAttribute('style','outline:  2px solid #0084FF');       
           }
     }
 

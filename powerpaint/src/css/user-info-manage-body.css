@@ -51,6 +51,7 @@
 }
 .info-content #title{
     font-size: 1.6vw;
+    color:#333333;
 }
 .row-info{
     width:100%;
@@ -69,7 +70,7 @@
 }
 .row-info #email{
     border: none;
-    width: 50%;
+    width: 70%;
 }
 #change-email{
     float:right;
@@ -115,9 +116,12 @@
     width: 50%;
 }
 #bt-changepass{
-    width: 20%;
-    margin-left: 40%;
-    
+    float: right;
+    background: #007BFF;
+    margin-top: 3vh;
+    padding: 0.5% 0%;
+    font-size: 1.3vw;
+    width: 5vw;height: auto;
 }
 .info-content input{
     background: #FFFFFF;

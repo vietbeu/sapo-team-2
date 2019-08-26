@@ -15,7 +15,7 @@ class ImgItem extends Component {
             let imgItems = document.getElementsByClassName('img-item-gl');
             for (let i=0 ; i<imgItems.length ; i++){
                 if (imgItems[i].getAttribute('value')=== this.state.src) {
-                  imgItems[i].setAttribute('style','outline:1px solid red');  
+                  imgItems[i].setAttribute('style','outline:2px solid #0084FF');  
                 }            
             }
         }
@@ -42,7 +42,7 @@ class ImgItem extends Component {
         else if  (isChosen===false  && listImgsSelected.length <= 8) {
             for (let i=0 ; i<imgItems.length ; i++){
                 if (imgItems[i].getAttribute('value')=== this.state.src) {
-                  imgItems[i].setAttribute('style','outline:1px solid red');  
+                  imgItems[i].setAttribute('style','outline:2px solid #0084FF');  
                 }            
             }
             this.setState({isChosen:true});      

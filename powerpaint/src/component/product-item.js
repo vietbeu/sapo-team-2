@@ -61,16 +61,16 @@ class ProductItem extends Component {
         let status;
         switch(product.item.status) {
             case 'NORMAL':
-                status='Hiển thị';
+                status=<div className='normal-status'>Hiển thị</div>;
                 break;
             case 'BANNED':
-                status= 'Khoá';
+                status= <div className='banned-status'>Khoá</div>;
                 break;
             case 'DELETED':
-                status= 'Đã xoá';
+                status= <div className='deleted-status'>Đã xoá</div>
                 break;
             case 'UNLIST':
-                status= 'Ẩn';
+                status= <div className='unlist-status'>Ẩn</div>;
                 break;
             default:
                 status='';

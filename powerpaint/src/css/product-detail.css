@@ -72,14 +72,17 @@
 #item-2{
     float: left;
     width: 20%;text-align: center;height:8vh;
+    color: #0084FF;
 }
 #item-3{
     float: left;
     width: 30%;text-align: center;height:8vh;
+    color: #0084FF;
 }
 #item-4{
     float: left;
     width: 30%;height:8vh;
+    color: #0084FF;
 }
 .menu-img-item:hover{
     cursor: pointer;

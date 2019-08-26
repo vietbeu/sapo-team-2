@@ -6,7 +6,7 @@ import PopUpAddShop from '../component/add-shop-popup';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Page from './page';
-import { serverIP,port } from '../component/const';
+import { serverIP,port, partner_id } from '../component/const';
 import AddShopButton from '../component/add-shop-button';
 class ShopeeOverview extends Component {
     state = {
@@ -15,17 +15,30 @@ class ShopeeOverview extends Component {
     async componentDidMount(){
         if (window.location.href.indexOf('shop_id')>0) {
             this.setState({isHiddenPopupAddShop:false});
-            this.setState({shop_id: window.location.href.split('=')[1]})
+            this.setState({shop_id: parseInt(window.location.href.split('=')[1])})
             const { value: shopname } = await Swal.fire({
                 title: 'Tên Shop',
-                text:'Hãy đặt tên cho shop để dễ dàng quản lý',
+                text:'Bạn có thể đặt tên cho shop để dễ dàng quản lý',
                 input: 'text',
-                inputPlaceholder: 'Hãy nhập tên shop'
-              })
-              
-              if (shopname) {
+                inputPlaceholder: 'Hãy nhập tên shop',
+                showCancelButton:true,
+                cancelButtonText:'Bỏ qua',
+                confirmButtonText:'Lưu'
+            })            
+            if (shopname) {
                 this.addShop(shopname);
-              }
+            }else{
+                const authen = 'Bearer '+localStorage.getItem('token');
+                axios.post('http://'+serverIP+':'+port+'/api/v1/test/getShopInfo',{
+                    shopid:this.state.shop_id ,
+                    partner_id:parseInt(partner_id),
+                },
+                {headers: {
+                    'Authorization': authen,
+                }})
+                .then(rsp => {console.log(rsp.data);this.addShop(rsp.data.shop_name)})
+                .catch(()=> Swal.fire('Thêm shop thất bại','Đã có lỗi xảy ra! Xin vui lòng thử lại sau!'))
+            }
         }
     }
     openNav=()=>{
@@ -40,7 +53,6 @@ class ShopeeOverview extends Component {
     
     addShop=(shop_name)=>{
         const authen = 'Bearer '+localStorage.getItem('token');
-        console.log(authen);
         axios.post('http://'+serverIP+':'+port+'/api/v1/shop',{
             shop_id:this.state.shop_id ,
             name:shop_name

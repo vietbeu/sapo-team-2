@@ -385,7 +385,9 @@ class BodyProductDetail extends Component {
         return ( 
             <div id='product-detail-body'>
                 <div id='back'>
+                    <a href='/product'>
                     <i className="fa fa-angle-left" aria-hidden="true"></i><span>Quay lại danh sách sản phẩm</span>
+                    </a>
                 </div>
                 <div id='product-name'>
                     {this.state.name}

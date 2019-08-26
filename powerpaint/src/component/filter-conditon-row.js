@@ -17,8 +17,8 @@ class FilterConditionRow extends Component {
         if (option == 'Danh mục sản phẩm') {this.setState({categories:true,shopeeStatus:false});}
         this.props.onChooseCondition(option,this.props.rowIndex);
     }
-    changeCategory=(list,lv1,lv2,lv3)=>{
-        this.props.onChangeCategory(list,lv1,lv2,lv3);
+    changeCategory=(list,lv1,lv2,lv3,cate_name)=>{
+        this.props.onChangeCategory(list,lv1,lv2,lv3,cate_name);
     }
     changeStatusFilter=(e)=>{
         let option = e.target.value;
@@ -36,7 +36,7 @@ class FilterConditionRow extends Component {
             shopeeStatus=(
             <span>
                 <select className='filter-detail' onChange={this.changeStatusFilter}>
-                    <option hidden>Chọn trạng tháic</option>
+                    <option hidden>Chọn trạng thái</option>
                     <option value='NORMAL'>Hiển thị</option>
                     <option value='UNLIST'>Ẩn</option>
                     <option value='BANNED'>Khoá</option>

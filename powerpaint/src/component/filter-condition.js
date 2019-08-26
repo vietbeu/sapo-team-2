@@ -35,8 +35,8 @@ class FilterCondition extends Component {
         filterConditionChosen.splice(index,1);
         this.setState({filterConditionChosen:filterConditionChosen})
     }
-    changeCategory=(list,lv1,lv2,lv3)=>{
-        this.setState({listCate:list,lv1:lv1,lv2:lv2,lv3:lv3});
+    changeCategory=(list,lv1,lv2,lv3,cate_name)=>{
+        this.setState({listCate:list,lv1:lv1,lv2:lv2,lv3:lv3,cate_name:cate_name});
     }
     changeStatusFilter=(option)=>{
         // this.props.onChangeStatusFilter(option);
@@ -48,7 +48,8 @@ class FilterCondition extends Component {
         let lv2=this.state.lv2;
         let lv3=this.state.lv3;
         let shopeeStatus = this.state.shopeeStatus;
-        this.props.onShowResult(listCate,lv1,lv2,lv3,shopeeStatus,this.state.filterConditionChosen);
+        let cate_name=this.state.cate_name;
+        this.props.onShowResult(listCate,lv1,lv2,lv3,cate_name,shopeeStatus,this.state.filterConditionChosen);
         let arr=[undefined,null,''];
         if(arr.indexOf(lv1) <0 || arr.indexOf(shopeeStatus)<0)
             this.props.onTurnOnFilter();

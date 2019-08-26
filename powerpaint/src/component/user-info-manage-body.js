@@ -3,6 +3,7 @@ import '../css/user-info-manage-body.css';
 import SettingMenu from './setting';
 import Axios from 'axios';
 import {serverIP,port} from './const';
+import Swal from 'sweetalert2';
 
 class UserInfoManagementBody extends Component {
     constructor(props){
@@ -45,7 +46,7 @@ class UserInfoManagementBody extends Component {
                                 </div> 
                                 <div className='row-info'>
                                     <span>Email</span>
-                                    <span id='change-email'>Đổi mới</span>
+                                    {/* <span id='change-email'>Đổi mới</span> */}
                                     <span><input id='email' type='text' disabled value={localStorage.getItem('email')}/></span>
                                 </div> 
                             </div>
@@ -104,15 +105,10 @@ class ChangePassForm extends Component {
         else this.setState({isConfirmPassValid: false, errorConfirmMessage: 'Không khớp với mật khẩu '})
     }
 
-    validationAll = () =>{
-        if (this.state.isPassValid===false) return false;
-        if (this.state.isConfirmPassValid===false) return false;
-        return true;
-    }
     submitNewPass = () => {
-        if (this.validationAll){
+        if (this.state.isPassValid===true && this.state.isConfirmPassValid===true){
             const authen = 'Bearer '+localStorage.getItem('token');
-            Axios.post('http://' + serverIP + ':'+port+'/api/v1/user/user/changepassword',{
+            Axios.post('http://' + serverIP + ':'+port+'/api/v1/user/changepassword',{
                 old_password:this.state.curPass,
                 new_password:this.state.newPass,
             },
@@ -120,9 +116,11 @@ class ChangePassForm extends Component {
                 'Authorization': authen,
             }})
             .then (res =>{
-                console.log(res);
+                if (res.data.success === 1) Swal.fire('Thành công','Đổi mật khẩu thành công','success')
+                else Swal.fire('Thất bại','Đổi mật khẩu thất bại','error')
             })
-        }
+            .catch (()=> Swal.fire('Thất bại','Đã có lỗi xảy ra! Xin vui lòng thử lại sau!'))
+        }else Swal.fire('','Vui lòng điền các trường thông tin đúng yêu cầu','warning');
     }
 
     render() { 
@@ -150,7 +148,7 @@ class ChangePassForm extends Component {
                     </div>
                 </span>
             </div> 
-            <button id='bt-changepass' onClick={this.submitNewPass}>OK</button>
+            <button id='bt-changepass' onClick={this.submitNewPass}>Lưu</button>
         </>   
         )
     }

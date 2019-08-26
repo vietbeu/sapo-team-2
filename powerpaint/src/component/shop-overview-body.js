@@ -126,9 +126,12 @@ class BodyShopOverView extends Component {
                         <div id='table-caption'>Hướng dẫn sử dụng</div>
                         <div id='tb-help-content'>
                             <ul>
-                                <li><span>Hướng dẫn cách thêm gian hàng</span></li>
-                                <li><span>Hướng dẫn cách sử dụng tool chỉnh ảnh trên shopee</span></li>
-                                <li><span>Hướng dẫn cách quản lý ảnh hiệu quả với Sapo Editor</span></li>
+                                <li><span><a href='https://support.sapo.vn/tong-quan-ban-hang-tren-shopee' target="_blank">
+                                    Hướng dẫn cách thêm gian hàng</a></span></li>
+                                <li><span><a href='https://support.sapo.vn/tong-quan-ban-hang-tren-shopee' target="_blank">
+                                    Hướng dẫn cách sử dụng tool chỉnh ảnh trên shopee</a></span></li>
+                                <li><span><a href='https://support.sapo.vn/tong-quan-ban-hang-tren-shopee' target="_blank">
+                                    Hướng dẫn cách quản lý ảnh hiệu quả với Sapo Editor</a></span></li>
                             </ul>
                         </div>
                     </div>
@@ -151,7 +154,7 @@ class BodyShopOverView extends Component {
                                     <span> {localStorage.getItem('shop-name')}</span>
                                 </div>
                                 <div className='link-shop'>
-                                    <a href={'https://shopee.vn/shop/'+this.state.shop_id}>
+                                    <a href={'https://shopee.vn/shop/'+this.state.shop_id} target="_blank">
                                         {'https://shopee.vn/shop/'+this.state.shop_id}
                                     </a>
                                 </div>

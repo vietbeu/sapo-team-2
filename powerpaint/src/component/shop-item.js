@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import {serverIP,port,partner_id} from './const';
 import axios from 'axios';
+import avtDefault from '../images/avt-shop-default.png'
 
 class ShopItem extends Component {
-    state = {  }
+    state = { 
+        avatar:null,
+     }
 
     componentDidMount(){
         const authen = 'Bearer '+localStorage.getItem('token');
@@ -42,8 +45,10 @@ class ShopItem extends Component {
         window.location.href='/shop';
     }
     render() { 
-        let shop=this.props.shop;
-        let shopStatus;
+        let shop=this.props.shop; let avt=this.state.avatar;
+        let shopStatus,srcAvt;
+        if (avt === null || avt===[] || avt === '') srcAvt=avtDefault;
+        else srcAvt=avt;
         if (shop.status===1) shopStatus=<td className='active-status'>Đang hoạt động</td>
         else shopStatus = <td className='deactive-status'>Ngừng hoạt động </td>
         return (
@@ -53,13 +58,13 @@ class ShopItem extends Component {
                     name={shop.name} onClick={this.clickShop}>
                         <span className='shop-avatar' id={shop.shop_id} date={this.formatDay(shop.createDate)} 
                     name={shop.name}>
-                            <img width='40%'  src={this.state.avatar} alt={shop.shop_id} id={shop.shop_id} date={this.formatDay(shop.createDate)} 
+                            <img width='40%'  src={srcAvt} alt={shop.shop_id} id={shop.shop_id} date={this.formatDay(shop.createDate)} 
                     name={shop.name}/>
                             </span>
                         {' '+shop.name}
                     </td>
                     <td className='link-shop'>
-                        <a href={'https://shopee.vn/shop/'+shop.shop_id}>{'https://shopee.vn/shop/'+shop.shop_id}</a></td>
+                        <a href={'https://shopee.vn/shop/'+shop.shop_id} target="_blank">{'https://shopee.vn/shop/'+shop.shop_id}</a></td>
                     <td className='connect-date'>{this.formatDay(shop.createDate)}</td>
                     {shopStatus}
                     

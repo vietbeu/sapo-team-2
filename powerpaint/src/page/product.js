@@ -10,7 +10,7 @@ class Product extends Component {
         let text = (
             <>
                 <span className='header-text'>
-                    <div><i className="fa fa-angle-double-left fa-2x" aria-hidden="true"></i></div>
+                    <div><a href='/overview'><i className="fa fa-angle-double-left fa-2x" aria-hidden="true"></i></a></div>
                     <div id='logo-shopee'></div>
                     <div id='location'>KÊNH SHOPEE/ Sản phẩm</div>
                 </span>
