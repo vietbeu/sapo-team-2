@@ -5,6 +5,7 @@ import {serverIP,port,partner_id,serverFrIP,portFr} from './const';
 import Axios from 'axios';
 import { async } from 'q';
 import ImgItem from './img-item';
+import {Modal, Button} from 'react-bootstrap';
 
 class BodyGallery extends Component {
     state = { 
@@ -14,7 +15,8 @@ class BodyGallery extends Component {
       shop_id:JSON.parse(localStorage.getItem('listShop'))[0].shop_id,
       listImgsSelected:[],
       numOfImgSelected:0,
-      warningDialogStatus: 0,
+      showModal:false,
+      typeModal:0,
       // listSelectedItems:JSON.parse(localStorage.getItem('products-selected')),
     }
     async componentDidMount(){
@@ -258,13 +260,13 @@ class BodyGallery extends Component {
     }
 
     showWarning=(type)=>{
-      this.setState({warningDialogStatus: type});
+      this.setState({showModal:true,typeModal: type});
     }
     showWarningUpdate=()=>{
       let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
       if (listCheckBox === null || listCheckBox.length===0)
         Swal.fire('','Bạn chưa chọn sản phẩm','warning');
-      else this.setState({warningDialogStatus:2});
+      else this.setState({showModal:true,typeModal:2});
     }
     showWarningAdd=()=>{
       let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
@@ -272,12 +274,12 @@ class BodyGallery extends Component {
         Swal.fire('','Bạn chưa chọn sản phẩm','warning');
       else{
       let max = parseInt(localStorage.getItem('max-imgs'));
-      if(this.state.listImgsSelected.length>max) this.setState({warningDialogStatus:3});
-      else this.setState({warningDialogStatus: 4})
+      if(this.state.listImgsSelected.length>max) this.setState({typeModal:3,showModal:true});
+      else this.setState({typeModal: 4,showModal:true})
       }
     }
     hideWarningDialog=()=>{
-      this.setState({warningDialogStatus:0});
+      this.setState({showModal:false});
     }
     redirectProductPage=()=>{
       let listImgs=this.state.listImgsSelected;
@@ -420,49 +422,104 @@ class BodyGallery extends Component {
     let listImgsSelected = this.state.listImgsSelected;
     this.props.onSelectImgs(listImgsSelected);
   }
-
+  closeModal=()=>{
+    this.setState({showModal:false});
+  }
     render() { 
-        let listShop=JSON.parse(localStorage.getItem('listShop'));
-        const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
-        let textNumSelectedImgs;
-        if (this.state.listImgsSelected.length>0) 
+      let listShop=JSON.parse(localStorage.getItem('listShop'));
+      const listSelectShop = listShop.map(x=><option value={x.shop_id} key={x.shop_id}>{x.name}</option>);
+      let textNumSelectedImgs;
+      let listImgsSelected=this.state.listImgsSelected;
+      if (this.state.listImgsSelected.length>0) 
           textNumSelectedImgs=<span id='num-selected-imgs'>{'Đã chọn '+this.state.numOfImgSelected+' ảnh'}</span>;
-        else textNumSelectedImgs=null;
-        let footer;
-        if (this.props.gallery === true)  footer = (
-          <>
-          {/* <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button> */}
-          <button id='bt-delImgs' onClick={this.deleteListImgs}>Xoá hình ảnh</button>
-          <button id='bt-update' onClick={this.showWarningUpdate}>Cập nhật và thay thế</button>
-          <button id='bt-add' onClick={this.showWarningAdd}>Cập nhật và bổ sung</button>
-          </>
-        ); else footer = (
-          <button id='bt-update' onClick={this.selectImgs}>Chọn ảnh</button>  
-        )
-        let currentImgs=[];currentImgs=this.state.currentImgs;
-        let imgRenderList=[];
-        if(currentImgs.length>0) imgRenderList=currentImgs.map(x=>{
-          let key  =currentImgs.indexOf(x);
-          return(
-          // <span className='img-item' value={key} key={key} onClick={this.handleCLickImgItem}
-          // onMouseOver={this.showEditImgMenu} onMouseLeave={this.hideEditImgMenu}>
-          //   <img className='img-content' value={key}  src={x} alt='img' />
-          //   <span className='img-button'>
-          //       <button value={key} src={x} onClick={this.editPhoto}  className='edit-bt'>
-          //           <i src={x} className="fa fa-pencil" value={key} aria-hidden="true"></i>
-          //       </button>
-          //       <button value={key} src={x} onClick={this.handleDeleteImg} className='edit-bt'>
-          //           <i className="fa fa-trash" aria-hidden="true" src={x}  value={key}></i>
-          //       </button>
-          //   </span>
-          // </span>
-          <ImgItem src={x} key={x} onDeleteImg={this.handleDeleteImg} onEditPhoto={this.handleEditPhoto}
+      else textNumSelectedImgs=null;
+      let footer;
+      if (this.props.gallery === true)  footer = (
+        <>
+        {/* <button id='bt-ok' onClick={this.redirectProductPage}>Chọn sản phẩm</button> */}
+        <button id='bt-delImgs' onClick={this.deleteListImgs}>Xoá hình ảnh</button>
+        <button id='bt-update'  onClick={this.showWarningUpdate}>Cập nhật và thay thế</button>
+        <button id='bt-add' onClick={this.showWarningAdd}>Cập nhật và bổ sung</button>
+        </>
+      ); else footer = (
+        <button id='bt-update' onClick={this.selectImgs}>Chọn ảnh</button>  
+      )
+      let currentImgs=[];currentImgs=this.state.currentImgs;
+      let imgRenderList=[];
+      if(currentImgs.length>0) imgRenderList=currentImgs.map(x=>{
+        let key  =currentImgs.indexOf(x);
+        return(
+        <ImgItem src={x} key={x} onDeleteImg={this.handleDeleteImg} onEditPhoto={this.handleEditPhoto}
             listImgsSelected={this.state.listImgsSelected} onSelectImg={this.handleCLickImgItem}/>
-        )})
+      )})
+      let type=this.state.typeModal,headerModal,bodyModal,footerModal;
+        if (type==1){
+          headerModal='Thông báo cập nhật hình ảnh lên Shopee';
+          bodyModal='Hiện tại bạn đã chọn quá số lượng 9 ảnh, bạn cần chọn lại số lượng hình ảnh phù hợp để chúng tôi '
+          +'hỗ trợ bạn cập nhật lên Shopee đảm bảo đúng những quy định mà Shopee đặt ra cho người bán hàng'
+          footerModal=<button id='bt-ok' onClick={this.closeModal}>Chọn lại</button>;
+        }
+        if (type===2){
+          headerModal='Thông báo cập nhật và thay thế hình ảnh';
+          bodyModal=(
+            <>
+              <div>{'Bạn đã lựa chọn '+listImgsSelected.length+' hình ảnh'}</div>
+              <div>Bạn có chắc chắn muốn thay thế toàn bộ những hình ảnh mà bạn đã lựa chọn cho 
+                tất cả những hình ảnh của sản phẩm?</div>
+            </>
+          );
+          footerModal=(
+            <>
+              <button id='bt-ok' onClick={this.updateToShopee}>Đồng ý</button>
+              <button id='bt-exit' onClick={this.closeModal}>Thoát</button>
+            </>
+          )
+        }
+        if (type===3){
+          headerModal='Thông báo cập nhật hình ảnh lên Shopee';
+          bodyModal='Bạn chỉ có thể lựa chọn tối đa '+localStorage.getItem('max-imgs') +' hình ảnh, bạn cần chọn lại số lượng hình ảnh phù hợp để chúng tôi '
+            +'hỗ trợ bạn cập nhật lên Shopee đảm bảo đúng những quy định mà Shopee đã đặt ra cho người mua hàng.'
+          footerModal=<button id='bt-ok' onClick={this.closeModal}>Chọn lại</button>;
+        }
+        if (type===4){
+          headerModal='Thông báo cập nhật và bổ sung hình ảnh';
+          bodyModal=(
+            <>
+              <div>{'Bạn đã lựa chọn '+listImgsSelected.length+' hình ảnh'}</div>
+              <div>Bạn có chắc chắn muốn bổ sung toàn bộ những hình ảnh mà bạn đã lựa chọn vào hình ảnh của các sản 
+                phẩm mà bạn đã lựa chọn?</div>
+            </>
+          )
+          footerModal = (
+            <>
+              <button id='bt-ok' onClick={this.addToShopee}>Đồng ý</button>
+              <button id='bt-exit' onClick={this.closeModal}>Thoát</button>
+            </>
+          )
+        }
         return (
           <>
-            <WarningDialog isHidden={this.state.warningDialogStatus} onClickExit={this.hideWarningDialog}
-            listImgsSelected={this.state.listImgsSelected} onUpdateShopee={this.updateToShopee} onAddShopee={this.addToShopee}/>
+            <Modal size="lg" dialogClassName='warning-dialog'centered show={this.state.showModal} onHide={this.closeModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>
+                  <div id='header-wn-dl'>
+                    {headerModal}
+                  </div>
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <div id='body-wn-dl'>
+                  {bodyModal}
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <div id='footer-wn-dl'>
+                {footerModal}
+                </div>
+              </Modal.Footer>
+            </Modal>
+            {/* <WarningDialog isHidden={this.state.warningDialogStatus} onClickExit={this.hideWarningDialog}
+            listImgsSelected={this.state.listImgsSelected} onUpdateShopee={this.updateToShopee} onAddShopee={this.addToShopee}/> */}
             <div id='gallery-content'>
                 <div id='select-acc'>
                     <span>
@@ -492,82 +549,3 @@ class BodyGallery extends Component {
 export default BodyGallery;
 
 
-class WarningDialog extends Component {
-  state = {  
-    type:this.props.type,
-  }
-  handleExit=()=>{
-    this.props.onClickExit();
-  }
-  handleUpdateToShopee=()=>{
-    this.props.onUpdateShopee();
-  }
-  handleAddToShopee=()=>{
-    this.props.onAddShopee();
-  }
-  render() { 
-    let header,body,footer,type=this.props.isHidden;
-    let listImgsSelected=this.props.listImgsSelected;
-    if (this.props.isHidden === 0) return null;
-    else {
-      if (type==1){
-        header='Thông báo cập nhật hình ảnh lên Shopee';
-        body='Hiện tại bạn đã chọn quá số lượng 9 ảnh, bạn cần chọn lại số lượng hình ảnh phù hợp để chúng tôi '
-        +'hỗ trợ bạn cập nhật lên Shopee đảm bảo đúng những quy định mà Shopee đặt ra cho người bán hàng'
-        footer=<button id='bt-ok' onClick={this.handleExit}>Chọn lại</button>;
-      }
-      if (type===2){
-        header='Thông báo cập nhật và thay thế hình ảnh';
-        body=(
-          <>
-          <div>{'Bạn đã lựa chọn '+listImgsSelected.length+' hình ảnh'}</div>
-          <div>Bạn có chắc chắn muốn thay thế toàn bộ những hình ảnh mà bạn đã lựa chọn cho 
-            tất cả những hình ảnh của sản phẩm?</div>
-          </>
-        );
-        footer=(
-          <>
-          <button id='bt-ok' onClick={this.handleUpdateToShopee}>Đồng ý</button>
-          <button id='bt-exit' onClick={this.handleExit}>Thoát</button>
-          </>
-        )
-      }
-      if (type===3){
-        header='Thông báo cập nhật hình ảnh lên Shopee';
-        body='Bạn chỉ có thể lựa chọn tối đa '+localStorage.getItem('max-imgs') +' hình ảnh, bạn cần chọn lại số lượng hình ảnh phù hợp để chúng tôi '
-        +'hỗ trợ bạn cập nhật lên Shopee đảm bảo đúng những quy định mà Shopee đã đặt ra cho người mua hàng.'
-        footer=<button id='bt-ok' onClick={this.handleExit}>Chọn lại</button>;
-      }
-      if (type===4){
-        header='Thông báo cập nhật và bổ sung hình ảnh';
-        body=(
-          <>
-          <div>{'Bạn đã lựa chọn '+listImgsSelected.length+' hình ảnh'}</div>
-          <div>Bạn có chắc chắn muốn bổ sung toàn bộ những hình ảnh mà bạn đã lựa chọn vào hình ảnh của các sản 
-            phẩm mà bạn đã lựa chọn?</div>
-          </>
-        )
-        footer = (
-          <>
-          <button id='bt-ok' onClick={this.handleAddToShopee}>Đồng ý</button>
-          <button id='bt-exit' onClick={this.handleExit}>Thoát</button>
-          </>
-        )
-      }
-      return (
-      <dialog id='warning-dialog' open>
-        <div id='header-wn-dl'>
-          <p>{header}</p>
-        </div>
-        <div id='body-wn-dl'>
-          {body}
-        </div>
-        <div id='footer-wn-dl'>
-          {footer}
-        </div>
-      </dialog>
-      );
-    }
-  }
-}
- 

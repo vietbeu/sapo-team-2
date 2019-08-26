@@ -83,18 +83,15 @@
     display: none;
 }
 
-#warning-dialog{
+.warning-dialog{
     font-size: 1.2vw;
     width: 60%;
-    z-index: 1;
-    border: 1px solid #C4CDD5;
     box-sizing: border-box;
     border-radius: 5px;
     padding: 1% 2%;
 }
 #header-wn-dl{
     font-size: 1.5vw;
-    border-bottom:1px solid #C4CDD5; 
     color: #333333;
     font-weight: bold;
     vertical-align: middle;
@@ -105,19 +102,20 @@
 }
 #body-wn-dl{
     font-size:1.5vw;
-    padding: 3%;
-    border-bottom:1px solid #C4CDD5; 
+    padding: 0% 2%;
     text-align: justify;
     color: #000000;
 }
 #footer-wn-dl{
-    padding-top: 2%;
+    position: relative;
+    width: 100%;
+    height:7vh;
 }
-#footer-wn-dl button {
-    float: right;
+/* #footer-wn-dl button {
+    position: absolute;
     line-height: 6vh;
     padding: 0% 2%;
-}
+} */
 #bt-cancel{
     background: rgba(196, 196, 196, 0.65);
     border-radius: 5px;
@@ -125,10 +123,15 @@
     margin-right: 2%;
 }
 #bt-ok{
+    position: absolute;
+    right: 0%;
+    top:50%;
+    transform: translateY(-50%);
     background: #007BFF;
     border-radius: 5px;
     border: none;
     color: #FFFFFF;
+    padding: 2vh 1vw;
 }
 #bt-update{
     background: #007BFF;
@@ -138,12 +141,16 @@
     
 }
 #bt-exit{
+    position: absolute;
     color: #7B7B7B;
     background: rgba(196, 196, 196, 0.5);
     border: 1px solid #C4C4C4;
     box-sizing: border-box;
     border-radius: 5px;
-    margin-right:2%;
+    right:15%;
+    top:50%;
+    transform: translateY(-50%);
+    padding: 2vh 1vw;
 }
 #bt-add{
     background: #007BFF;
