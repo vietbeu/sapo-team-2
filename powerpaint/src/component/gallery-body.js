@@ -18,7 +18,7 @@ class BodyGallery extends Component {
       numOfImgSelected:0,
       showModal:false,
       typeModal:0,
-      showAdvanceModal:true,
+      showAdvanceModal:false,
       // listSelectedItems:JSON.parse(localStorage.getItem('products-selected')),
     }
     async componentDidMount(){
@@ -136,8 +136,6 @@ class BodyGallery extends Component {
       for (let i=0 ; i<imgItems.length ; i++)
         for (let j=0;j<listImgsSelected.length;j++)
           if (imgItems[i].getAttribute('src')==listImgsSelected[j]) {
-            console.log(imgItems[i].getAttribute('src'));
-            console.log(listImgsSelected[j]);
             imgItems[i].setAttribute('style','outline:  2px solid #0084FF');       
           }
     }
@@ -409,6 +407,7 @@ class BodyGallery extends Component {
           listImgs.push(listImgsSelected[i]);
         }
       else listImgs=listImgsSelected;
+      // console.log(listImgs);
       await Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/addItemImg',{
         partner_id:partner_id,
         shopid:shop_id,
@@ -427,7 +426,8 @@ class BodyGallery extends Component {
     if (listFail.length==0)  {
       Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success')
       localStorage.setItem('products-selected',null);
-    } else Swal.fire('Thất bại','Cập nhật ảnh thất bại','error') ; 
+    } else Swal.fire('Kết quả','Cập nhật thất bại '+listFail.length+' sản phẩm,'
+     +' cập nhật thành công '+listCheckBox.length-listFail.length+' sản phẩm.','error') ; 
   }
   selectImgs=()=>{
     let listImgsSelected = this.state.listImgsSelected;
@@ -440,20 +440,23 @@ class BodyGallery extends Component {
     this.setState({showAdvanceModal:false});
   }
   showPopUpAddImgsAdvance=()=>{
+    this.closeModal();
     let radios=document.getElementsByName('type-add-Imgs');
     let option;
     for (let i = 0; i < radios.length; i++){
       if (radios[i].checked === true){
           option=radios[i].value;
-          alert(option);
       }
     }
     if (option=='auto'){
       this.addToShopee();
     }
     if (option=='advance'){
-
+      this.showAdvanceModal()
     }
+  }
+  showAdvanceModal=()=>{
+    this.setState({showAdvanceModal:true});
   }
     render() { 
       let listShop=JSON.parse(localStorage.getItem('listShop'));
@@ -508,17 +511,22 @@ class BodyGallery extends Component {
         if (type===3){
           headerModal='Thông báo xác nhận hình thức bổ sung và cập nhật';
           bodyModal=(
-            <div id='popup-type-add-Imgs'>
-              <div>Bạn có thể lựa chọn hình thức bổ sung và cập nhật sau:</div>
-              <input name='type-add-Imgs' type='radio' checked value='auto'/>
-              <span className='radio-txt'>Tự động bổ sung hình ảnh phù hợp</span><br/>
-              <input name='type-add-Imgs' type='radio' value='advance'/>
-              <span className='radio-txt'>Bổ sung hình ảnh sản phẩm nâng cao</span><br/>
-            </div>
+            // <div id='popup-type-add-Imgs'>
+            //   <div>Bạn có thể lựa chọn hình thức bổ sung và cập nhật sau:</div>
+            //   <input name='type-add-Imgs' type='radio' checked value='auto'/>
+            //   <span className='radio-txt'>Tự động bổ sung hình ảnh phù hợp</span><br/>
+            //   <input name='type-add-Imgs' type='radio' value='advance'/>
+            //   <span className='radio-txt'>Bổ sung hình ảnh sản phẩm nâng cao</span><br/>
+            // </div>
+            <>
+            <div>{'Bạn đã lựa chọn '+listImgsSelected.length+' hình ảnh'}</div>
+            <div>Chúng tôi sẽ tự động cập nhật số lượng ảnh với mỗi sản phẩm phù hợp với quy định của Shopee</div>
+            </>
           )
           footerModal=(
           <>
-          <button id='bt-ok' onClick={this.showPopUpAddImgsAdvance}>Đồng ý</button>
+          {/* <button id='bt-ok' onClick={this.showPopUpAddImgsAdvance}>Đồng ý</button> */}
+          <button id='bt-ok' onClick={this.addToShopee}>Đồng ý</button>
           <button id='bt-exit' onClick={this.closeModal}>Thoát</button>
           </>
           );
@@ -570,12 +578,13 @@ class BodyGallery extends Component {
                 </Modal.Header>
                 <Modal.Body>
                   <div id='body-wn-dl'>
-                    <PopupAddImgAdvance/>
+                    <PopupAddImgAdvance listProducts={JSON.parse(localStorage.getItem('products-selected'))}
+                      listImgs={this.state.listImgsSelected}/>
                   </div>
                 </Modal.Body>
                 <Modal.Footer>
                   <div id='footer-wn-dl'>
-                    <button id='bt-ok' >Cập nhật</button>
+                    <button id='bt-ok' >Cập nhật Shopee</button>
                     <button id='bt-exit' onClick={this.closeAdvanceModal}>Thoát</button>
                   </div>
                 </Modal.Footer>

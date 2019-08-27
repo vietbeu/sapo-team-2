@@ -13,6 +13,7 @@
 }
 .body-panel{
     width:100%;
+    position: relative;
 }
 .body-panel #margin-top{
     height: 2vh;
