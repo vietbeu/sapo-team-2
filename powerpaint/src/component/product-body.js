@@ -31,6 +31,8 @@ class BodyProDuct extends Component {
      }
     componentDidMount(){
       let listShop = JSON.parse(localStorage.getItem('listShop'));
+      let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
+      if (arr.indexOf(listCheckBox)<0) this.setState({listCheckBox:listCheckBox});
       console.log(listShop[0].shop_id);
       this.setState({shop_id: listShop[0].shop_id});
       this.getProductItem(listShop[0].shop_id);

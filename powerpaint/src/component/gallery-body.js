@@ -591,6 +591,11 @@ class BodyGallery extends Component {
             </Modal>
             {/* <WarningDialog isHidden={this.state.warningDialogStatus} onClickExit={this.hideWarningDialog}
             listImgsSelected={this.state.listImgsSelected} onUpdateShopee={this.updateToShopee} onAddShopee={this.addToShopee}/> */}
+            <div id='back'>
+              <a href='/product'>
+                <i className="fa fa-angle-left" aria-hidden="true"></i><span>Quay lại danh sách sản phẩm</span>
+              </a>
+            </div>            
             <div id='gallery-content'>
                 <div id='select-acc'>
                 Gian hàng &nbsp;
