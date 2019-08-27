@@ -48,14 +48,21 @@ class BodyProDuct extends Component {
         // let body_getItemList = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
         //                     ',"pagination_offset": '+offset+', "pagination_entries_per_page": '+100+'}';
         //listItems= await API_Shopee(URL_getItemsList, body_getItemList);
-        listItems= await Axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemList?offset='+offset+'&shopid='+shopid+'&entries='+100)
+        listItems= await Axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemList?offset='+offset+'&shopid='+shopid+'&entries='+100,{
+          headers:{
+            'Authorization':'Bearer '+localStorage.getItem('token'),
+          }
+        })
         offset+=100;
         more =listItems.data.more;
         listItems.data.items.map(async x =>{
           // let body_getItemDetail = '{"partner_id": '+partner_id+', "shopid": '+shopid+', "timestamp": '+timestamp+
           //                           ',"item_id": '+x.item_id+'}';
           //let itemsDetail = await API_Shopee(URL_getItemDetail, body_getItemDetail);
-        let itemsDetail = await Axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemDetail?item_id='+x.item_id+'&shopid='+shopid);
+        let itemsDetail = await Axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemDetail?item_id='+x.item_id+'&shopid='+shopid,
+        {headers :{
+          'Authorization':'Bearer '+localStorage.getItem('token'),
+        }});
           await listItemsDetail.push(itemsDetail.data);
           //console.log(listItemsDetail);
           this.setState((prevState,props)=>{ return {listItemsDetail: listItemsDetail}});
@@ -126,7 +133,7 @@ class BodyProDuct extends Component {
       for (let i=0 ; i< checkBoxes.length ; i++)
         if (checkBoxes[i].item.item_id == item.item_id) {check+=1;break}
       if (check===0){
-        checkBoxes.push({item:item,shop_id:this.state.shop_id});
+        checkBoxes.push({item:item,shop_id:this.state.shop_id,numImg:9-numImg});
         if (numImg > maxImg) { maxImg=numImg;this.setState({maxImg:numImg});}
         this.setState({listCheckBox: checkBoxes});
       }
@@ -428,6 +435,7 @@ class BodyProDuct extends Component {
             {buttonShowSelectedItemList}       
             <div id='product-overview-content'>
                 <div id='select-acc'>
+                  Gian hàng &nbsp;
                     <select onChange={this.changeShop}>
                         {listSelectShop}
                     </select>

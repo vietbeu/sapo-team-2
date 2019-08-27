@@ -22,7 +22,10 @@ class BodyShopOverView extends Component {
         let listItems=[]; let numberOfItems=0;
         while(more){
           listItems= await axios.get('http://'+serverIP+':'+port+'/api/v1/test/getItemList?offset='
-                                        +offset+'&shopid='+this.state.shop_id+'&entries='+100)
+                                        +offset+'&shopid='+this.state.shop_id+'&entries='+100,
+                                        {headers:{
+                                            'Authorization':'Bearer '+localStorage.getItem('token'),
+                                        }})
           offset+=100;
           more =listItems.data.more;
           numberOfItems+= listItems.data.items.length;

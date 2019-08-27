@@ -1,0 +1,43 @@
+#pu-left-content{
+    width:30%;
+    height: 60vh;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    float: left;
+    color: rgba(51, 51, 51, 0.7);
+}
+#pu-button{
+    width: 10%;
+    position: relative;
+    float: left;
+    height: 60vh;
+}
+#pu-right-content{
+    width: 60%;
+    height:60vh;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    float: left;
+    color: rgba(51, 51, 51, 0.7);
+}
+#pu-bt-add{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #C4C4C4;
+    color: #7B7B7B;
+    font-weight: bold;
+    border: none;
+    width: 90%;
+    padding: 5% 0%;
+    top:40%;
+}
+.pu-content-header{
+    height: 7vh;
+    padding: 1vh 1vw;
+    border: 1px solid #C4C4C4;
+    font-weight: bold;
+}
+.pu-content-body{
+    padding: 1vh 1vw;
+}

@@ -177,3 +177,11 @@ button[disabled]{
     margin-left: 2vw;
     color: #7B7B7B;
 }
+
+#popup-type-add-Imgs .radio-txt{
+    font-size:1.3vw;
+    margin-left:1%;
+}
+#popup-type-add-Imgs input{
+    margin-left: 5%;
+}

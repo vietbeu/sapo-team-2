@@ -6,6 +6,7 @@ import Axios from 'axios';
 import { async } from 'q';
 import ImgItem from './img-item';
 import {Modal, Button} from 'react-bootstrap';
+import PopupAddImgAdvance from './advance-add-img-popup';
 
 class BodyGallery extends Component {
     state = { 
@@ -17,6 +18,7 @@ class BodyGallery extends Component {
       numOfImgSelected:0,
       showModal:false,
       typeModal:0,
+      showAdvanceModal:true,
       // listSelectedItems:JSON.parse(localStorage.getItem('products-selected')),
     }
     async componentDidMount(){
@@ -361,7 +363,7 @@ class BodyGallery extends Component {
     }}) 
   }
 
-  updateToShopee=()=>{
+  updateToShopee=async()=>{
     this.hideWarningDialog();
     let listFail=[];
     let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
@@ -370,7 +372,7 @@ class BodyGallery extends Component {
       let item_id = listCheckBox[i].item.item_id;
       let shop_id = listCheckBox[i].shop_id;
       const authen = 'Bearer '+localStorage.getItem('token');
-      Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/updateItemImg',{
+      await Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/updateItemImg',{
         partner_id:partner_id,
         shopid:shop_id,
         item_id:item_id,
@@ -380,43 +382,52 @@ class BodyGallery extends Component {
         if (rsp.data.error == null) console.log(1);
         else listFail.push(item_id)})
       .catch(error => 
-            Swal.fire('Fail!','Đã có lỗi xảy ra! Cập nhật ảnh thất bại','error')
+        listFail.push(item_id)
       )      
     }
     console.log(listFail);
     if (listFail.length==0)  {
       Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success') ;
       localStorage.setItem('products-selected',null);
-    }   
+    }    
+    // else Swal.fire('Thất bại','Cập nhật ảnh thất bại','error') ; 
   }
     
-  addToShopee=()=>{
+  addToShopee=async()=>{
     this.hideWarningDialog();
+    const authen = 'Bearer '+localStorage.getItem('token');
     let listFail=[];
     let listImgsSelected = this.state.listImgsSelected;
     let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
     for (let i=0;i<listCheckBox.length;i++){
       let item_id = listCheckBox[i].item.item_id;
       let shop_id = listCheckBox[i].shop_id;
-      const authen = 'Bearer '+localStorage.getItem('token');
-      Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/addItemImg',{
+      let listImgs=[];
+      let numOfSlotImg =listCheckBox[i].numImg;
+      if( numOfSlotImg <listImgsSelected.length)
+        for (let j=0;j<numOfSlotImg;j++){
+          listImgs.push(listImgsSelected[i]);
+        }
+      else listImgs=listImgsSelected;
+      await Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/addItemImg',{
         partner_id:partner_id,
         shopid:shop_id,
         item_id:item_id,
-        images:listImgsSelected,
+        images:listImgs,
       },{headers: {'Authorization': authen,}})
       .then (rsp => {
+        // console.log(listImgs);
         if (rsp.data.error == null) console.log(1);
         else listFail.push(item_id)})
       .catch(error => 
-            Swal.fire('Fail!','Đã có lỗi xảy ra! Cập nhật ảnh thất bại','error')
+        listFail.push(item_id)
       )      
     }
     console.log(listFail);
     if (listFail.length==0)  {
       Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success')
       localStorage.setItem('products-selected',null);
-    }    
+    } else Swal.fire('Thất bại','Cập nhật ảnh thất bại','error') ; 
   }
   selectImgs=()=>{
     let listImgsSelected = this.state.listImgsSelected;
@@ -424,6 +435,25 @@ class BodyGallery extends Component {
   }
   closeModal=()=>{
     this.setState({showModal:false});
+  }
+  closeAdvanceModal=()=>{
+    this.setState({showAdvanceModal:false});
+  }
+  showPopUpAddImgsAdvance=()=>{
+    let radios=document.getElementsByName('type-add-Imgs');
+    let option;
+    for (let i = 0; i < radios.length; i++){
+      if (radios[i].checked === true){
+          option=radios[i].value;
+          alert(option);
+      }
+    }
+    if (option=='auto'){
+      this.addToShopee();
+    }
+    if (option=='advance'){
+
+    }
   }
     render() { 
       let listShop=JSON.parse(localStorage.getItem('listShop'));
@@ -476,10 +506,22 @@ class BodyGallery extends Component {
           )
         }
         if (type===3){
-          headerModal='Thông báo cập nhật hình ảnh lên Shopee';
-          bodyModal='Bạn chỉ có thể lựa chọn tối đa '+localStorage.getItem('max-imgs') +' hình ảnh, bạn cần chọn lại số lượng hình ảnh phù hợp để chúng tôi '
-            +'hỗ trợ bạn cập nhật lên Shopee đảm bảo đúng những quy định mà Shopee đã đặt ra cho người mua hàng.'
-          footerModal=<button id='bt-ok' onClick={this.closeModal}>Chọn lại</button>;
+          headerModal='Thông báo xác nhận hình thức bổ sung và cập nhật';
+          bodyModal=(
+            <div id='popup-type-add-Imgs'>
+              <div>Bạn có thể lựa chọn hình thức bổ sung và cập nhật sau:</div>
+              <input name='type-add-Imgs' type='radio' checked value='auto'/>
+              <span className='radio-txt'>Tự động bổ sung hình ảnh phù hợp</span><br/>
+              <input name='type-add-Imgs' type='radio' value='advance'/>
+              <span className='radio-txt'>Bổ sung hình ảnh sản phẩm nâng cao</span><br/>
+            </div>
+          )
+          footerModal=(
+          <>
+          <button id='bt-ok' onClick={this.showPopUpAddImgsAdvance}>Đồng ý</button>
+          <button id='bt-exit' onClick={this.closeModal}>Thoát</button>
+          </>
+          );
         }
         if (type===4){
           headerModal='Thông báo cập nhật và bổ sung hình ảnh';
@@ -518,10 +560,31 @@ class BodyGallery extends Component {
                 </div>
               </Modal.Footer>
             </Modal>
+            <Modal size='xl' centered show={this.state.showAdvanceModal} onHide={this.closeAdvanceModal}>
+              <Modal.Header closeButton>
+                  <Modal.Title>
+                    <div id='header-wn-dl'>
+                      Thông báo xác nhận hình thức bổ sung và cập nhật
+                    </div>
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <div id='body-wn-dl'>
+                    <PopupAddImgAdvance/>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <div id='footer-wn-dl'>
+                    <button id='bt-ok' >Cập nhật</button>
+                    <button id='bt-exit' onClick={this.closeAdvanceModal}>Thoát</button>
+                  </div>
+                </Modal.Footer>
+            </Modal>
             {/* <WarningDialog isHidden={this.state.warningDialogStatus} onClickExit={this.hideWarningDialog}
             listImgsSelected={this.state.listImgsSelected} onUpdateShopee={this.updateToShopee} onAddShopee={this.addToShopee}/> */}
             <div id='gallery-content'>
                 <div id='select-acc'>
+                Gian hàng &nbsp;
                     <span>
                         <select onChange={this.changeShop}>
                             {listSelectShop}
