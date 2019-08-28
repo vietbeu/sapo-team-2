@@ -54,7 +54,12 @@ class ProductItem extends Component {
                         <div>{this.formatDay(listUpdatedItem[i].updateDate)}</div>
                         </>
                     )
-                else updatedStatus=<div className='up-fail'><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{' Thất bại'}</div>
+                else updatedStatus=(
+                        <>
+                        <div className='up-fail'><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{' Thất bại'}</div>
+                        <div>{this.formatDay(listUpdatedItem[i].updateDate)}</div>
+                        </>
+                )  
                 break;
             }else updatedStatus=<div className='no-up'>Chưa cập nhật</div>;
         }

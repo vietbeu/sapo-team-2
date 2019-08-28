@@ -88,35 +88,40 @@ class BodyGallery extends Component {
                 })
             }else Swal.fire('Fail!', 'Lưu ảnh thất bại!','error' )
         })
-        .catch(error=>Swal.fire('Thất bại!', 'Đã có lỗi xảy ra! Xin vui lòng thử lại sau','error' ) )  
+        .catch(()=>Swal.fire('Thất bại!', 'Đã có lỗi xảy ra! Xin vui lòng thử lại sau','error' ) )  
       }
     }
     styleDisabledButton = () => {
       let btUpdate;
       btUpdate=document.getElementById('bt-update');
-      btUpdate.setAttribute("disabled","disabled");
+      this.disabledButton(btUpdate);
       if (this.props.gallery === true){
         let btAdd=document.getElementById('bt-add');
-        btAdd.setAttribute("disabled","disabled");
-        btAdd.style.backgroundColor='rgba(196, 196, 196, 0.5)';
-        btAdd.style.color='#7B7B7B';
+        let btDel=document.getElementById('bt-delImgs');
+        this.disabledButton(btAdd);
+        this.disabledButton(btDel);
       }
-      btUpdate.style.backgroundColor='rgba(196, 196, 196, 0.5)';
-      btUpdate.style.color='#7B7B7B';
+    }
+    disabledButton = ( button) =>{
+      button.setAttribute("disabled","disabled");
+      button.style.backgroundColor='rgba(196, 196, 196, 0.5)';
+      button.style.color='#7B7B7B';
+    }
+    clickableButton = (button) => {
+      button.removeAttribute("disabled");
+      button.style.backgroundColor='#007BFF';
+      button.style.color='#FFFFFF'; 
     }
     styleClickableButton= () =>{
-      let btUpdate
+      let btUpdate;
       btUpdate=document.getElementById('bt-update');
-      btUpdate.removeAttribute("disabled");
-      btUpdate.style.backgroundColor='#007BFF';
-      btUpdate.style.color='#FFFFFF';
+      this.clickableButton(btUpdate);
       if (this.props.gallery === true){
         let btAdd=document.getElementById('bt-add');
-        btAdd.removeAttribute("disabled");
-        btAdd.style.backgroundColor='#007BFF';
-        btAdd.style.color='#FFFFFF' ;
-      }
-      
+        let btDel=document.getElementById('bt-delImgs');
+        this.clickableButton(btAdd);
+        this.clickableButton(btDel);
+      }  
     }
     changeShop=(e)=>{
       this.setState({shop_id:e.target.value});
@@ -385,10 +390,14 @@ class BodyGallery extends Component {
     }
     console.log(listFail);
     if (listFail.length==0)  {
-      Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success') ;
+      Swal.fire('Thành công', 'Cập nhật ảnh '+listCheckBox.length+' sản phẩm thành công','success') ;
       localStorage.setItem('products-selected',null);
     }    
-    // else Swal.fire('Thất bại','Cập nhật ảnh thất bại','error') ; 
+    else {
+      let numSuccess = listCheckBox.length-listFail.length;
+      Swal.fire('Kết quả cập nhật:','Thất bại '+listFail.length+' sản phẩm,'
+     +' thành công '+numSuccess+' sản phẩm.','error') ; 
+    }
   }
     
   addToShopee=async()=>{
@@ -404,7 +413,7 @@ class BodyGallery extends Component {
       let numOfSlotImg =listCheckBox[i].numImg;
       if( numOfSlotImg <listImgsSelected.length)
         for (let j=0;j<numOfSlotImg;j++){
-          listImgs.push(listImgsSelected[i]);
+          listImgs.push(listImgsSelected[j]);
         }
       else listImgs=listImgsSelected;
       // console.log(listImgs);
@@ -424,10 +433,13 @@ class BodyGallery extends Component {
     }
     console.log(listFail);
     if (listFail.length==0)  {
-      Swal.fire('Thành công', 'Cập nhật ảnh các sản phẩm thành công','success')
+      Swal.fire('Thành công', 'Cập nhật ảnh '+listCheckBox.length+' sản phẩm thành công','success')
       localStorage.setItem('products-selected',null);
-    } else Swal.fire('Kết quả','Cập nhật thất bại '+listFail.length+' sản phẩm,'
-     +' cập nhật thành công '+listCheckBox.length-listFail.length+' sản phẩm.','error') ; 
+    } else {
+      let numSuccess = listCheckBox.length-listFail.length;
+      Swal.fire('Kết quả cập nhật:','Thất bại '+listFail.length+' sản phẩm,'
+     +' thành công '+numSuccess+' sản phẩm.','error') ; 
+    }
   }
   selectImgs=()=>{
     let listImgsSelected = this.state.listImgsSelected;
