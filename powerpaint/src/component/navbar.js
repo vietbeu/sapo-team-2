@@ -106,11 +106,13 @@ class SubMenu extends Component {
             <div className='sub-menu'>
                 <div className='sub-menu-row'>
                     <span><i className="fa fa-phone" aria-hidden="true"></i></span>
-                    <span className='sub-menu-text'>Hotline 1900 6750</span>
+                    <span className='sub-menu-text'>Hotline 097 586 7756</span>
                 </div>
                 <div className='sub-menu-row'>
+                    <a href='https://support.sapo.vn/tong-quan-ban-hang-tren-shopee' target='_blank'>
                     <span><i className="fa fa-info-circle" aria-hidden="true"></i></span>
                     <span className='sub-menu-text'>Trợ giúp</span>
+                    </a>
                 </div>
                 <div className='sub-menu-row' url='/userinfo' onClick={this.redirect}>
                     <span url='/userinfo'><i className="fa fa-user" aria-hidden="true"></i></span>

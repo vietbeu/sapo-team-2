@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import img3 from '../images/img3.jpg';
-import img4 from '../images/img4.jpg';
+import img3 from '../images/login3.jpeg';
+import img4 from '../images/login4.jpg';
 import Popup from 'reactjs-popup';
 import InfoPopup from './info-popup';
 
@@ -13,15 +13,15 @@ class Image extends Component {
     changeImage = () =>{
         let currentImage=this.state.imageNum;
         if (currentImage < imgBackground.length -1){
-            document.getElementById('image-background').style.backgroundImage="url(https://images.pexels.com/photos/926987/pexels-photo-926987.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)";
+            document.getElementById('image-background').style.backgroundImage="url("+img3+")";
             this.setState({imageNum: currentImage+1});
         }else {
-            document.getElementById('image-background').style.backgroundImage="url('https://images.pexels.com/photos/1268552/pexels-photo-1268552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')";
+            document.getElementById('image-background').style.backgroundImage="url("+img4+")";
             this.setState({imageNum: 0});
         }    
     }
     componentDidMount(){
-        this.imageEffect=setInterval(this.changeImage, 3000);
+        this.imageEffect=setInterval(this.changeImage, 5000);
     }
     componentWillUnmount(){
         clearInterval(this.imageEffect);

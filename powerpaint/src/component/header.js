@@ -30,7 +30,7 @@ class Header extends Component {
                 <div className='info' id='avatar' onClick={this.handleCLickAvatar}>
                 </div>
                 <button className='header-button' onClick={() =>
-                    alert("Hãy liên hệ với chúng tôi qua  số điện thoại 0975867756 hoặc email sapoteam2@gmail.com")}>
+                    window.open('https://support.sapo.vn/tong-quan-ban-hang-tren-shopee','_blank' )}>
                     <div className='help'>
                         <div>
                             <span className="fa-stack fa-lg">

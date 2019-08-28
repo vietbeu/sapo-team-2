@@ -1,6 +1,6 @@
 
 .first-page .image-background{
-  background-image: url(../images/img3.jpg);
+  background-image: url(../images/login4.jpg);
   float: left;
   width:65%;height: 115vh;
   background-position: center;
@@ -121,6 +121,12 @@
   background-color :#0084FF;
   color: white;
   font-size: 1.5vw;
+}
+.submit-email{
+  background-color :#0084FF;
+  color: white;
+  font-size: 1.5vw;
+  float:right; 
 }
 .forget-pass{
   float:right;

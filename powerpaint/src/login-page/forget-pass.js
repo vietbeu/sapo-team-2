@@ -36,8 +36,8 @@ class ForgetPass extends Component {
                     {message}
                     <input type='email' placeholder='Hãy nhập email đã đăng ký' required onChange={this.changeEmail}/>
                 </div>
-                <button className='submit' onClick={this.handleSubmitForgerPassForm}>Gửi</button>
-                <button className='forget-pass'>Quay lại</button>
+                <button className='submit-email' onClick={this.handleSubmitForgerPassForm}>Gửi</button>
+                {/* <button className='forget-pass'>Quay lại</button> */}
             </React.Fragment>
           );
     }

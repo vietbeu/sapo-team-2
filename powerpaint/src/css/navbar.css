@@ -96,7 +96,7 @@
     width: 100%;
     background: #10253F;
     font-size: 1.1vw;
-    display: inline;
+    /* display: inline; */
 }
 
 .sub-menu-row{
@@ -104,6 +104,14 @@
     position: relative;
 }
 .sub-menu-row:hover{
+    background: #5A99E7;
+    color: #ffffff;
+    cursor: pointer;
+}
+.sub-menu-row a{
+    color:inherit;
+}
+.sub-menu-row a :hover{
     background: #5A99E7;
     color: #ffffff;
     cursor: pointer;
