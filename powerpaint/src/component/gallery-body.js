@@ -10,8 +10,8 @@ import PopupAddImgAdvance from './advance-add-img-popup';
 
 class BodyGallery extends Component {
     state = { 
-     // images_gallery:[],
-      images_gallery: JSON.parse(localStorage.getItem('images_gallery')),
+      images_gallery:[],
+      // images_gallery: JSON.parse(localStorage.getItem('images_gallery')),
       currentImgs:[],
       shop_id:JSON.parse(localStorage.getItem('listShop'))[0].shop_id,
       listImgsSelected:[],
@@ -120,7 +120,9 @@ class BodyGallery extends Component {
         let btAdd=document.getElementById('bt-add');
         let btDel=document.getElementById('bt-delImgs');
         this.clickableButton(btAdd);
-        this.clickableButton(btDel);
+        btDel.removeAttribute("disabled");
+        btDel.style.backgroundColor='#EC5B3E';
+        btDel.style.color='#FFFFFF';   
       }  
     }
     changeShop=(e)=>{
@@ -240,7 +242,7 @@ class BodyGallery extends Component {
       let buttons = document.getElementsByClassName('edit-bt');
       for(let i = 0 ; i< buttons.length;i++) buttons[i].style.display='none';   
     }
-    handleCLickImgItem=(src,isChosen) =>{
+    handleCLickImgItem=(src) =>{
       let listImgsSelected = this.state.listImgsSelected;
       let index = listImgsSelected.indexOf(src);
       let maxImg=parseInt(localStorage.getItem('max-imgs'));
@@ -397,7 +399,10 @@ class BodyGallery extends Component {
       this.showUpdateStatus('error',listFail.length,numSuccess);
     }
   }
-    
+  handleAddToShopee=(numOfUpdate)=>{
+    if ( numOfUpdate <= 0) this.hideWarningDialog();
+    else this.addToShopee();
+  }
   addToShopee=async()=>{
     this.hideWarningDialog();
     const authen = 'Bearer '+localStorage.getItem('token');
@@ -543,20 +548,24 @@ class BodyGallery extends Component {
           )
         }
         if (type===3){
-          headerModal='Thông báo xác nhận hình thức bổ sung và cập nhật';
+          headerModal='Thông báo cập nhật và bổ sung hình ảnh';
           let listCheckBox = JSON.parse(sessionStorage.getItem('products-selected')),listUnchange=[];
           for (let i=0;i<listCheckBox.length;i++){
             let numOfSlotImg =listCheckBox[i].numImg;
             if (numOfSlotImg <= 0)listUnchange.push(i);
           }
-          let moreTxt,altTxt='',numOfUpdate;
+          let moreTxt,altTxt='',numOfUpdate,lastTxt='';
           numOfUpdate = listCheckBox.length - listUnchange.length;
 
           if (listUnchange.length > 0) {
-            moreTxt=<div>{'Có '+listUnchange.length+' sản phẩm không thể cập nhật thêm ảnh'
+            moreTxt=<div>{'Có '+listUnchange.length+'/'+listCheckBox.length+' sản phẩm không thể cập nhật thêm ảnh'
           +' vì đã đủ số lượng ảnh tối đa (9 ảnh)'}</div>;
             altTxt='còn lại';
           }
+          if (numOfUpdate >0) lastTxt =(
+            <div>{'Chúng tôi sẽ tự động cập nhật số lượng ảnh với '+numOfUpdate+' sản phẩm '+altTxt
+            +' phù hợp với quy định của Shopee.'}</div>
+          )
           bodyModal=(
             // <div id='popup-type-add-Imgs'>
             //   <div>Bạn có thể lựa chọn hình thức bổ sung và cập nhật sau:</div>
@@ -568,14 +577,13 @@ class BodyGallery extends Component {
             <>
             <div>{'Bạn đã lựa chọn '+listImgsSelected.length+' hình ảnh'}</div>
             {moreTxt}
-            <div>{'Chúng tôi sẽ tự động cập nhật số lượng ảnh với '+numOfUpdate+' sản phẩm '+altTxt
-            +' phù hợp với quy định của Shopee.'}</div>
+            {lastTxt}
             </>
           )
           footerModal=(
           <>
           {/* <button id='bt-ok' onClick={this.showPopUpAddImgsAdvance}>Đồng ý</button> */}
-          <button id='bt-ok' onClick={this.addToShopee}>Đồng ý</button>
+          <button id='bt-ok' onClick={()=>this.handleAddToShopee(numOfUpdate)}>Đồng ý</button>
           <button id='bt-exit' onClick={this.closeModal}>Thoát</button>
           </>
           );

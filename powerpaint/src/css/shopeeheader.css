@@ -28,16 +28,17 @@
 .header-text i{
     width: 5%;
     color:  #7B7B7B;
+    display: none;
 }
 .header-text #logo-shopee{
     background-image: url('../images/logo-shopee.png');
-    background-position: center center;
+    background-position: center left;
     background-size: contain;
     background-repeat: no-repeat;
     height:5vh;
     width: 10%;
     position: absolute;
-    margin-left: 3%;
+    margin-left: 0%;
     top:50%;
     transform: translateY(-50%);
 }
@@ -45,7 +46,7 @@
     top:50%;
     transform: translateY(-50%);
     position: absolute;
-    left:18%;
+    margin-left:8%;
     color: #000000;
 }
 

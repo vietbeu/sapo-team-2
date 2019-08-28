@@ -131,7 +131,7 @@
     border-radius: 5px;
     border: none;
     color: #FFFFFF;
-    padding: 2vh 1vw;
+    padding: 1vh 1vw;
 }
 #bt-update{
     background: #007BFF;
@@ -147,10 +147,10 @@
     border: 1px solid #C4C4C4;
     box-sizing: border-box;
     border-radius: 5px;
-    right:15%;
+    right:13%;
     top:50%;
     transform: translateY(-50%);
-    padding: 2vh 1vw;
+    padding: 1vh 1vw;
 }
 #bt-add{
     background: #007BFF;

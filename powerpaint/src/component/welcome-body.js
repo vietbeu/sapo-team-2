@@ -29,14 +29,13 @@ class WelcomeBody extends Component {
                         </div>
                         <div>
                             Hãy thực hiện kết nối gian hàng trên shopee để sử dụng các tính năng của chúng tôi.
-                            Sau khi thực hiện kết nối dữ liệu của quý khách sẽ được đồng bộ về hệ thống trong khoảng thời 
-                            gian từ 15 đến 60 phút.
+                            Sau khi thực hiện kết nối dữ liệu của quý khách sẽ được đồng bộ về hệ thống.
                         </div>
                     </div> 
                     <div id='footer'>
                         <button onClick={this.redirectShopee}> Kết nối Shopee</button>
                         <div id='signup'>
-                            <span><a href='https://shopee.vn'>Đăng kí tại đây</a></span> nếu bạn chưa có gian hàng trên Shopee.
+                            <span><a href='https://shopee.vn' target='_blank'>Đăng kí tại đây</a></span> nếu bạn chưa có gian hàng trên Shopee.
                         </div>
                     </div>
                 </div>
