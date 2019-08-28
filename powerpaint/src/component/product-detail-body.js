@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../css/product-detail.css';
 import Swal from 'sweetalert2';
-import img from '../images/img3.jpg'
 import Axios from 'axios';
 import { serverIP,port,partner_id,sightengine, URL_UpdateItemImg, URL_InsertItemImg, URL_DeleteItemImg, serverFrIP, portFr } from './const';
 import {API_Shopee} from './API';
@@ -14,6 +13,7 @@ class BodyProductDetail extends Component {
         item_id:localStorage.getItem('item-id-detail'),
         shop_id:localStorage.getItem('shop-id-detail'),
         images : JSON.parse(localStorage.getItem('img-detail')),
+        preImages: JSON.parse(localStorage.getItem('img-detail')),
         name : localStorage.getItem('name-detail'),
         sku : localStorage.getItem('sku-detail'),
         status: localStorage.getItem('status-detail'),
@@ -78,7 +78,24 @@ class BodyProductDetail extends Component {
         })
     }
 
-    updateItemImgToShopee = (e) =>{
+    handleUpdateItemImgToShopee=()=>{
+        let preImages = this.state.preImages;
+        let image =this.state.images;
+        let isChanged=false;
+        if ( preImages.length !== image.length) isChanged=true;
+        else{
+            for ( let i=0;i<preImages.length;i++){
+                if (preImages[i] !== image[i]){
+                    isChanged=true;
+                    break;
+                }
+            }
+        }
+        if (!isChanged)
+            Swal.fire('','Bạn chưa thay đổi hình ảnh','warning');
+        else this.updateItemImgToShopee();
+    }
+    updateItemImgToShopee = () =>{
         let shopid=this.state.shop_id;
         let item_id=this.state.item_id;
         let myImgs=this.state.images;
@@ -110,11 +127,14 @@ class BodyProductDetail extends Component {
                 }})
             .then (rsp => {
                 if (rsp.data.error == null)
+                {   
+                    this.setState({preImages:this.state.images})
                     Swal.fire(
                         'Success!',
                         'Update ảnh trên Shopee thành công!',
                         'success'
                     )
+                }
                 else Swal.fire(
                     'Fail!',
                     'Cập nhật ảnh thất bại!',
@@ -433,7 +453,7 @@ class BodyProductDetail extends Component {
                         </div>
                         <div id='right-content-footer'>
                             <div id='update-button'>
-                                <button onClick={this.updateItemImgToShopee}>Cập nhật lên Shopee</button>     
+                                <button id='bt-up-shopee' onClick={this.handleUpdateItemImgToShopee}>Cập nhật lên Shopee</button>     
                             </div>
                         </div>
                     </div>

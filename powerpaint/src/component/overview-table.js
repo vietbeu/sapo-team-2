@@ -80,11 +80,23 @@ class Table extends Component {
           localStorage.setItem('list-categories',JSON.stringify(listCategories));
         })     
       }
+    deleteShop=(id)=>{
+        axios.delete('http://' + serverIP + ':'+port+'/api/v1/shop/delete/'+id,
+            {headers: {
+            'Authorization': 'Bearer '+localStorage.getItem('token'),
+        }}) 
+        .then(()=>{
+            Swal.fire('Thành công','Xoá shop thành công','success');
+            this.getShop();
+        })
+        .catch(()=> Swal.fire('Thất bại','Đã có lỗi xảy ra! Xin vui lòng thử lại sau.','error'))
+
+    }
     render() { 
         let list = this.state.listShop;
         let listShop=[];
         if (list != []){
-            listShop = list.map((x)=><ShopItem shop={x} key={x.id}/>);
+            listShop = list.map((x)=><ShopItem shop={x} key={x.id} onDeleteShop={()=>this.deleteShop(x.shop_id)}/>);
             let listActiveShop=[] ;
             list.map(x => {
                 if (x.status===1) listActiveShop.push(x);

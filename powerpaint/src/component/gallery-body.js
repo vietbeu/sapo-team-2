@@ -268,13 +268,13 @@ class BodyGallery extends Component {
       this.setState({showModal:true,typeModal: type});
     }
     showWarningUpdate=()=>{
-      let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
+      let listCheckBox = JSON.parse(sessionStorage.getItem('products-selected'));
       if (listCheckBox === null || listCheckBox.length===0)
         Swal.fire('','Bạn chưa chọn sản phẩm','warning');
       else this.setState({showModal:true,typeModal:2});
     }
     showWarningAdd=()=>{
-      let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
+      let listCheckBox = JSON.parse(sessionStorage.getItem('products-selected'));
       if (listCheckBox === null || listCheckBox.length===0)
         Swal.fire('','Bạn chưa chọn sản phẩm','warning');
       else{
@@ -353,7 +353,7 @@ class BodyGallery extends Component {
           'URLs':listImgsSelected,
         }
         })
-        .then ( rsp => {
+        .then ( () => {
           for (let j=0;j<listImgsSelected.length;j++){
             for (let i=0;i<images.length;i++) 
               if (images[i].shop_id==shop_id) images[i].photos.splice(images[i].photos.indexOf(listImgsSelected[j]),1);
@@ -362,14 +362,14 @@ class BodyGallery extends Component {
           this.setState({listImgsSelected:[]});
           Swal.fire('Thành công!','Xoá ảnh thành công','success')
          })
-         .catch(e => Swal.fire('Xoá ảnh thất bại!','Xin vui lòng thử lại sau','error') )      
+         .catch(() => Swal.fire('Xoá ảnh thất bại!','Xin vui lòng thử lại sau','error') )      
     }}) 
   }
 
   updateToShopee=async()=>{
     this.hideWarningDialog();
     let listFail=[];
-    let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
+    let listCheckBox = JSON.parse(sessionStorage.getItem('products-selected'));
     let listImgsSelected = this.state.listImgsSelected;
     for (let i=0;i<listCheckBox.length;i++){
       let item_id = listCheckBox[i].item.item_id;
@@ -390,56 +390,78 @@ class BodyGallery extends Component {
     }
     console.log(listFail);
     if (listFail.length==0)  {
-      Swal.fire('Thành công', 'Cập nhật ảnh '+listCheckBox.length+' sản phẩm thành công','success') ;
-      localStorage.setItem('products-selected',null);
+      this.showUpdateStatus('success',0,listCheckBox.length);
     }    
     else {
       let numSuccess = listCheckBox.length-listFail.length;
-      Swal.fire('Kết quả cập nhật:','Thất bại '+listFail.length+' sản phẩm,'
-     +' thành công '+numSuccess+' sản phẩm.','error') ; 
+      this.showUpdateStatus('error',listFail.length,numSuccess);
     }
   }
     
   addToShopee=async()=>{
     this.hideWarningDialog();
     const authen = 'Bearer '+localStorage.getItem('token');
-    let listFail=[];
+    let listFail=[],listUnchange=[];
     let listImgsSelected = this.state.listImgsSelected;
-    let listCheckBox = JSON.parse(localStorage.getItem('products-selected'));
+    let listCheckBox = JSON.parse(sessionStorage.getItem('products-selected'));
     for (let i=0;i<listCheckBox.length;i++){
       let item_id = listCheckBox[i].item.item_id;
       let shop_id = listCheckBox[i].shop_id;
       let listImgs=[];
       let numOfSlotImg =listCheckBox[i].numImg;
-      if( numOfSlotImg <listImgsSelected.length)
-        for (let j=0;j<numOfSlotImg;j++){
-          listImgs.push(listImgsSelected[j]);
-        }
-      else listImgs=listImgsSelected;
-      // console.log(listImgs);
-      await Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/addItemImg',{
-        partner_id:partner_id,
-        shopid:shop_id,
-        item_id:item_id,
-        images:listImgs,
-      },{headers: {'Authorization': authen,}})
-      .then (rsp => {
+      if (numOfSlotImg >0){
+        if( numOfSlotImg <listImgsSelected.length)
+          for (let j=0;j<numOfSlotImg;j++){
+            listImgs.push(listImgsSelected[j]);
+          }
+        else listImgs=listImgsSelected;
         // console.log(listImgs);
-        if (rsp.data.error == null) console.log(1);
-        else listFail.push(item_id)})
-      .catch(error => 
-        listFail.push(item_id)
-      )      
+        await Axios.post('http://' + serverIP + ':'+port+'/api/v1/test/addItemImg',{
+          partner_id:partner_id,
+          shopid:shop_id,
+          item_id:item_id,
+          images:listImgs,
+        },{headers: {'Authorization': authen,}})
+        .then (rsp => {
+          // console.log(listImgs);
+          if (rsp.data.error == null) console.log(1);
+          else listFail.push(item_id)})
+        .catch(error => 
+          listFail.push(item_id)
+        )      
+      }else listUnchange.push(item_id);
     }
     console.log(listFail);
     if (listFail.length==0)  {
-      Swal.fire('Thành công', 'Cập nhật ảnh '+listCheckBox.length+' sản phẩm thành công','success')
-      localStorage.setItem('products-selected',null);
+      this.showUpdateStatus('success',0,listCheckBox.length-listUnchange.length)
     } else {
-      let numSuccess = listCheckBox.length-listFail.length;
-      Swal.fire('Kết quả cập nhật:','Thất bại '+listFail.length+' sản phẩm,'
-     +' thành công '+numSuccess+' sản phẩm.','error') ; 
+      let numSuccess = listCheckBox.length-listFail.length-listUnchange.length;
+      this.showUpdateStatus('error',listFail.length,numSuccess);
     }
+  }
+
+  showUpdateStatus=(type,listFailLength,listSuccessLength)=>{
+    sessionStorage.setItem('products-selected',null);
+    let text,popupType;
+    if (type==='error'){
+      text ='Thất bại '+listFailLength+' sản phẩm,'+' thành công '+listSuccessLength+' sản phẩm.';
+      popupType='warning';
+    }
+    if (type==='success'){
+      text='Cập nhật ảnh '+listSuccessLength+' sản phẩm thành công';
+      popupType='success';
+    }
+    Swal.fire({
+      title: 'Kết quả cập nhật:',
+      text: text,
+      type: popupType,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'OK'
+    }).then((result) => {
+      if (result.value) {
+        window.location.href='/product'
+      }
+    })       
   }
   selectImgs=()=>{
     let listImgsSelected = this.state.listImgsSelected;
@@ -522,6 +544,19 @@ class BodyGallery extends Component {
         }
         if (type===3){
           headerModal='Thông báo xác nhận hình thức bổ sung và cập nhật';
+          let listCheckBox = JSON.parse(sessionStorage.getItem('products-selected')),listUnchange=[];
+          for (let i=0;i<listCheckBox.length;i++){
+            let numOfSlotImg =listCheckBox[i].numImg;
+            if (numOfSlotImg <= 0)listUnchange.push(i);
+          }
+          let moreTxt,altTxt='',numOfUpdate;
+          numOfUpdate = listCheckBox.length - listUnchange.length;
+
+          if (listUnchange.length > 0) {
+            moreTxt=<div>{'Có '+listUnchange.length+' sản phẩm không thể cập nhật thêm ảnh'
+          +' vì đã đủ số lượng ảnh tối đa (9 ảnh)'}</div>;
+            altTxt='còn lại';
+          }
           bodyModal=(
             // <div id='popup-type-add-Imgs'>
             //   <div>Bạn có thể lựa chọn hình thức bổ sung và cập nhật sau:</div>
@@ -532,7 +567,9 @@ class BodyGallery extends Component {
             // </div>
             <>
             <div>{'Bạn đã lựa chọn '+listImgsSelected.length+' hình ảnh'}</div>
-            <div>Chúng tôi sẽ tự động cập nhật số lượng ảnh với mỗi sản phẩm phù hợp với quy định của Shopee</div>
+            {moreTxt}
+            <div>{'Chúng tôi sẽ tự động cập nhật số lượng ảnh với '+numOfUpdate+' sản phẩm '+altTxt
+            +' phù hợp với quy định của Shopee.'}</div>
             </>
           )
           footerModal=(
@@ -590,7 +627,7 @@ class BodyGallery extends Component {
                 </Modal.Header>
                 <Modal.Body>
                   <div id='body-wn-dl'>
-                    <PopupAddImgAdvance listProducts={JSON.parse(localStorage.getItem('products-selected'))}
+                    <PopupAddImgAdvance listProducts={JSON.parse(sessionStorage.getItem('products-selected'))}
                       listImgs={this.state.listImgsSelected}/>
                   </div>
                 </Modal.Body>

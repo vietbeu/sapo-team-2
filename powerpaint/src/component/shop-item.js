@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {serverIP,port,partner_id} from './const';
 import axios from 'axios';
 import avtDefault from '../images/avt-shop-default.png'
+import Swal from 'sweetalert2'
 
 class ShopItem extends Component {
     state = { 
@@ -44,6 +45,20 @@ class ShopItem extends Component {
         localStorage.setItem('shop-status',this.props.shop.status);
         window.location.href='/shop';
     }
+    handleDeleteShop=()=>{
+        Swal.fire({
+            title: 'Xoá gian hàng này?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.value) 
+                this.props.onDeleteShop();
+          })        
+
+    }
     render() { 
         let shop=this.props.shop; let avt=this.state.avatar;
         let shopStatus,srcAvt;
@@ -67,7 +82,7 @@ class ShopItem extends Component {
                         <a href={'https://shopee.vn/shop/'+shop.shop_id} target="_blank">{'https://shopee.vn/shop/'+shop.shop_id}</a></td>
                     <td className='connect-date'>{this.formatDay(shop.createDate)}</td>
                     {shopStatus}
-                    
+                    <td><i className="fa fa-trash-o" aria-hidden="true" onClick={this.handleDeleteShop}></i></td>
                 </tr>   
             </>         
           );
