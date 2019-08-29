@@ -265,6 +265,14 @@ class BodyProDuct extends Component {
     })  
   }
   showFilterResult=(listCategories,lv1,lv2,lv3,cate_name,shopeeStatus,filterChosen)=>{
+    if(arr.indexOf(shopeeStatus)<0 && filterChosen.indexOf(listFilterCondition[0])>=0){
+      let status_name;
+      if (shopeeStatus==='NORMAL') status_name='Hiển thị';
+      if (shopeeStatus==='UNLIST') status_name='Ẩn';
+      if (shopeeStatus==='BANNED') status_name='Khoá';
+      if (shopeeStatus==='DELETED') status_name='Đã xoá';
+      this.setState({status_name:status_name});
+    }
     if(filterChosen.length>0 && (arr.indexOf(lv1) <0 || arr.indexOf(shopeeStatus)<0)){
       let listResult=[];
       if (filterChosen.indexOf(listFilterCondition[1])>=0){
@@ -275,18 +283,13 @@ class BodyProDuct extends Component {
         }
       }
       else if (filterChosen.indexOf(listFilterCondition[0])>=0) {
+        this.setState({cate_name_filter:''})
         listResult= this.showStatusFilterResult(shopeeStatus,this.state.listItemsDetail);
-      }
+      } 
+      if (filterChosen.indexOf(listFilterCondition[0])<0) this.setState({status_name:''});
       if (listResult.length<=0) Swal.fire('','Không có sản phẩm nào thoả mãn','info')
     }else this.setState({onFilter:false});
-    if(arr.indexOf(shopeeStatus)<0){
-      let status_name;
-      if (shopeeStatus==='NORMAL') status_name='Hiển thị';
-      if (shopeeStatus==='UNLIST') status_name='Ẩn';
-      if (shopeeStatus==='BANNED') status_name='Khoá';
-      if (shopeeStatus==='DELETED') status_name='Đã xoá';
-      this.setState({status_name:status_name});
-    }
+    
   }
   showCategoryFilterResult=(listCategories,lv1,lv2,lv3)=>{
     let filterText;
@@ -423,7 +426,7 @@ class BodyProDuct extends Component {
         if(this.state.onFilter===true) {
           let text;
           if (arr.indexOf(this.state.cate_name_filter) <0)
-            if(arr.indexOf(this.state.status_name<0))
+            if(arr.indexOf(this.state.status_name)<0)
               text='Danh mục: ' + this.state.cate_name_filter+'; Trạng thái: '+this.state.status_name;
             else text = 'Danh mục: '+this.state.cate_name_filter;
           else text='Trạng thái: '+this.state.status_name;
@@ -455,7 +458,9 @@ class BodyProDuct extends Component {
                             {close =>(
                             <>
                             {/* <button className='exit-popup-bt' onClick={close}><i className="fa fa-times" aria-hidden="true"></i></button> */}
-                            <FilerCondition onShowResult={this.showFilterResult} onTurnOnFilter={this.turnOnFilter}/>
+                            <FilerCondition onShowResult={(listCategories,lv1,lv2,lv3,cate_name,shopeeStatus,filterChosen)=>{
+                              this.showFilterResult(listCategories,lv1,lv2,lv3,cate_name,shopeeStatus,filterChosen);
+                              close()}} onTurnOnFilter={this.turnOnFilter}/>
                             </>
                             )}
                           </Popup>                                    
