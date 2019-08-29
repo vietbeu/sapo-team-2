@@ -15,9 +15,15 @@
 }
 #product-name{
     margin-left: 3%;
-    color:#333333;
+    /* color:#333333; */
     font-size:1.9vw;  
     margin-bottom: 3vh;
+}
+#product-name a{
+    color:#333333;
+}
+#product-name a:hover{
+    color:#0084FF;
 }
 #detail-content{
     width: 94%;

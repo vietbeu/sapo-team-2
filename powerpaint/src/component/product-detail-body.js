@@ -427,7 +427,9 @@ class BodyProductDetail extends Component {
                     </a>
                 </div>
                 <div id='product-name'>
-                    {this.state.name}
+                    <a href={'https://banhang.shopee.vn/portal/product/'+this.state.item_id} target='_blank'>
+                        {this.state.name}
+                    </a>
                 </div>
                 <div id='detail-content'>
                     <div id='left-detail-content'>
