@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import img from '../images/img-1.jpg'
 import Swal from 'sweetalert2';
-import {serverIP,port,partner_id,serverFrIP,portFr} from './const';
+import {serverIP,port,partner_id,serverFrIP,portFr, sightengine} from './const';
 import Axios from 'axios';
 import { async } from 'q';
 import ImgItem from './img-item';
@@ -175,11 +175,22 @@ class BodyGallery extends Component {
             .then ( rsp => {
               if (rsp.data.success===1){
                 let url=rsp.data.url;
-                for (let i=0;i<images.length;i++) {
-                  if (images[i].shop_id==shop_id) images[i].photos.push(url);
-                }
-                this.updateStateImg(images);
-                Swal.fire({title: 'Ảnh vừa tải lên',imageUrl: e.target.result,imageAlt: 'The uploaded picture'})
+                sightengine.check(['nudity']).set_url(url)
+                .then(rsp => {
+                  if(rsp.nudity.safe < 0.9 && rsp.nudity.partial<0.9) {
+                    Swal.fire('Fail!','Ảnh có nội dung không phù hợp','error');
+                    Axios.delete("http://"+serverIP+':'+port+'/api/v1/image/delete',
+                    {headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
+                    data:{'URLs':[url],}
+                   })                                                       
+                  } else{
+                    for (let i=0;i<images.length;i++) {
+                      if (images[i].shop_id==shop_id) images[i].photos.push(url);
+                    }
+                    this.updateStateImg(images);
+                    Swal.fire({title: 'Ảnh vừa tải lên',imageUrl: e.target.result,imageAlt: 'The uploaded picture'});
+                  }
+                })
               }else Swal.fire('Fail!', 'Lưu ảnh thất bại!','error' )
             })   
           }
@@ -202,13 +213,18 @@ class BodyGallery extends Component {
         showLoaderOnConfirm: true,
     })
     if (url) {
-        const authen = 'Bearer '+localStorage.getItem('token');
-        Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
-        {"item_id":localStorage.getItem('item-id-detail'),"photo_url":url,"shop_id":shop_id},
-            {headers: {
-                'Authorization': authen,
-            }})
-        .then ((rsp)=> {
+      sightengine.check(['nudity']).set_url(url)
+      .then(rsp => {
+        if(rsp.nudity.safe < 0.9 && rsp.nudity.partial<0.9) {
+          Swal.fire('Fail!','Ảnh có nội dung không phù hợp','error') 
+        }else{     
+          const authen = 'Bearer '+localStorage.getItem('token');
+          Axios.post('http://' + serverIP + ':'+port+'/api/v1/upload',
+          {"item_id":localStorage.getItem('item-id-detail'),"photo_url":url,"shop_id":shop_id},
+              {headers: {
+                  'Authorization': authen,
+              }})
+          .then ((rsp)=> {
             if (rsp.data.success==1){
               for (let i=0;i<images.length;i++) 
                 if (images[i].shop_id==shop_id) images[i].photos.push(rsp.data.url);
@@ -220,13 +236,10 @@ class BodyGallery extends Component {
                 'error'
             )
             })
-        .catch(error =>
-            Swal.fire(
-                'Fail!',
-                'Tải ảnh lên thất bại!',
-                'error'
-              ))
+        .catch(() =>Swal.fire('Fail!','Tải ảnh lên thất bại!','error'))
       }
+    })
+  }
 }
     updateStateImg=(images)=>{
       this.setState({images_gallery:images});

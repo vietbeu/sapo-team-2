@@ -401,6 +401,23 @@ class BodyProductDetail extends Component {
                 <div className='img-text'>{'Ảnh '+imgTxt}</div>
             </span>
         )})
+        let status;
+        switch(this.state.status) {
+            case 'NORMAL':
+                status='Hiển thị';
+                break;
+            case 'BANNED':
+                status= 'Khoá';
+                break;
+            case 'DELETED':
+                status='Đã xoá'
+                break;
+            case 'UNLIST':
+                status= 'Ẩn';
+                break;
+            default:
+                status='';
+          }
         //let shopeeImgs= images.map(x =>  <img src={x} alt='img' key={images.indexOf(x)}onClick={this.editPhoto}/>)
         return ( 
             <div id='product-detail-body'>
@@ -424,7 +441,7 @@ class BodyProductDetail extends Component {
                         </div>
                         <div className='detail-row'>
                             <label>Trạng thái trên Shopee</label>
-                            <input type='text' value={this.state.status}></input>
+                            <input type='text' value={status}></input>
                         </div>
                     </div>
                     <div id='right-detail-content'>
